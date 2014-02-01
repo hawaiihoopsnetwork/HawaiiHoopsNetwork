@@ -1,4 +1,4 @@
-name := "play-new-passcheckstyle"
+name := "Hawaii Hoops Network"
 
 version := "1.0-SNAPSHOT"
 

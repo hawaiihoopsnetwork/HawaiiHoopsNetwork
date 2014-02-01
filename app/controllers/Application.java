@@ -14,7 +14,8 @@ public class Application extends Controller {
    * @return The resulting home page. 
    */
   public static Result index() {
-    return ok(Index.render("Your new application is ready."));
+    return ok(Index.render());
   }
-
+  
+  
 }

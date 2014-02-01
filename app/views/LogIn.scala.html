@@ -1,0 +1,62 @@
+@(user: Form[views.formdata.LoginForm], newUser: Form[views.formdata.NewUserForm]) 
+
+@import bootstrap3._ 
+@import helper._ 
+
+@Main("Login / Register") {
+<div class="container">
+  <div class="row page-content">
+    <div class="col-sm-5 right-well">
+      @form(routes.Login.loginUser(), 'class -> "form-horizontal") {
+      <h1>Log In</h1>
+      @text(user("userName"),
+        label="",
+        placeholder="username",
+        help="User Name")
+      @bootstrap3.password(user("password"),
+        label="",
+        placeholder="password",
+        help="Password")
+        
+        <div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button type="submit" class="btn btn-default">Log In</button>
+  </div>
+</div>
+    }
+    </div>
+    <div class="col-sm-1 vertical_dotted_line"></div>
+    <div class="col-sm-6 left-well">
+    @form(routes.Login.createNewUser(), 'class -> "form-horizontal") {
+      <h1>Create a New User</h1>
+      @text(newUser("userName"),
+        label="",
+        placeholder="username",
+        help="Your user name. (Cannot be changed)")
+      @bootstrap3.password(newUser("password"),
+        label="",
+        placeholder="password",
+        help="Your Password")
+      @bootstrap3.password(newUser("passwordCheck"),
+        label="",
+        placeholder="password",
+        help="Reenter password")
+      @text(newUser("emailAddress"),
+        label="",
+        placeholder="example@gmail.com",
+        help="Your Email Address")
+        <div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button type="submit" class="btn btn-default">Create Account</button>
+  </div>
+  
+}
+</div>
+<h100>By creating an account, you agree to the <a href="#">Terms and Conditions</a>.</h100>
+        </div>
+        </div>
+    </div>
+
+
+
+}
