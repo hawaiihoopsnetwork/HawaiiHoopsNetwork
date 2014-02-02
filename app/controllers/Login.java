@@ -45,7 +45,9 @@ public class Login extends Controller {
       return badRequest(LogIn.render(formData, user));
     }
     else {
-      return ok(Index.render());
+      LoginForm data = new LoginForm();
+      Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
+      return ok(Index.render(loginForm));
     }
   }
 
@@ -65,7 +67,9 @@ public class Login extends Controller {
       return badRequest(LogIn.render(user, formData));
     }
     else {
-      return ok(Index.render());
+      LoginForm data = new LoginForm();
+      Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
+      return ok(Index.render(loginForm));
     }
   }
 

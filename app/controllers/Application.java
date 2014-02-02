@@ -1,7 +1,9 @@
 package controllers;
 
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.formdata.LoginForm;
 import views.html.Index;
 import views.html.TermsOfUse;
 
@@ -16,7 +18,9 @@ public class Application extends Controller {
    * @return The resulting home page.
    */
   public static Result index() {
-    return ok(Index.render());
+    LoginForm data = new LoginForm();
+    Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
+    return ok(Index.render(loginForm));
   }
 
   /**
@@ -25,7 +29,9 @@ public class Application extends Controller {
    * @return The resulting terms of use page.
    */
   public static Result terms() {
-    return ok(TermsOfUse.render());
+    LoginForm data = new LoginForm();
+    Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
+    return ok(TermsOfUse.render(loginForm));
   }
 
 }

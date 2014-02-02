@@ -1,4 +1,8 @@
-@(title: String)(content: Html)
+@(title: String, user: Form[views.formdata.LoginForm])(content: Html)
+
+@import helper._
+@import bootstrap3._
+@import models._
 
 <!DOCTYPE html>
 
@@ -36,6 +40,29 @@
         <ul class="nav navbar-nav">
           <li><a href="#">Gym Locations</a></li>      
           <li><a href="@routes.Login.logIn()">LogIn/Register</a></li>      
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li  class="dropdown"><a id="loginButton" class="dropdown-toggle" data-toggle="dropdown" href="#">Login<b
+              class="caret"></b></a>
+            <ul class="dropdown-menu">
+            <div class="loginWidget">
+               @form(routes.Login.loginUser(), 'class -> "form-horizontal") {
+                     @textWidget(user("userName"),
+                      label="",
+                      placeholder="username",
+                      help="User Name")
+               @bootstrap3.passwordWidget(user("password"),
+                      label="",
+                      placeholder="password",
+                      help="Password")
+                 <div class="form-group">
+                    <div class="col-sm-offset-6 col-sm-2">
+                    <button type="submit" class="btn btn-default">Log In</button>
+                 </div>  
+              </div>
+              }
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
