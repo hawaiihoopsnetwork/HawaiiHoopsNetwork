@@ -3,12 +3,15 @@
 # ~~~~
 
 # Home page
+# Application.java
 GET     /                           controllers.Application.index()
+GET     /TermsConditionsUse         controllers.Application.terms()
 
 # Login
+# Login.java
 GET     /login                      controllers.Login.logIn()
-GET     /c                           controllers.Login.createNewUser()
-GET     /d                          controllers.Login.loginUser()
+GET     /create                     controllers.Login.createNewUser()
+GET     /login                      controllers.Login.loginUser()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

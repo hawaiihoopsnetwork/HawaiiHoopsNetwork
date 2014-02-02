@@ -1,5 +1,5 @@
 /**
- * 
+ * Contains the different models.
  */
 /**
  * @author AJ

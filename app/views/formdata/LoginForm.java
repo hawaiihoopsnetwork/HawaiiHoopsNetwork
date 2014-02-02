@@ -5,16 +5,33 @@ import java.util.List;
 import models.db.ProfilesDB;
 import play.data.validation.ValidationError;
 
+/**
+ * The login form data.
+ * 
+ * @author AJ
+ * 
+ */
 public class LoginForm {
 
+  /** User Name. */
   public String userName;
+  /** Password. */
   public String password;
-  
-  public LoginForm() {}
-  
+
+  /**
+   * Default constructor.
+   */
+  public LoginForm() {
+  }
+
+  /**
+   * The validation method.
+   * 
+   * @return errors, if any.
+   */
   public List<ValidationError> validate() {
     List<ValidationError> errors = new ArrayList<>();
-    
+
     if (ProfilesDB.isUser(userName)) {
       errors.add(new ValidationError("userName", "Already a registered user."));
     }

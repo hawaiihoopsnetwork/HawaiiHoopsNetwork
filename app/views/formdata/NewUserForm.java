@@ -6,24 +6,48 @@ import play.data.validation.ValidationError;
 import models.Profile;
 import models.db.ProfilesDB;
 
+/**
+ * The New User form.
+ * 
+ * @author AJ
+ * 
+ */
 public class NewUserForm {
 
+  /** User Name. */
   public String userName;
+  /** Password. */
   public String password;
+  /** Password Check. */
   public String passwordCheck;
+  /** Email Adress. */
   public String emailAddress;
-  
-  public NewUserForm() {}
-  
+
+  /**
+   * Default constructor.
+   */
+  public NewUserForm() {
+  }
+
+  /**
+   * Other constructor.
+   * 
+   * @param profile the profile.
+   */
   public NewUserForm(Profile profile) {
     profile.setUserName(userName);
     profile.setPassword(password);
     profile.setEmailAdress(emailAddress);
   }
-  
+
+  /**
+   * Validation method.
+   * 
+   * @return errors, if any.
+   */
   public List<ValidationError> validate() {
     List<ValidationError> errors = new ArrayList<>();
-    
+
     if (ProfilesDB.isUser(userName)) {
       errors.add(new ValidationError("userName", "User Name already in use."));
     }
