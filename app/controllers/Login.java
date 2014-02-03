@@ -26,7 +26,7 @@ public class Login extends Controller {
     NewUserForm data2 = new NewUserForm();
     Form<LoginForm> logIn = Form.form(LoginForm.class).fill(data1);
     Form<NewUserForm> user = Form.form(NewUserForm.class).fill(data2);
-    return ok(LogIn.render(logIn, user));
+    return ok(LogIn.render("Log In", logIn, user));
   }
 
   /**
@@ -42,12 +42,12 @@ public class Login extends Controller {
 
     if (formData.hasErrors()) {
       System.out.println("Errors Found");
-      return badRequest(LogIn.render(formData, user));
+      return badRequest(LogIn.render("Log In", formData, user));
     }
     else {
       LoginForm data = new LoginForm();
       Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
-      return ok(Index.render(loginForm));
+      return ok(Index.render("Home", loginForm));
     }
   }
 
@@ -64,12 +64,12 @@ public class Login extends Controller {
 
     if (formData.hasErrors()) {
       System.out.println("Errors Found");
-      return badRequest(LogIn.render(user, formData));
+      return badRequest(LogIn.render("Log In", user, formData));
     }
     else {
       LoginForm data = new LoginForm();
       Form<LoginForm> loginForm = Form.form(LoginForm.class).fill(data);
-      return ok(Index.render(loginForm));
+      return ok(Index.render("Home", loginForm));
     }
   }
 

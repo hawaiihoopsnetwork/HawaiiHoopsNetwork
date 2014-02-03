@@ -44,7 +44,7 @@ h100 {
 }
 
 h101 {
-  font-size: 10px;
+  font-size: 12px;
   margin-left: 20px;
 }
 
@@ -59,4 +59,8 @@ h101 {
 
 .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {
   background-color: #222222;
+}
+
+.footer {
+  padding-bottom: 40px;
 }

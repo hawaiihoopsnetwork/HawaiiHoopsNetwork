@@ -1,9 +1,9 @@
-@(user: Form[views.formdata.LoginForm], newUser: Form[views.formdata.NewUserForm]) 
+@(title: String, user: Form[views.formdata.LoginForm], newUser: Form[views.formdata.NewUserForm]) 
 
 @import bootstrap3._ 
 @import helper._ 
 
-@Main("Login / Register", user) {
+@Main(title, user) {
 <div class="container">
   <div class="row page-content">
     <div class="col-sm-5 right-well">

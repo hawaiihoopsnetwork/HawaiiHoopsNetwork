@@ -1,0 +1,29 @@
+@(title: String, user: Form[views.formdata.LoginForm], contact: Form[views.formdata.ContactForm])
+
+@import helper._
+@import bootstrap3._
+
+@Main(title, user) {
+<div class="container">
+<h1>Contact Us</h1>
+ @form(routes.Application.contact(), 'class -> "form-horizontal") {
+                     @text(contact("emailAddress"),
+                      label="Email",
+                      placeholder="example@example.com",
+                      help="")
+               @bootstrap3.textarea(contact("content"),
+                      rows="12",
+                      label="Message",
+                      placeholder="What would you like to tell us?",
+                      help="")
+                 <div class="form-group">
+                    <div class="col-sm-offset-6 col-sm-2">
+                    <button type="submit" class="btn btn-default">Send</button>
+                 </div>  
+              </div>
+              }
+
+    
+</div>
+    
+}

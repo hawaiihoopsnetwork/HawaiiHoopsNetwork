@@ -6,6 +6,8 @@
 # Application.java
 GET     /                           controllers.Application.index()
 GET     /TermsConditionsUse         controllers.Application.terms()
+GET     /Contact                    controllers.Application.contact()
+GET     /AboutUs                    controllers.Application.about()
 
 # Login
 # Login.java
