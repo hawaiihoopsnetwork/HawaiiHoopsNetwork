@@ -1,6 +1,7 @@
 .header-image {
-  background-image: url('../images/logo.jpg');
+  background-image: url('../images/HawaiiHoopsNetworkLogo.jpg');
   height: 174px;
+  background-repeat: no-repeat;
 }
 
 .carousel-image {
