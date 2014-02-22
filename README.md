@@ -11,4 +11,5 @@ Connecting basketball players, teams, and leagues on Oahu!
 [User Interviews](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/UserInterviews)  
 [Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/TeamMeetings)  
 [UI Mockups](http://hawaiihoopsnetwork.github.io/uimockup)  
-[End To End Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/EndToEndUseCases)
+[End To End Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/EndToEndUseCases)  
+[Stakeholder Requirements](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Stakeholder-Requirements)
