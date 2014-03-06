@@ -9,7 +9,7 @@ Connecting basketball players, teams, and leagues on Oahu!
 ## Wiki Links
 [Related Technologies](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/RelatedTechnologies)  
 [User Interviews](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/UserInterviews)  
-[Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/TeamMeetings)  
+[Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings)  
 [UI Mockups](http://hawaiihoopsnetwork.github.io/uimockup)  
 [End To End Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/EndToEndUseCases)  
 [Stakeholder Requirements](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Stakeholder-Requirements)  
