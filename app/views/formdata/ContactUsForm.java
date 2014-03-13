@@ -12,6 +12,8 @@ import play.data.validation.ValidationError;
  */
 public class ContactUsForm {
 
+  /** Name. */
+  public String name = "";
   /** Email address. */
   public String email = "";
   /** Message. */
@@ -26,10 +28,12 @@ public class ContactUsForm {
   /**
    * Constructor.
    * 
+   * @param name person's name
    * @param email the email address
    * @param message the message
    */
-  public ContactUsForm(String email, String message) {
+  public ContactUsForm(String name, String email, String message) {
+    this.name = name;
     this.email = email;
     this.message = message;
   }
@@ -42,6 +46,9 @@ public class ContactUsForm {
   public List<ValidationError> validate() {
     List<ValidationError> errors = new ArrayList<>();
 
+    if (name == null || name.length() == 0) {
+      errors.add(new ValidationError("name", "You must enter your name."));
+    }
     if (email == null || email.length() == 0) {
       errors.add(new ValidationError("email", "Email Address is required."));
     }

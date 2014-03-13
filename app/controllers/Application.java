@@ -3,10 +3,12 @@ package controllers;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
+import com.typesafe.plugin.*;
 import views.html.Index;
 import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
+import views.html.footer.MessageSent;
 import views.formdata.ContactUsForm;
 
 /**
@@ -58,7 +60,15 @@ public class Application extends Controller {
       return badRequest(ContactUs.render("Contact Us", formData));
     }
     else {
-      return redirect("/");
+      ContactUsForm message = formData.get();
+
+      MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+      mail.setSubject("New message from: " + message.name);
+      mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
+      mail.setFrom(message.email);
+      mail.send(message.message);
+
+      return ok(MessageSent.render("Message Sent"));
     }
   }
 
