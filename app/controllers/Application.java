@@ -24,7 +24,7 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    return ok(Index.render("Your new application is ready."));
+    return ok(Index.render("Hawaii Hoops Network"));
   }
 
   /**
