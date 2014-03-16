@@ -5,6 +5,7 @@ import play.mvc.Result;
 import play.data.Form;
 import com.typesafe.plugin.*;
 import views.html.Index;
+import views.html.Main;
 import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
@@ -15,11 +16,20 @@ import views.formdata.ContactUsForm;
  * Implements the controllers for this application.
  */
 public class Application extends Controller {
+  
+  /**
+   * Returns the home page
+   * 
+   * @return The home page
+   */
+  public static Result main(String title) {
+    return ok(Main.render(title));
+  }
 
   /**
-   * Returns the home page.
+   * Returns the colorblock page.
    * 
-   * @return The resulting home page.
+   * @return The resulting colorblock page.
    */
   public static Result index() {
     return ok(Index.render("Your new application is ready."));
