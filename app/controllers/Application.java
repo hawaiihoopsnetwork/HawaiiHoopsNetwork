@@ -17,14 +17,6 @@ import views.formdata.ContactUsForm;
  */
 public class Application extends Controller {
   
-  /**
-   * Returns the home page
-   * 
-   * @return The home page
-   */
-  public static Result main(String title) {
-    return ok(Main.render(title));
-  }
 
   /**
    * Returns the colorblock page.
