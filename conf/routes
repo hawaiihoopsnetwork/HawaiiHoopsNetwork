@@ -3,7 +3,22 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET         /                           controllers.Application.index()
+
+GET         /login                      controllers.Users.login()
+POST        /login                      controllers.Users.postLogin()
+GET         /register                   controllers.Users.register()
+POST        /register                   controllers.Users.postRegister()
+GET         /logout                     controllers.Users.logout()
+GET         /delete                     controllers.Users.deleteUser()
+
+GET         /courts                     controllers.Courts.index()
+GET         /courts/:name               controllers.Courts.getCourt(name)
+GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
+GET         /courts/manage/new          controllers.Courts.newCourt()
+GET         /courts/manage/edit         controllers.Courts.manageCourt()
+POST        /courts/manage/post         controllers.Courts.postSurfer()
+
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file               controllers.Assets.at(path="/public", file)
