@@ -1,8 +1,6 @@
 package views.formdata;
 
-import java.util.ArrayList;
-import java.util.List;
-import play.data.validation.ValidationError;
+import play.data.validation.Constraints;
 
 /**
  * Creates a contact form.
@@ -13,10 +11,14 @@ import play.data.validation.ValidationError;
 public class ContactUsForm {
 
   /** Name. */
+  @Constraints.Required(message = "Name is required.")
   public String name = "";
   /** Email address. */
+  @Constraints.Required(message = "Email address is required.")
+  @Constraints.Email(message = "Not a valid email address.")
   public String email = "";
   /** Message. */
+  @Constraints.Required(message = "Message is required.")
   public String message = "";
 
   /**
@@ -36,29 +38,6 @@ public class ContactUsForm {
     this.name = name;
     this.email = email;
     this.message = message;
-  }
-
-  /**
-   * Validates that all input is valid.
-   * 
-   * @return the list of errors
-   */
-  public List<ValidationError> validate() {
-    List<ValidationError> errors = new ArrayList<>();
-
-    if (name == null || name.length() == 0) {
-      errors.add(new ValidationError("name", "You must enter your name."));
-    }
-    if (email == null || email.length() == 0) {
-      errors.add(new ValidationError("email", "Email Address is required."));
-    }
-    if (!email.endsWith("@gmail.com") && !email.endsWith("@aol.com") && !email.endsWith("@yahoo.com")) {
-      errors.add(new ValidationError("email", "Not a valid email address."));
-    }
-    if (message == null || message.length() == 0) {
-      errors.add(new ValidationError("message", "Message cannot be empty."));
-    }
-    return errors.isEmpty() ? null : errors;
   }
 
 }
