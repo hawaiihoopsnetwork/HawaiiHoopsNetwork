@@ -14,9 +14,9 @@ GET         /delete                     controllers.Users.deleteUser()
 
 GET         /courts                     controllers.Courts.index()
 GET         /courts/:name               controllers.Courts.getCourt(name)
+GET         /courts/:name/edit         controllers.Courts.manageCourt(name)
 GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
 GET         /courts/manage/new          controllers.Courts.newCourt()
-GET         /courts/manage/edit         controllers.Courts.manageCourt()
 POST        /courts/manage/post         controllers.Courts.postSurfer()
 
 

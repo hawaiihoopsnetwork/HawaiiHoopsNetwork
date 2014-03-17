@@ -50,7 +50,7 @@ public class Courts extends Controller{
      * @return edit court form
      */
     @Security.Authenticated(Secured.class)
-    public static Result manageCourt() {
+    public static Result manageCourt(String name) {
         return ok();
     }
 
