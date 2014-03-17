@@ -1,15 +1,19 @@
 package controllers;
 
+import java.util.List;
+import models.Team;
+import models.TeamDB;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
-import com.typesafe.plugin.*;
+//import com.typesafe.plugin.*;
 import views.html.Index;
 import views.html.Main;
 import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
 import views.html.footer.MessageSent;
+import views.html.Leagues;
 import views.formdata.ContactUsForm;
 
 /**
@@ -25,6 +29,17 @@ public class Application extends Controller {
    */
   public static Result index() {
     return ok(Index.render("Hawaii Hoops Network"));
+  }
+  
+  /**
+   * returns the LeaguesPage
+   * 
+   * @return the LeaguesPage
+   */
+  public static Result leagues() {
+    List<Team> listTeam = TeamDB.getTeams();
+    
+    return ok(Leagues.render("Leagues", listTeam));
   }
 
   /**
@@ -46,7 +61,8 @@ public class Application extends Controller {
     ContactUsForm contact = new ContactUsForm();
     Form<ContactUsForm> formData = Form.form(ContactUsForm.class).fill(contact);
 
-    return ok(ContactUs.render("Contact Us", formData));
+    //return ok(ContactUs.render("Contact Us", formData));
+    return ok(Index.render("Fix this"));
   }
 
   /**
@@ -54,6 +70,7 @@ public class Application extends Controller {
    * 
    * @return the page if any errors, index otherwise
    */
+  /*
   public static Result sendMessage() {
 
     Form<ContactUsForm> formData = Form.form(ContactUsForm.class).bindFromRequest();
@@ -69,10 +86,10 @@ public class Application extends Controller {
       mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
       mail.setFrom(message.email);
       mail.send(message.message);
-
+      
       return ok(MessageSent.render("Message Sent"));
     }
-  }
+  }*/
 
   /**
    * Returns the about us page.
