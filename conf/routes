@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /Players                    controllers.Application.players()
 GET     /TermsOfUse                 controllers.Application.terms()
 GET     /ContactUs                  controllers.Application.contact()
 POST    /Send                       controllers.Application.sendMessage()
