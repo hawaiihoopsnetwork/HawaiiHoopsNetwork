@@ -3,16 +3,15 @@ package forms;
 import models.Court;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Backing class for the court form.
  */
-public class CourtForm {
+public class CourtForm
+{
 
-    @Id
     @Constraints.Required(message = "Name is required")
     public String name;
 
@@ -22,7 +21,8 @@ public class CourtForm {
     /**
      * Default constructor
      */
-    public CourtForm() {
+    public CourtForm()
+    {
        // default no arg constructor
     }
 
@@ -31,7 +31,8 @@ public class CourtForm {
      * @param name court name.
      * @param description description of the court.
      */
-    public CourtForm(String name, String description) {
+    public CourtForm(String name, String description)
+    {
         this.name = name;
         this.description = description;
     }
@@ -40,10 +41,12 @@ public class CourtForm {
      * Checks if form is valid.
      * @return null if no errors, List of errors if there are.
      */
-    public List<ValidationError> validate() {
+    public List<ValidationError> validate()
+    {
         List<ValidationError> errors = new ArrayList<>();
 
-        if (Court.contains(name)) {
+        if (Court.contains(name))
+        {
             errors.add(new ValidationError("name", "Name already exists."));
         }
         return errors.isEmpty() ? null : errors;

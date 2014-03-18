@@ -13,7 +13,8 @@ import forms.*;
 /**
  * Implements the login controller for this application.
  */
-public class Users extends Controller {
+public class Users extends Controller
+{
   
   // private static final Form<SearchForm> searchForm = Form.form(SearchForm.class);
   private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
@@ -23,7 +24,8 @@ public class Users extends Controller {
    * Provides the Registration page (only to unauthenticated users). 
    * @return The Registration page. 
    */
-  public static Result register() {
+  public static Result register()
+  {
     return ok();
   }
   
@@ -35,14 +37,16 @@ public class Users extends Controller {
    * If errors not found, render the page with the good data. 
    * @return The index page with the results of validation. 
    */
-  public static Result postRegister() {
-
+  public static Result postRegister()
+  {
     Form<RegistrationForm> filledRegistrationForm = registrationForm.bindFromRequest();
     
-    if (filledRegistrationForm.hasErrors()) {
+    if (filledRegistrationForm.hasErrors())
+    {
       return badRequest();
     }
-    else {
+    else
+    {
       RegistrationForm data = filledRegistrationForm.get();
       User user = User.addUser(data);
       session().clear();
@@ -56,7 +60,8 @@ public class Users extends Controller {
    * Provides the Login page (only to unauthenticated users). 
    * @return The Login page. 
    */
-  public static Result login() {
+  public static Result login()
+  {
     return ok();
   }
 
@@ -68,16 +73,19 @@ public class Users extends Controller {
    * If errors not found, render the page with the good data. 
    * @return The index page with the results of validation. 
    */
-  public static Result postLogin() {
+  public static Result postLogin()
+  {
 
     // Get the submitted form data from the request object, and run validation.
     Form<LoginForm> filledLoginForm = loginForm.bindFromRequest();
 
-    if (filledLoginForm.hasErrors()) {
+    if (filledLoginForm.hasErrors())
+    {
       flash("error", "Login credentials not valid.");
       return badRequest();
     }
-    else {
+    else
+    {
       // email/password OK, so now we set the session variable and only go to authenticated pages.
       session().clear();
       session("email", filledLoginForm.get().email);
@@ -90,13 +98,15 @@ public class Users extends Controller {
    * @return A redirect to the Index page. 
    */
   @Security.Authenticated(Secured.class)
-  public static Result logout() {
+  public static Result logout()
+  {
     session().clear();
     return redirect(routes.Application.index());
   }
   
   @Security.Authenticated(Secured.class)
-  public static Result deleteUser() {
+  public static Result deleteUser()
+  {
     User user = Secured.getUserInfo(ctx());
     user.delete();
     session().clear();

@@ -6,14 +6,12 @@ import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.MinLength;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
-
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegistrationForm {
+public class RegistrationForm
+{
 
-    @Id
     @Email(message = "Enter a valid email.")
     @Required(message = "Email is required.")
     public String email;
@@ -36,7 +34,8 @@ public class RegistrationForm {
     /**
      * The default constructor.
      */
-    public RegistrationForm() {
+    public RegistrationForm()
+    {
         // default no arg constructor
     }
 
@@ -49,7 +48,8 @@ public class RegistrationForm {
      * @param password password
      * @param confirm  confirmation password
      */
-    public RegistrationForm(String first, String last, String email, String password, String confirm) {
+    public RegistrationForm(String first, String last, String email, String password, String confirm)
+    {
         this.first = first;
         this.last = last;
         this.email = email;
@@ -62,16 +62,18 @@ public class RegistrationForm {
      *
      * @return null if no errors, List of errors if there are.
      */
-    public List<ValidationError> validate() {
+    public List<ValidationError> validate()
+    {
         List<ValidationError> errors = new ArrayList<>();
 
-        if (User.contains(email)) {
+        if (User.contains(email))
+        {
             errors.add(new ValidationError("email", "Email already exists."));
         }
-        if (!password.equals(confirmPassword)) {
+        if (!password.equals(confirmPassword))
+        {
             errors.add(new ValidationError("confirmPassword", "Passwords did not match."));
         }
         return errors.isEmpty() ? null : errors;
     }
-
 }

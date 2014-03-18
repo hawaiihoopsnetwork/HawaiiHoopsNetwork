@@ -2,11 +2,10 @@ package models;
 
 
 import org.mindrot.jbcrypt.BCrypt;
-import play.data.validation.Constraints.Email;
-import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 import forms.RegistrationForm;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,19 +21,17 @@ public class User extends Model {
   // private static final long serialVersionUID = 514181764033756576L;
   
   @Id
-  @Email
+  private Long id;
+
+  @Column(unique = true)
   private String email;
   
-  @Required
   private String first;
   
-  @Required
   private String last;
   
-  @Required
   private String password;
   
-  @Required
   private boolean admin;
   
   /**
@@ -55,8 +52,8 @@ public class User extends Model {
   /**
    * The EBean ORM finder method for database queries on User.
    */
-  public static Finder<String, User> find = new Finder<String, User>(
-      String.class, User.class
+  public static Finder<Long, User> find = new Finder<Long, User>(
+      Long.class, User.class
     ); 
   
   /**

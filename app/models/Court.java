@@ -1,12 +1,11 @@
 package models;
 
-import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import java.util.List;
-import javax.persistence.Entity;
 import javax.persistence.Lob;
-import javax.persistence.Id;
+import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Id;
 
 /**
  * A simple representation of a basketball court.
@@ -14,18 +13,35 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "court")
-public class Court extends Model{
+public class Court extends Model
+{
 
     @Id
-    @Constraints.Required
+    private Long id;
+
     private String name;
 
+    private String type;
+
+    private String address;
+
+    private Float lat;
+
+    private Float lng;
+
     @Lob
-    @Constraints.Required
     private String description;
 
-    public Court(String name, String description) {
+    // @ManyToMany
+    // private List<Player> players = new List<Player>();
+
+    public Court(String name, String type, String address, Float lat, Float lng, String description)
+    {
         this.name = name;
+        this.type = type;
+        this.address = address;
+        this.lat = lat;
+        this.lng = lng;
         this.description = description;
     }
 
@@ -41,8 +57,9 @@ public class Court extends Model{
     * @param name court name.
     * @param description short description of court.
     */
-    public static void addCourt(String name, String description) {
-        Court court = new Court(name, description);
+    public static void addCourt(String name, String type, String address, Float lat, Float lng, String description)
+    {
+        Court court = new Court(name, type, address, lat, lng, description);
         court.save();
     }
 
@@ -50,7 +67,8 @@ public class Court extends Model{
      * Deletes the specified user from the database.
      * @param name court name
      */
-    public static void deleteCourt(String name) {
+    public static void deleteCourt(String name)
+    {
         find.ref(name).delete();
     }
 
@@ -59,7 +77,8 @@ public class Court extends Model{
     * @param name court name.
     * @return The court info.
     */
-    public static Court getCourt(String name) {
+    public static Court getCourt(String name)
+    {
         return find.where().eq("name", name).findUnique();
     }
 
@@ -67,34 +86,89 @@ public class Court extends Model{
      * Returns all courts.
      * @return a list of courts.
      */
-    public static List<Court> getCourts() {
+    public static List<Court> getCourts()
+    {
         return find.all();
     }
 
     /**
-     * Check if email exists.
+     * Check if court exists.
      * @param name court name.
      * @return true if contains key false if not
      * */
-    public static boolean contains(String name) {
+    public static boolean contains(String name)
+    {
         return (getCourt(name) != null);
     }
 
-    public String getName() {
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public String getDescription() {
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public Float getLat()
+    {
+        return lat;
+    }
+
+    public void setLat(Float lat)
+    {
+        this.lat = lat;
+    }
+
+    public Float getLng()
+    {
+        return lng;
+    }
+
+    public void setLng(Float lng)
+    {
+        this.lng = lng;
+    }
+
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
-
 
 }

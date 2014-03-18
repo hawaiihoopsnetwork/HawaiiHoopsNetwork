@@ -3,7 +3,6 @@
 # ~~~~
 
 # Home page
-<<<<<<< HEAD
 GET         /                           controllers.Application.index()
 
 GET         /login                      controllers.Users.login()
@@ -20,10 +19,10 @@ GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
 GET         /courts/manage/new          controllers.Courts.newCourt()
 POST        /courts/manage/post         controllers.Courts.postSurfer()
 
-GET     /TermsOfUse                 controllers.Application.terms()
-GET     /ContactUs                  controllers.Application.contact()
-POST    /Send                       controllers.Application.sendMessage()
-GET     /AboutUs                    controllers.Application.about()
+GET         /TermsOfUse                 controllers.Application.terms()
+GET         /ContactUs                  controllers.Application.contact()
+POST        /Send                       controllers.Application.sendMessage()
+GET         /AboutUs                    controllers.Application.about()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file               controllers.Assets.at(path="/public", file)
