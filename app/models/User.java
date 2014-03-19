@@ -4,36 +4,39 @@ package models;
 import org.mindrot.jbcrypt.BCrypt;
 import play.db.ebean.Model;
 import forms.RegistrationForm;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * A simple representation of a user. 
  * @author taylorak
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends Model {
 
-  // private static final long serialVersionUID = 514181764033756576L;
-  
   @Id
+  @GeneratedValue
   private Long id;
 
   @Column(unique = true)
   private String email;
-  
-  private String first;
-  
-  private String last;
-  
+
+  private String name;
+
+  private String real_name;
+
   private String password;
-  
+
   private boolean admin;
+
+  // timestamp when the users password needs to be changed
+  //private Date pass_expiration;
+
+  // Timestamp when the user email was authenticated default null
+  //private Date email_auth;
   
+
   /**
    * Initializes new User.
    * @param first The name.
@@ -41,10 +44,9 @@ public class User extends Model {
    * @param email The email.
    * @param password The password.
    */
-  public User(String first, String last, String email, String password) {
+  public User(String name, String email, String password) {
     String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
-    this.first = first;
-    this.last = last;
+    this.name = name;
     this.email = email;
     this.password = passwordHash;
   }
@@ -72,8 +74,8 @@ public class User extends Model {
    * @param email Their email.
    * @param password Their password. 
    */
-  public static void addUser(String first, String last, String email, String password) {
-    User user = new User(first, last, email, password);
+  public static void addUser(String name, String email, String password) {
+    User user = new User(name, email, password);
     user.save();
   }
   
@@ -82,7 +84,7 @@ public class User extends Model {
    * @param formData RegistrationForm info. 
    */
   public static User addUser(RegistrationForm formData) {
-    User user = new User(formData.first, formData.last, formData.email, formData.password);
+    User user = new User(formData.first, formData.email, formData.password);
     user.save();
     return user;
   }
@@ -170,31 +172,17 @@ public class User extends Model {
   }
 
   /**
-   * @return the first
+   * @return the name
    */
-  public String getFirst() {
-    return first;
+  public String getName() {
+    return name;
   }
 
   /**
-   * @param first the first to set
+   * @param name the name to set
    */
-  public void setFirst(String first) {
-    this.first = first;
-  }
-
-  /**
-   * @return the last
-   */
-  public String getLast() {
-    return last;
-  }
-
-  /**
-   * @param last the last to set
-   */
-  public void setLast(String last) {
-    this.last = last;
+  public void setName(String name) {
+    this.name = name;
   }
 
 }

@@ -1,22 +1,21 @@
 package models;
 
 import play.db.ebean.Model;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Lob;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * A simple representation of a basketball court.
  * @author taylorak
  */
 @Entity
-@Table(name = "court")
+@Table(name = "courts")
 public class Court extends Model
 {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
@@ -32,8 +31,8 @@ public class Court extends Model
     @Lob
     private String description;
 
-    // @ManyToMany
-    // private List<Player> players = new List<Player>();
+    @ManyToMany
+    private List<Player> players = new ArrayList<Player>();
 
     public Court(String name, String type, String address, Float lat, Float lng, String description)
     {

@@ -15,8 +15,8 @@ import forms.ContactUsForm;
  * Implements the controllers for this application.
  */
 public class Application extends Controller {
-  
 
+  
   /**
    * Returns the colorblock page.
    * 
