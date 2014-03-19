@@ -1,0 +1,62 @@
+@(title: String, gameForm: Form[views.formdata.games.GameForm])
+
+@import helper._
+@import bootstrap3._
+
+<style>
+
+.form-group {
+    width: 700px;
+}
+
+</style>
+
+@Main(title) {
+
+<h2>Create A Game</h2>
+<hr>
+</br>
+    
+    @form(routes.Games.addGame(), 'class -> "form-horizontal") {
+    
+        @bootstrap3.text(gameForm("date"),
+              label = "Date (MM / DD)",
+              placeholder = "2/15",
+              help = "Please enter the date.")
+              
+        @bootstrap3.text(gameForm("time"),
+              label = "Time",
+              placeholder = "3: 30 p.m.",
+              help = "Please enter the time.")
+              
+        @bootstrap3.text(gameForm("location"),
+              label = "Location",
+              placeholder = "Stan Sheriff Center",
+              help = "Please enter the location.")
+              
+        @bootstrap3.radiobuttons(gameForm("type"), 
+              label = "Type",
+              buttonNameList = models.games.Game.getTypes(),
+              help = "")
+              
+        @bootstrap3.text(gameForm("avgSklLvl"),
+              label = "Avg. Skill Level (optional)",
+              placeholder = "2 years",
+              help = "Please enter the average skill level.")
+        
+        @bootstrap3.textarea(gameForm("players"),
+              rows = "6",
+              label = "Players (optional)",
+              placeholder = "Who will be at this game?",
+              help = "Please separate players with a comma.")
+              
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                Add Game
+                </button>
+            </div>
+        </div>
+    }
+}
