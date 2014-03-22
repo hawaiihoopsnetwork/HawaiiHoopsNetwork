@@ -20,6 +20,13 @@ GET         /courts/manage/new          controllers.Courts.newCourt()
 POST        /courts/manage/post         controllers.Courts.postSurfer()
 
 GET         /players                    controllers.Players.players()
+GET         /skill/:skill               controllers.Players.playersSkill(skill: String)
+GET         /position/:position         controllers.Players.playersPosition(position: String)
+GET         /playerName/:name           controllers.Players.playersWithName(name: String)
+GET         /playersByName              controllers.Players.sortAllPlayersByName()
+GET         /playersByCourt             controllers.Players.sortAllPlayersByCourt()
+GET         /playersBySkill             controllers.Players.sortAllPlayersBySkill()
+GET         /playersByPosition          controllers.Players.sortAllPlayersByPosition()
 
 GET         /TermsOfUse                 controllers.Application.terms()
 GET         /ContactUs                  controllers.Application.contact()

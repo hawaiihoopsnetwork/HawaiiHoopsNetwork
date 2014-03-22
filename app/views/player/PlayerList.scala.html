@@ -1,4 +1,6 @@
-@(title: String)
+@(title: String, players: List[Player])
+
+@import helper._
 
 @Main(title) {
     <div class="container">
@@ -12,12 +14,12 @@
                 Skill Level<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Beginner</a></li>
-                <li><a href="#">Intermediate</a></li>
-                <li><a href="#">Competitive</a></li>
-                <li><a href="#">College</a></li>
+                <li><a href="@routes.Players.playersSkill("Beginner")">Beginner</a></li>
+                <li><a href="@routes.Players.playersSkill("Intermediate")">Intermediate</a></li>
+                <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
+                <li><a href="@routes.Players.playersSkill("College")">College</a></li>
                 <li class="divider"></li>
-                <li><a href="#">All</a></li>
+                <li><a href="@routes.Players.players()">All</a></li>
             </ul>
         </div>
 
@@ -26,19 +28,30 @@
                 Position<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Point Gaurd</a></li>
-                <li><a href="#">Shooting Gaurd</a></li>
-                <li><a href="#">Center</a></li>
-                <li><a href="#">Power Forward</a></li>
-                <li><a href="#">Small Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Point Gaurd")">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Shooting Gaurd")">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Center")">Center</a></li>
+                <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="#">All</a></li>
+                <li><a href="@routes.Players.players()">All</a></li>
             </ul>
         </div>
 
-        <a href="#" class="btn btn-primary btn-default active" role="button">Search</a>
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <a href="@routes.Players.playersWithName("Alex G.")">Search</a>
+              </button>
+            </span> <input type="text" class="form-control">
+          </div>
+          <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
 
-        <a href="players/shayne.html" class="btn btn-primary pull-right active" role="button">Your Profile</a>
+
+      <a href="players/shayne.html" class="btn btn-primary pull-right active" role="button">Your Profile</a>
 
 
     </div>
@@ -50,12 +63,12 @@
                 Skill Level<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Beginner</a></li>
-                <li><a href="#">Intermediate</a></li>
-                <li><a href="#">Competitive</a></li>
-                <li><a href="#">College</a></li>
+                <li><a href="@routes.Players.playersSkill("Beginner")">Beginner</a></li>
+                <li><a href="@routes.Players.playersSkill("Intermediate")">Intermediate</a></li>
+                <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
+                <li><a href="@routes.Players.playersSkill("College")">College</a></li>
                 <li class="divider"></li>
-                <li><a href="#">All </a></li>
+                <li><a href="@routes.Players.players()">All</a></li>
             </ul>
         </div>
 
@@ -64,13 +77,13 @@
                 Position<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Point Gaurd</a></li>
-                <li><a href="#">Shooting Gaurd</a></li>
-                <li><a href="#">Center</a></li>
-                <li><a href="#">Power Forward</a></li>
-                <li><a href="#">Small Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Point Gaurd")">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Shooting Gaurd")">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Center")">Center</a></li>
+                <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="#">All</a></li>
+                <li><a href="@routes.Players.players()">All</a></li>
             </ul>
         </div>
 
@@ -85,22 +98,22 @@
     
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Skill Levl</th>
-            <th class="hidden-xs">Position</th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByName()">Name</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByCourt()">Court</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersBySkill()">Skill Level</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByPosition()">Position</a></th>
         </tr>
         </thead>
         
         <tbody data-link="row" class="rowlink">
-       @* @for((player, index) <- players.zipWithIndex){
+        @for(player <- players){
             <tr>
                 <td><a id="noColor" href="#">@player.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
                 <td>@player.getSkill()</td>
-                <td class="hidden-xs">@player.getPosition()</td>
+                <td>@player.getPosition()</td>
             </tr>
-        } *@
+        }
         </tbody>
         
     </table>
