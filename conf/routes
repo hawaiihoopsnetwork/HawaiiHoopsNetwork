@@ -11,9 +11,9 @@ GET     /AboutUs                    controllers.Application.about()
 
 # Games
 GET     /games/list                  controllers.Games.allGames()
-GET     /games/view                  controllers.Games.getGame(id: Long ?= 0)
+GET     /games/view/:name            controllers.Games.getGame(name)
 GET     /games/create                controllers.Games.createGame()
-GET     /games/edit                  controllers.Games.editGame(id: Long)
+GET     /games/edit/:name            controllers.Games.editGame(name)
 POST    /games/new                   controllers.Games.addGame()
 
 # Map static resources from the /public folder to the /assets URL path

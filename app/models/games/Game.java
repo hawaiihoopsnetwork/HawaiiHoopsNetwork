@@ -6,7 +6,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+import views.formdata.games.GameForm;
 
+/**
+ * Game model.
+ * 
+ * @author AJ
+ * 
+ */
 @Entity
 @Table(name = "game")
 public class Game extends Model {
@@ -17,7 +24,7 @@ public class Game extends Model {
   private static final long serialVersionUID = 1L;
 
   @Id
-  private long id;
+  private String name;
 
   @Constraints.Required
   private String time;
@@ -33,7 +40,21 @@ public class Game extends Model {
   private String avgSklLvl;
   private String players;
 
-  public Game(String time, String date, String location, String type, String freq, String sklLvl, String players) {
+  /**
+   * Constructs a game.
+   * 
+   * @param name name
+   * @param time time
+   * @param date date
+   * @param location location
+   * @param type type
+   * @param freq frequency
+   * @param sklLvl skill level
+   * @param players players
+   */
+  public Game(String name, String time, String date, String location, String type, String freq, String sklLvl,
+      String players) {
+    this.setName(name);
     this.setTime(time);
     this.setDate(date);
     this.setLocation(location);
@@ -43,37 +64,67 @@ public class Game extends Model {
     this.setPlayers(players);
   }
 
-  public static Finder<Long, Game> find() {
-    return new Finder<Long, Game>(Long.class, Game.class);
-  }
-
-  public static void addGame(String time, String date, String location, String type, String freq, String sklLvl,
-      String players) {
-    Game game = new Game(time, date, location, type, freq, sklLvl, players);
-    game.save();
-  }
-
-  public static void addGame(Game game) {
-    game.save();
-  }
-
-  public static void deleteGame(long id) {
-    find().ref(id).delete();
-  }
-
-  public static Game getGame(long id) {
-    return find().where().eq("id", id).findUnique();
-  }
-
-  public static List<Game> getGames() {
-    return find().all();
+  /**
+   * Finder for a game.
+   * 
+   * @return a finder object
+   */
+  public static Finder<String, Game> find() {
+    return new Finder<String, Game>(String.class, Game.class);
   }
 
   /**
-   * @return the id
+   * Adds a game to the database.
+   * 
+   * @param gf the game form
    */
-  public long getId() {
-    return id;
+  public static void addGame(GameForm gf) {
+    // TODO currently does not work with editing of games
+    if (getGame(gf.name) == null) {
+      Game game = new Game(gf.name, gf.time, gf.date, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+      game.save();
+
+    }
+    else {
+      Game game = getGame(gf.name);
+      game.setTime(gf.time);
+      game.setDate(gf.date);
+      game.setLocation(gf.location);
+      game.setType(gf.type);
+      game.setFrequency(gf.frequency);
+      game.setAvgSklLvl(gf.avgSklLvl);
+      game.setPlayers(gf.players);
+      game.save();
+    }
+
+  }
+
+  /**
+   * Deletes a game.
+   * 
+   * @param name the name of the game
+   */
+  public static void deleteGame(String name) {
+    find().ref(name).delete();
+  }
+
+  /**
+   * Returns the game based on it's name.
+   * 
+   * @param name name
+   * @return the game
+   */
+  public static Game getGame(String name) {
+    return find().byId(name);
+  }
+
+  /**
+   * Returns a list of all the games.
+   * 
+   * @return the list of games
+   */
+  public static List<Game> getGames() {
+    return find().all();
   }
 
   /**
@@ -118,6 +169,11 @@ public class Game extends Model {
     this.location = location;
   }
 
+  /**
+   * Returns the types of games.
+   * 
+   * @return type of game
+   */
   public static List<String> getTypes() {
     String[] types = { "Public", "Private" };
     return java.util.Arrays.asList(types);
@@ -138,7 +194,7 @@ public class Game extends Model {
   }
 
   /**
-   * @return the players
+   * @return the players as a java List
    */
   public List<String> getListPlayers() {
     // TODO check if player name is related to a player profile
@@ -146,6 +202,11 @@ public class Game extends Model {
     return gamePlayers;
   }
 
+  /**
+   * Returns the players.
+   * 
+   * @return players
+   */
   public String getPlayers() {
     return players;
   }
@@ -172,6 +233,16 @@ public class Game extends Model {
   }
 
   /**
+   * Returns a list of frequencies.
+   * 
+   * @return the list of frequencies.
+   */
+  public static List<String> getListFrequencies() {
+    String[] freqs = { "One Time", "Recurring" };
+    return java.util.Arrays.asList(freqs);
+  }
+
+  /**
    * @return the frequency
    */
   public String getFrequency() {
@@ -183,5 +254,19 @@ public class Game extends Model {
    */
   public void setFrequency(String frequency) {
     this.frequency = frequency;
+  }
+
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
   }
 }

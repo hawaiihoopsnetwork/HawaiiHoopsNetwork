@@ -1,6 +1,9 @@
 @(title: String, game: models.games.Game)
 
-@Main(title) {
+
+@Main(title + game.getName()) {
+
+    
     
     <div class="visible-xs">
      <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
@@ -11,19 +14,21 @@
    <div class="row">
     <div class="col-md-9">
         <div class="well">
+        <h2>@game.getName()</h2>
+        <hr>
+        </br>
         <ul>
         <h10>Type: </h10><i>Public</i></br></br>
         <h10>Time: </h10>@game.getTime()</br></br>
         <h10>Date: </h10>@game.getDate()</br></br>
-        <h10>Day: </h10>Thursday</br></br>
         <h10>Location: </h10>@game.getLocation()</br></br>
-        <h10>Frequency: </h10><i>@game.getType()</i></br></br>
-        <h10>Skill Level (avg years playing): </h10>5 years</br>
+        <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
+        <h10>Skill Level (avg years playing): </h10>@game.getAvgSklLvl()</br>
         </ul>
         </br>
         </br>
         </br>
-        <a href="@routes.Games.editGame(game.getId())">Edit</a>
+        <!-- <a href="@routes.Games.editGame(game.getName())">Edit</a> -->
         
         </div>
     </div>

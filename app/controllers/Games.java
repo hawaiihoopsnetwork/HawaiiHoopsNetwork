@@ -14,21 +14,37 @@ import views.html.games.AllGames;
  */
 public class Games extends Controller {
 
+  /**
+   * Returns a page containing all upcoming games.
+   * 
+   * @return the list of games
+   */
   public static Result allGames() {
     return ok(AllGames.render("All Games", Game.getGames()));
   }
 
-  public static Result getGame(long id) {
-    Game game = Game.find().byId(id);
+  /**
+   * Brings a page showing info about a particular game.
+   * 
+   * @param name the name of the game
+   * @return the page related to the game
+   */
+  public static Result getGame(String name) {
+    Game game = Game.find().byId(name);
 
     if (game == null) {
       throw new RuntimeException("Not a valid game.");
     }
     else {
-      return ok(SingleGame.render("Game: " + game.getId(), game));
+      return ok(SingleGame.render("Game: " + game.getName(), game));
     }
   }
 
+  /**
+   * A page containing the fields required to create a game.
+   * 
+   * @return the Create Game page.
+   */
   public static Result createGame() {
     GameForm gameForm = new GameForm();
     Form<GameForm> formdata = Form.form(GameForm.class).fill(gameForm);
@@ -36,6 +52,11 @@ public class Games extends Controller {
     return ok(CreateGame.render("Create Game", formdata));
   }
 
+  /**
+   * Adds a game to the list of upcoming games.
+   * 
+   * @return the list of upcoming games if the form has no errors
+   */
   public static Result addGame() {
 
     Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
@@ -45,15 +66,21 @@ public class Games extends Controller {
     }
     else {
       GameForm game = gameForm.get();
+      Game.addGame(game);
 
-      Game.addGame(game.time, game.date, game.location, game.type, game.frequency, game.avgSklLvl, game.players);
       // TODO save edits to a game.
       return redirect("/games/list");
     }
   }
 
-  public static Result editGame(long id) {
-    Game game = Game.find().byId(id);
+  /**
+   * Brings up the form required to edit the game.
+   * 
+   * @param name name of game
+   * @return the create game page
+   */
+  public static Result editGame(String name) {
+    Game game = Game.find().byId(name);
     GameForm data = new GameForm(game);
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
     return ok(CreateGame.render("Edit Game", formdata));

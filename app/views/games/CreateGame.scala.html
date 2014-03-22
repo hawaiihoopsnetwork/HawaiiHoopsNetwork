@@ -6,7 +6,7 @@
 <style>
 
 .form-group {
-    width: 700px;
+    width: 800px;
 }
 
 </style>
@@ -19,6 +19,12 @@
     
     @form(routes.Games.addGame(), 'class -> "form-horizontal") {
     
+        <!-- Make non-editable eventually -->
+        @bootstrap3.text(gameForm("name"),
+              label = "Game name",
+              placeholder = "The best game today",
+              help = "")
+        
         @bootstrap3.text(gameForm("date"),
               label = "Date (MM / DD)",
               placeholder = "2/15",
@@ -38,7 +44,12 @@
               label = "Type",
               buttonNameList = models.games.Game.getTypes(),
               help = "")
-              
+        <!-- 
+        @bootstrap3.radiobuttons(gameForm("frequency"), 
+              label = "Frequency",
+              buttonNameList = models.games.Game.getListFrequencies(),
+              help = "")
+        -->      
         @bootstrap3.text(gameForm("avgSklLvl"),
               label = "Avg. Skill Level (optional)",
               placeholder = "2 years",

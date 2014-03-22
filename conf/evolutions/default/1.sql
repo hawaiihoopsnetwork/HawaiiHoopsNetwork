@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table game (
-  id                        bigint not null,
+  name                      varchar(255) not null,
   time                      varchar(255),
   date                      varchar(255),
   location                  varchar(255),
@@ -12,7 +12,7 @@ create table game (
   frequency                 varchar(255),
   avg_skl_lvl               varchar(255),
   players                   varchar(255),
-  constraint pk_game primary key (id))
+  constraint pk_game primary key (name))
 ;
 
 create sequence game_seq;
