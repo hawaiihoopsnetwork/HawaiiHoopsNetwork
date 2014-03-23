@@ -35,14 +35,20 @@
         
         @bootstrap3.checkboxes(teamForm("days"),
             label = "Scheduled Day(s)",
-            checkboxMap = models.teams.Team.getDays(),
+            checkboxMap = models.teams.Team.getMapDays(),
             help = "")
         
         @bootstrap3.text(teamForm("sklLvl"),
             label = "Skill Level (optional)",
             placeholder = "",
             help = "")
-         
+            
+         @bootstrap3.textarea(teamForm("roster"),
+            rows = "6",
+            label = "Roster",
+            placeholder = "",
+            help = "Who is on the team? Please separate names with a comma.")
+            
          @bootstrap3.textarea(teamForm("description"),
             rows = "6",
             label = "Team Description",

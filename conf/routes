@@ -10,6 +10,7 @@ POST    /Send                       controllers.Application.sendMessage()
 GET     /AboutUs                    controllers.Application.about()
 
 # Teams
+GET     /teams/view/:name           controllers.Teams.getTeam(name)
 GET     /teams/all                  controllers.Teams.allTeams()
 GET     /teams/create               controllers.Teams.createTeam()
 POST    /teams/post                 controllers.Teams.postTeam()

@@ -29,6 +29,9 @@ public class TeamForm {
   public Map<String, Boolean> days;
   /** Skill level. **/
   public String sklLvl;
+  /** Roster. **/
+  @Constraints.Required
+  public String roster;
   /** Description of Team. **/
   public String description;
 
