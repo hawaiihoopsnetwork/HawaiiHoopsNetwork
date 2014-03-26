@@ -2,9 +2,8 @@ package views.formdata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
 import models.Player;
-import models.PlayerDB;
 import play.data.validation.ValidationError;
 
 /**
@@ -13,7 +12,6 @@ import play.data.validation.ValidationError;
 public class PlayerFormData {
 
   public long id;
-  public String username;
   public String name;
   public String homeCourt;
   public String skill;
@@ -29,9 +27,8 @@ public class PlayerFormData {
    * @param position = position of player
    * 
    */
-  public PlayerFormData(String username, String name, String homeCourt, String skill, String position, long rating) {
+  public PlayerFormData(String name, String homeCourt, String skill, String position, long rating) {
     super();
-    this.username = username;
     this.name = name;
     this.homeCourt = homeCourt;
     this.skill = skill;
@@ -52,7 +49,6 @@ public class PlayerFormData {
    * @param surfer player instance
    */
   public PlayerFormData(Player player) {
-    this.username = player.getUsername();
     this.name = player.getName();
     this.homeCourt = player.getHomeCourt();
     this.skill = player.getSkill();

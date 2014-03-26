@@ -1,27 +1,34 @@
 package models;
 
-import java.util.Comparator;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
+import com.avaje.ebean.Page;
 import play.db.ebean.Model;
+import views.formdata.PlayerFormData;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author Scott Honda
  */
 @Entity
+@Table(name = "players")
 public class Player extends Model {
   
-  private static final long serialVersionUID = 1L;
-  
   @Id
-  private long id;
-  private String username;
+  @GeneratedValue
+  private Long id;
   private String name;
   private String homeCourt;
   private String skill;
   private String position;
-  private long rating;
+  private Long rating;
+
+  @ManyToMany(mappedBy = "players")
+  private List<Court> courts = new ArrayList<Court>();
+
+  // @OneToOne
+  // private User user;
   
   /**
    * Creates a new player.
@@ -33,7 +40,6 @@ public class Player extends Model {
    * 
    */
   public Player(String name, String homeCourt, String skill, String position, long rating) {
-    this.username = username;
     this.name = name;
     this.homeCourt = homeCourt;
     this.skill = skill;
@@ -41,15 +47,39 @@ public class Player extends Model {
     this.rating = rating;
   }
   
-  /**
-   * finds a player.
-   * 
-   * @return a player
-   */
-  public static Finder<Long, Player> find() {
-    return new Finder<Long, Player>(Long.class, Player.class);
-  }
-  
+   /**
+   * The EBean ORM finder method for database queries on PlayerList.
+   **/
+   public static Finder<Long, Player> find = new Finder<Long, Player>(
+          Long.class, Player.class
+   );
+   
+   public static void addPlayer(PlayerFormData formData) {
+     Player player = new Player(formData.name, formData.homeCourt, formData.skill, formData.position, formData.rating);
+     player.save();
+   }
+   
+   public static List<Player> getPlayers() {
+     return find.all();
+   }
+   
+   public static List<Player> getPlayersSkill(String skillLevel) {
+     return find.where().eq("skill", skillLevel).findList();
+   }
+   
+   public static List<Player> getPlayersPosition(String position) {
+     return find.where().eq("position", position).findList();
+   }
+   
+   /**
+    * Returns the court associated with a name, or null if not found.
+    * @param name court name.
+    * @return The court info.
+    */
+    public static List<Player> getPlayersWithName(String name) {
+        return find.where().eq("name", name).findList();
+    }
+   
   /**
    * ********************* *
    *  Getters and Setters  *
@@ -132,18 +162,43 @@ public class Player extends Model {
   public void setRating(long rating) {
     this.rating = rating;
   }
-
+  
   /**
-   * @return the username
+   * ************* *
+   *  Comparators  *
+   * ************* *
    */
-  public String getUsername() {
-    return username;
-  }
 
-  /**
-   * @param username the username to set
-   */
-  public void setUsername(String username) {
-    this.username = username;
+  public static class SortByName implements Comparator<Player> {
+
+    @Override
+    public int compare(Player first, Player second) {
+      return first.getName().compareToIgnoreCase(second.getName());
+    }
   }
+  
+  public static class SortByCourt implements Comparator<Player> {
+
+    @Override
+    public int compare(Player first, Player second) {
+      return first.getHomeCourt().compareToIgnoreCase(second.getHomeCourt());
+    }
+  }
+  
+  public static class SortBySkill implements Comparator<Player> {
+
+    @Override
+    public int compare(Player first, Player second) {
+      return first.getSkill().compareToIgnoreCase(second.getSkill());
+    }
+  }
+  
+  public static class SortByPosition implements Comparator<Player> {
+
+    @Override
+    public int compare(Player first, Player second) {
+      return first.getPosition().compareToIgnoreCase(second.getPosition());
+    }
+  }
+  
 }

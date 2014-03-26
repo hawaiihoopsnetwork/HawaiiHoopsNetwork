@@ -1,33 +1,21 @@
 package controllers;
 
-import models.PlayerDB;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import com.typesafe.plugin.*;
 import views.html.Index;
-import views.html.Main;
-import views.html.player.Players;
 import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
 import views.html.footer.MessageSent;
-import views.formdata.ContactUsForm;
+import forms.ContactUsForm;
 
 /**
  * Implements the controllers for this application.
  */
 public class Application extends Controller {
-  
-  /**
-   * Returns the playerprofiles page
-   * 
-   * @return The Player profiles list page.
-   */
-  public static Result players() {
-    return ok(Players.render("Players", PlayerDB.getPlayers()));
-  }
-  
+
   
   /**
    * Returns the colorblock page.

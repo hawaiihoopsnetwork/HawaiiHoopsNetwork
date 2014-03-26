@@ -3,12 +3,35 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET     /Players                    controllers.Application.players()
-GET     /TermsOfUse                 controllers.Application.terms()
-GET     /ContactUs                  controllers.Application.contact()
-POST    /Send                       controllers.Application.sendMessage()
-GET     /AboutUs                    controllers.Application.about()
+GET         /                           controllers.Application.index()
+
+GET         /login                      controllers.Users.login()
+POST        /login                      controllers.Users.postLogin()
+GET         /register                   controllers.Users.register()
+POST        /register                   controllers.Users.postRegister()
+GET         /logout                     controllers.Users.logout()
+GET         /delete                     controllers.Users.deleteUser()
+
+GET         /courts                     controllers.Courts.index()
+GET         /courts/:name               controllers.Courts.getCourt(name)
+GET         /courts/:name/edit          controllers.Courts.manageCourt(name)
+GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
+GET         /courts/manage/new          controllers.Courts.newCourt()
+POST        /courts/manage/post         controllers.Courts.postSurfer()
+
+GET         /players                    controllers.Players.players()
+GET         /skill/:skill               controllers.Players.playersSkill(skill: String)
+GET         /position/:position         controllers.Players.playersPosition(position: String)
+GET         /playerName/                controllers.Players.playersWithName()
+GET         /playersByName              controllers.Players.sortAllPlayersByName()
+GET         /playersByCourt             controllers.Players.sortAllPlayersByCourt()
+GET         /playersBySkill             controllers.Players.sortAllPlayersBySkill()
+GET         /playersByPosition          controllers.Players.sortAllPlayersByPosition()
+
+GET         /TermsOfUse                 controllers.Application.terms()
+GET         /ContactUs                  controllers.Application.contact()
+POST        /Send                       controllers.Application.sendMessage()
+GET         /AboutUs                    controllers.Application.about()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file               controllers.Assets.at(path="/public", file)

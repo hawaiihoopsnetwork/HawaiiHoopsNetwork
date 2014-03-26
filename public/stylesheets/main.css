@@ -12,6 +12,16 @@ h100 {
     height: 174px;
 }
 
+.btn, .btn-primary, .button {
+    
+    background-color: #F77E07;
+    border-color: #F77E07;
+}
+
+.btn-group>.btn:first-child {
+    margin-left: 5px;
+}
+
 .form-control2 {
     margin-top: 10px;
     width: 140px;

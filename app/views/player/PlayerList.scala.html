@@ -1,0 +1,130 @@
+@(title: String, players: List[Player], searchForm: Form[views.formdata.SearchFormData])
+
+@import helper._
+@import bootstrap3._
+
+@Main(title) {
+    <div class="container">
+
+    <div class="well">
+
+    <div class="row-search hidden-xs">
+    
+        <div class="col-md-4">
+        @form(routes.Players.playersWithName(), 'class -> "form-horizontal"){
+          <div class="input-group">
+            @simpleText(searchForm("name"),
+                  placeholder="Name",
+                  label="",
+                  help="")
+            <span class="input-group-btn">
+              <div class="form-group">
+                <button id="submitButton" type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </span>  
+            
+          </div>
+          <!-- /input-group -->
+        }
+        </div>
+        <!-- /.col-lg-6 -->
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Skill Level<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="@routes.Players.playersSkill("Beginner")">Beginner</a></li>
+                <li><a href="@routes.Players.playersSkill("Intermediate")">Intermediate</a></li>
+                <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
+                <li><a href="@routes.Players.playersSkill("College")">College</a></li>
+                <li class="divider"></li>
+                <li><a href="@routes.Players.players()">All</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Position<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="@routes.Players.playersPosition("Point Gaurd")">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Shooting Gaurd")">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Center")">Center</a></li>
+                <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
+                <li class="divider"></li>
+                <li><a href="@routes.Players.players()">All</a></li>
+            </ul>
+        </div>
+
+        
+        
+      <a href="players/shayne.html" class="btn btn-primary pull-right active" role="button">Your Profile</a>
+
+    </div>
+
+    <div class="row-search visible-xs">
+
+        <div class="btn-group">
+            <button type="button" class="btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                Skill Level<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="@routes.Players.playersSkill("Beginner")">Beginner</a></li>
+                <li><a href="@routes.Players.playersSkill("Intermediate")">Intermediate</a></li>
+                <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
+                <li><a href="@routes.Players.playersSkill("College")">College</a></li>
+                <li class="divider"></li>
+                <li><a href="@routes.Players.players()">All</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                Position<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="@routes.Players.playersPosition("Point Gaurd")">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Shooting Gaurd")">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playersPosition("Center")">Center</a></li>
+                <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
+                <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
+                <li class="divider"></li>
+                <li><a href="@routes.Players.players()">All</a></li>
+            </ul>
+        </div>
+
+        <a href="#" class="btn btn-primary btn-sm active" role="button">Search</a>
+
+        <a href="players/shayne.html" class="btn btn-primary pull-right active" role="button">Your Profile</a>
+
+    </div>
+    <hr>
+    <!-- Rows are clickable -->
+    <table class="table table-striped table-hover">
+    
+        <thead>
+        <tr>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByName()">Name</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByCourt()">Court</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersBySkill()">Skill Level</a></th>
+            <th><a id="playersSortByName" href="@routes.Players.sortAllPlayersByPosition()">Position</a></th>
+        </tr>
+        </thead>
+        
+        <tbody data-link="row" class="rowlink">
+        @for(player <- players){
+            <tr>
+                <td><a id="noColor" href="#">@player.getName()</a></td>
+                <td>@player.getHomeCourt()</td>
+                <td>@player.getSkill()</td>
+                <td>@player.getPosition()</td>
+            </tr>
+        }
+        </tbody>
+        
+    </table>
+    </div>
+</div>
+}

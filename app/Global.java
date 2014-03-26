@@ -1,4 +1,5 @@
-import models.PlayerDB;
+import models.Court;
+import models.Player;
 import play.Application;
 import play.GlobalSettings;
 import views.formdata.PlayerFormData;
@@ -16,10 +17,12 @@ public class Global extends GlobalSettings {
    * @param app 
    */
   public void onStart(Application app) {
-    PlayerDB.addPlayer(new PlayerFormData("alexg", "Alex G.", "Paki Park", "Intermediate", "Center", 5));
-    PlayerDB.addPlayer(new PlayerFormData("stevef", "Steve F.", "Paki Park", "Intermediate", "Center", 5));
-    PlayerDB.addPlayer(new PlayerFormData("loap", "Loa P.", "Paki Park", "Intermediate", "Center", 5));
-    PlayerDB.addPlayer(new PlayerFormData("keitha", "Keith A.", "Paki Park", "Intermediate", "Center", 5));
-    PlayerDB.addPlayer(new PlayerFormData("hectorm", "Hector M.", "Paki Park", "Intermediate", "Center", 5));
+      Court.addCourt("Aina Haina", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
+      
+      Player.addPlayer(new PlayerFormData("Alex G.", "Paki Park", "Intermediate", "Center", 5));
+      Player.addPlayer(new PlayerFormData("Steve F.", "Kapolei Park", "Beginner", "Power Forward", 5));
+      Player.addPlayer(new PlayerFormData("Loa P.", "Aulani Park", "Competitive", "Point Gaurd", 5));
+      Player.addPlayer(new PlayerFormData("Keith A.", "Kapiolani Park", "College", "Small Forward", 5));
+      Player.addPlayer(new PlayerFormData("Hector M.", "Hawaii Kai Park", "Intermediate", "Shooting Gaurd", 5));
   }
 }
