@@ -47,38 +47,32 @@ public class Player extends Model {
     this.rating = rating;
   }
   
+  public static void addPlayer(PlayerFormData formData) {
+    Player player = new Player(formData.name, formData.homeCourt, formData.skill, formData.position, formData.rating);
+    player.save();
+  }
+  
    /**
    * The EBean ORM finder method for database queries on PlayerList.
    **/
-   public static Finder<Long, Player> find = new Finder<Long, Player>(
-          Long.class, Player.class
-   );
-   
-   public static void addPlayer(PlayerFormData formData) {
-     Player player = new Player(formData.name, formData.homeCourt, formData.skill, formData.position, formData.rating);
-     player.save();
-   }
-   
-   public static List<Player> getPlayers() {
-     return find.all();
-   }
-   
-   public static List<Player> getPlayersSkill(String skillLevel) {
-     return find.where().eq("skill", skillLevel).findList();
-   }
-   
-   public static List<Player> getPlayersPosition(String position) {
-     return find.where().eq("position", position).findList();
+   public static Finder<Long, Player> find() {
+     return new Finder<Long, Player>(Long.class, Player.class);
    }
    
    /**
-    * Returns the court associated with a name, or null if not found.
-    * @param name court name.
-    * @return The court info.
+    * The EBean Page finder method to implement pagination. 
+    * @param sortOrder = the order to of the sorting
+    * @param page = the current page index
+    * @return page object of all players
     */
-    public static List<Player> getPlayersWithName(String name) {
-        return find.where().eq("name", name).findList();
-    }
+   public static Page<Player> find(String sortOrder, int page) {
+     return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
+   }
+   
+   public static Page<Player> find(String field, String search, String sortOrder, int page) {
+     return find().where().eq(field, search).orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
+   }
+   
    
   /**
    * ********************* *
@@ -163,42 +157,5 @@ public class Player extends Model {
     this.rating = rating;
   }
   
-  /**
-   * ************* *
-   *  Comparators  *
-   * ************* *
-   */
-
-  public static class SortByName implements Comparator<Player> {
-
-    @Override
-    public int compare(Player first, Player second) {
-      return first.getName().compareToIgnoreCase(second.getName());
-    }
-  }
-  
-  public static class SortByCourt implements Comparator<Player> {
-
-    @Override
-    public int compare(Player first, Player second) {
-      return first.getHomeCourt().compareToIgnoreCase(second.getHomeCourt());
-    }
-  }
-  
-  public static class SortBySkill implements Comparator<Player> {
-
-    @Override
-    public int compare(Player first, Player second) {
-      return first.getSkill().compareToIgnoreCase(second.getSkill());
-    }
-  }
-  
-  public static class SortByPosition implements Comparator<Player> {
-
-    @Override
-    public int compare(Player first, Player second) {
-      return first.getPosition().compareToIgnoreCase(second.getPosition());
-    }
-  }
   
 }
