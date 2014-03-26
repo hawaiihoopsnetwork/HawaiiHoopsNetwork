@@ -1,16 +1,22 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import models.Player;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.data.Form;
 import views.html.player.PlayerList;
+import views.formdata.SearchFormData;
+
 
 /**
  * Created by taylorak on 3/18/14.
  */
 public class Players extends Controller{
+  
+  static List<Player> tempList = new ArrayList<Player>();
 
   /**
    * Returns the playerprofiles page
@@ -18,7 +24,12 @@ public class Players extends Controller{
    * @return The Player profiles list page.
    */
   public static Result players() {
-    return ok(PlayerList.render("PlayerList", Player.getPlayers()));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    tempList = Player.getPlayers();
+    
+    return ok(PlayerList.render("PlayerList", Player.getPlayers(), dataForm));
   }
   
   /**
@@ -27,7 +38,12 @@ public class Players extends Controller{
    * @return The Player profiles list page.
    */
   public static Result playersSkill(String skillLevel) {
-    return ok(PlayerList.render("PlayerList", Player.getPlayersSkill(skillLevel)));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    tempList = Player.getPlayersSkill(skillLevel);
+    
+    return ok(PlayerList.render("PlayerList", Player.getPlayersSkill(skillLevel), dataForm));
   }
   
   /**
@@ -36,7 +52,12 @@ public class Players extends Controller{
    * @return The Player profiles list page.
    */
   public static Result playersPosition(String position) {
-    return ok(PlayerList.render("PlayerList", Player.getPlayersPosition(position)));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    tempList = Player.getPlayersPosition(position);
+    
+    return ok(PlayerList.render("PlayerList", Player.getPlayersPosition(position), dataForm));
   }
   
   /**
@@ -44,9 +65,20 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
-  public static Result playersWithName(String name) {
-    return ok(PlayerList.render("PlayerList", Player.getPlayersWithName(name)));
+  public static Result playersWithName() {
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    Form<SearchFormData> data = Form.form(SearchFormData.class).bindFromRequest();
+    SearchFormData formData = data.get();
+    List<Player> results = Player.getPlayersWithName(formData.name);
+    
+    tempList = results;
+    
+    return ok(PlayerList.render("PlayerList", results, dataForm));
   }
+  
+  
   
   /**
    * Returns a page containing a list of the players in alphabetical order.
@@ -54,9 +86,11 @@ public class Players extends Controller{
    * @return the page
    */
   public static Result sortAllPlayersByName() {
-    List<Player> players = Player.getPlayers();
-    Collections.sort(players, new Player.SortByName());
-    return ok(PlayerList.render("PlayerList", players));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    Collections.sort(tempList, new Player.SortByName());
+    return ok(PlayerList.render("PlayerList", tempList, dataForm));
   }
   
   /**
@@ -65,9 +99,11 @@ public class Players extends Controller{
    * @return the page
    */
   public static Result sortAllPlayersByCourt() {
-    List<Player> players = Player.getPlayers();
-    Collections.sort(players, new Player.SortByCourt());
-    return ok(PlayerList.render("PlayerList", players));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    Collections.sort(tempList, new Player.SortByCourt());
+    return ok(PlayerList.render("PlayerList", tempList, dataForm));
   }
   
   /**
@@ -76,9 +112,11 @@ public class Players extends Controller{
    * @return the page
    */
   public static Result sortAllPlayersBySkill() {
-    List<Player> players = Player.getPlayers();
-    Collections.sort(players, new Player.SortBySkill());
-    return ok(PlayerList.render("PlayerList", players));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    Collections.sort(tempList, new Player.SortBySkill());
+    return ok(PlayerList.render("PlayerList", tempList, dataForm));
   }
   
   /**
@@ -87,9 +125,11 @@ public class Players extends Controller{
    * @return the page
    */
   public static Result sortAllPlayersByPosition() {
-    List<Player> players = Player.getPlayers();
-    Collections.sort(players, new Player.SortByPosition());
-    return ok(PlayerList.render("PlayerList", players));
+    SearchFormData data2 = new SearchFormData();
+    Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    
+    Collections.sort(tempList, new Player.SortByPosition());
+    return ok(PlayerList.render("PlayerList", tempList, dataForm));
   }
 
 }
