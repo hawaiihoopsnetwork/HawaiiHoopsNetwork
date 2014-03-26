@@ -2,6 +2,7 @@ package models;
 
 import play.db.ebean.Model;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.*;
 
@@ -99,6 +100,16 @@ public class Court extends Model
     {
         return (getCourt(name) != null);
     }
+
+    /**
+     * Returns the list of types.
+     *
+     * @return the list of types
+     */
+    public static List<String> getTypes() {
+        return Arrays.asList("public", "private");
+    }
+
 
     public Long getId()
     {

@@ -1,14 +1,14 @@
 @(title: String, courts: List[Court])
 
-@Main(title) {
-    <div id="map" class="tab-pane fade in active">
-        <div class="row">
-            <div class="col-md-12">
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+    <script src="@routes.Assets.at("javascripts/courts-map.js")" type="text/javascript"></script>
+}
+
+@Main(title, scripts) {
                 <div id="map-canvas"></div>
                 @for(court <- courts){
                    <h1>@court.getName()</h1>
                 }
-            </div>
-        </div>
-    </div>
 }

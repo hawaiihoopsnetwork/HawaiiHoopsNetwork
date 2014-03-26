@@ -28,8 +28,8 @@ create table players (
 create table users (
   id                        bigint not null,
   email                     varchar(255),
-  first                     varchar(255),
-  last                      varchar(255),
+  name                      varchar(255),
+  real_name                 varchar(255),
   password                  varchar(255),
   admin                     boolean,
   constraint uq_users_email unique (email),
