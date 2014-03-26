@@ -18,7 +18,8 @@
         <hr>
         </br>
         <ul>
-        <h10>Type: </h10><i>Public</i></br></br>
+        <!--  Created By: Get user who created the game -->
+        <h10>Type: </h10><i>@game.getType()</i></br></br>
         <h10>Time: </h10>@game.getTime()</br></br>
         <h10>Date: </h10>@game.getDate()</br></br>
         <h10>Location: </h10>@game.getLocation()</br></br>
@@ -28,7 +29,17 @@
         </br>
         </br>
         </br>
-        <!-- <a href="@routes.Games.editGame(game.getName())">Edit</a> -->
+      <!-- Need to check if logged in user is user who created the game -->
+        <a href="@routes.Games.editGame(game.getName())">Edit</a>
+        <ul>
+        <h10>Created: </h10>@game.getDateCreated()</br></br>
+        @if(game.getDateEdit() != null) {
+        <h10>Update Count: </h10>@game.getUpdateCount()</br></br>
+        <h10>Last Updated: </h10>@game.getDateEdit()</br></br>
+        }
+        
+        
+        </ul>
         
         </div>
     </div>

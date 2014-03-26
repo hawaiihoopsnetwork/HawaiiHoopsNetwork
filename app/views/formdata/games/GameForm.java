@@ -20,7 +20,7 @@ public class GameForm {
   @Constraints.Required(message = "A name is required.")
   public String name;
   /** Date. **/
-  @Constraints.Required(message = "A date is required.")
+  
   public String date;
   /** Time. **/
   @Constraints.Required(message = "A time is required.")
@@ -38,6 +38,13 @@ public class GameForm {
   /** Players attending. **/
   public String players;
 
+  /** Month. **/
+  @Constraints.Required(message = "A Month is Required.")
+  public String month;
+  /** Day. **/
+  @Constraints.Required(message = "A day is required.")
+  public String day;
+
   /**
    * Default Constructor.
    * 
@@ -49,7 +56,8 @@ public class GameForm {
    * Game form.
    * 
    * @param name name
-   * @param date date
+   * @param month month
+   * @param day day
    * @param time time
    * @param location location
    * @param type type
@@ -57,10 +65,11 @@ public class GameForm {
    * @param sklLvl Average Skill Level
    * @param players players attending
    */
-  public GameForm(String name, String date, String time, String location, String type, String freq, String sklLvl,
-      String players) {
+  public GameForm(String name, String month, String day, String time, String location, String type, String freq,
+      String sklLvl, String players) {
     this.name = name;
-    this.date = date;
+    this.month = month;
+    this.day = day;
     this.time = time;
     this.location = location;
     this.type = type;
@@ -76,7 +85,12 @@ public class GameForm {
    */
   public GameForm(Game game) {
     this.name = game.getName();
-    this.date = game.getDate();
+
+    String date = game.getDate();
+    String[] dateSplit = date.split("\\s*");
+    this.month = dateSplit[0];
+    this.day = dateSplit[1];
+
     this.time = game.getTime();
     this.location = game.getLocation();
     this.type = game.getType();

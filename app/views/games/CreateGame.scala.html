@@ -1,4 +1,4 @@
-@(title: String, gameForm: Form[views.formdata.games.GameForm])
+@(title: String, pageType: String, gameForm: Form[views.formdata.games.GameForm])
 
 @import helper._
 @import bootstrap3._
@@ -20,15 +20,37 @@
     @form(routes.Games.addGame(), 'class -> "form-horizontal") {
     
         <!-- Make non-editable eventually -->
-        @bootstrap3.text(gameForm("name"),
-              label = "Game name",
-              placeholder = "The best game today",
-              help = "")
+        @if(pageType == "Edit"){
+            <input type="hidden"
+                name="id"
+                value="@gameForm("id").value">
+            @bootstrap3.slug(gameForm("name"),
+                pageType = "Edit",
+                label = "Name",
+                placeholder = "The Name of the Game",
+                help = "")
+        } else {
+            <input type="hidden"
+                name="id"
+                value=0>
+            @bootstrap3.slug(gameForm("name"),
+                pageType = "Create",
+                label="Name",
+                placeholder="The Name of the Game",
+                help = "")
+        }
         
-        @bootstrap3.text(gameForm("date"),
-              label = "Date (MM / DD)",
-              placeholder = "2/15",
-              help = "Please enter the date.")
+        @bootstrap3.selectDate(gameForm("month"),
+            label = "Month",
+            optionMap = models.games.Game.getMonths(),
+            isMultiple = false,
+            help = "",
+            gameForm("day"),
+            label2 = "Day",
+            optionMap2 = models.games.Game.getDays(),
+            isMultiple2 = false,
+            help2 = "")
+            
               
         @bootstrap3.text(gameForm("time"),
               label = "Time",
@@ -65,7 +87,11 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button id="submitButton" type="submit" class="btn btn-primary">
+                @if(pageType == "Create"){ 
                 Add Game
+                } else {
+                Done Editing
+                }
                 </button>
             </div>
         </div>

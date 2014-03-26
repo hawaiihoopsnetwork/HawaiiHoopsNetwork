@@ -49,7 +49,7 @@ public class Games extends Controller {
     GameForm gameForm = new GameForm();
     Form<GameForm> formdata = Form.form(GameForm.class).fill(gameForm);
 
-    return ok(CreateGame.render("Create Game", formdata));
+    return ok(CreateGame.render("Create Game", "Create", formdata));
   }
 
   /**
@@ -62,14 +62,12 @@ public class Games extends Controller {
     Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
 
     if (gameForm.hasErrors()) {
-      return badRequest(CreateGame.render("Create Game", gameForm));
+      return badRequest(CreateGame.render("Create Game", "Create", gameForm));
     }
     else {
       GameForm game = gameForm.get();
       Game.addGame(game);
-
-      // TODO save edits to a game.
-      return redirect("/games/list");
+      return redirect("/games/view/" + game.name);
     }
   }
 
@@ -80,10 +78,9 @@ public class Games extends Controller {
    * @return the create game page
    */
   public static Result editGame(String name) {
-    Game game = Game.find().byId(name);
-    GameForm data = new GameForm(game);
+    GameForm data = new GameForm(Game.find().byId(name));
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
-    return ok(CreateGame.render("Edit Game", formdata));
+    return ok(CreateGame.render("Edit Game", "Edit", formdata));
 
   }
 

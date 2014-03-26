@@ -12,6 +12,9 @@ create table game (
   frequency                 varchar(255),
   avg_skl_lvl               varchar(255),
   players                   varchar(255),
+  date_created              varchar(255),
+  date_edit                 varchar(255),
+  update_count              integer,
   constraint pk_game primary key (name))
 ;
 

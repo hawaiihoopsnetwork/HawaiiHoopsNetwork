@@ -1,6 +1,9 @@
 package models.games;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -40,6 +43,10 @@ public class Game extends Model {
   private String avgSklLvl;
   private String players;
 
+  private String dateCreated;
+  private String dateEdit;
+  private int updateCount;
+
   /**
    * Constructs a game.
    * 
@@ -62,6 +69,7 @@ public class Game extends Model {
     this.setFrequency(freq);
     this.setAvgSklLvl(sklLvl);
     this.setPlayers(players);
+    this.setUpdateCount(0);
   }
 
   /**
@@ -80,23 +88,50 @@ public class Game extends Model {
    */
   public static void addGame(GameForm gf) {
     // TODO currently does not work with editing of games
-    if (getGame(gf.name) == null) {
-      Game game = new Game(gf.name, gf.time, gf.date, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+    Game game;
+    Date date;
+    
+    String gameDate = gf.month + " " + gf.day;
+    
+    if (!isGame(gf.name)) {
+      
+      game = new Game(gf.name, gf.time, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+      date = new Date();
+      game.setDateCreated(date.toString());
       game.save();
 
     }
     else {
-      Game game = getGame(gf.name);
+      game = getGame(gf.name);
       game.setTime(gf.time);
-      game.setDate(gf.date);
+      game.setDate(gameDate);
       game.setLocation(gf.location);
       game.setType(gf.type);
       game.setFrequency(gf.frequency);
       game.setAvgSklLvl(gf.avgSklLvl);
       game.setPlayers(gf.players);
+
+      date = new Date();
+      game.setDateEdit(date.toString());
+
+      int count = game.getUpdateCount();
+      count++;
+      game.setUpdateCount(count);
+
       game.save();
     }
 
+  }
+
+  /**
+   * Checks if given name is a valid game.
+   * 
+   * @param name the name of the game.
+   * @return game if exists
+   */
+  public static boolean isGame(String name) {
+    Game game = getGame(name);
+    return !(game == null);
   }
 
   /**
@@ -115,7 +150,7 @@ public class Game extends Model {
    * @return the game
    */
   public static Game getGame(String name) {
-    return find().byId(name);
+    return find().where().eq("name", name).findUnique();
   }
 
   /**
@@ -269,4 +304,76 @@ public class Game extends Model {
   public void setName(String name) {
     this.name = name;
   }
+
+  /**
+   * @return the dateCreated
+   */
+  public String getDateCreated() {
+    return dateCreated;
+  }
+
+  /**
+   * @param dateCreated the dateCreated to set
+   */
+  public void setDateCreated(String dateCreated) {
+    this.dateCreated = dateCreated;
+  }
+
+  /**
+   * @return the dateEdit
+   */
+  public String getDateEdit() {
+    return dateEdit;
+  }
+
+  /**
+   * @param dateEdit the dateEdit to set
+   */
+  public void setDateEdit(String dateEdit) {
+    this.dateEdit = dateEdit;
+  }
+
+  /**
+   * @return the updateCount
+   */
+  public int getUpdateCount() {
+    return updateCount;
+  }
+
+  /**
+   * @param updateCount the updateCount to set
+   */
+  public void setUpdateCount(int updateCount) {
+    this.updateCount = updateCount;
+  }
+
+  /**
+   * Returns a map of the months.
+   * 
+   * @return a map of the months
+   */
+  public static Map<String, Boolean> getMonths() {
+    String[] month =
+        { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
+            "December" };
+    Map<String, Boolean> months = new LinkedHashMap<>();
+    for (int x = 0; x < month.length; x++) {
+      months.put(month[x], false);
+    }
+    return months;
+  }
+
+  /**
+   * A java Map of days.
+   * 
+   * @return a map of days
+   */
+  public static Map<String, Boolean> getDays() {
+    Map<String, Boolean> days = new LinkedHashMap<>();
+    for (int x = 0; x <= 31; x++) {
+      days.put(Integer.toString(x), false);
+    }
+    return days;
+  }
+
 }
