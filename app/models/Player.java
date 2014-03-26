@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import com.avaje.ebean.Page;
 import play.db.ebean.Model;
 import views.formdata.PlayerFormData;
 import java.util.ArrayList;
@@ -45,8 +46,7 @@ public class Player extends Model {
     this.position = position;
     this.rating = rating;
   }
-
-
+  
    /**
    * The EBean ORM finder method for database queries on PlayerList.
    **/
