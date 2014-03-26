@@ -59,8 +59,8 @@ public class Player extends Model {
      player.save();
    }
    
-   public static List<Player> getPlayers() {
-     return find.all();
+   public static Page<Player> getPlayers(int page) {
+     return ((Finder<Long, Player>) find.all()).orderBy("id asc").findPagingList(10).setFetchAhead(false).getPage(page);
    }
    
    public static List<Player> getPlayersSkill(String skillLevel) {

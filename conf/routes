@@ -19,7 +19,7 @@ GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
 GET         /courts/manage/new          controllers.Courts.newCourt()
 POST        /courts/manage/post         controllers.Courts.postSurfer()
 
-GET         /players                    controllers.Players.players()
+GET         /players                    controllers.Players.players(page: Integer)
 GET         /skill/:skill               controllers.Players.playersSkill(skill: String)
 GET         /position/:position         controllers.Players.playersPosition(position: String)
 GET         /playerName/                controllers.Players.playersWithName()

@@ -1,4 +1,4 @@
-@(title: String, players: List[Player], searchForm: Form[views.formdata.SearchFormData])
+@(currentPage: com.avaje.ebean.Page[Player], title: String, searchForm: Form[views.formdata.SearchFormData])
 
 @import helper._
 @import bootstrap3._
@@ -39,7 +39,7 @@
                 <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
                 <li><a href="@routes.Players.playersSkill("College")">College</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players()">All</a></li>
+                <li><a href="@routes.Players.players(currentPage.getPageIndex)">All</a></li>
             </ul>
         </div>
 
@@ -54,7 +54,7 @@
                 <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
                 <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players()">All</a></li>
+                <li><a href="@routes.Players.players(currentPage.getPageIndex)">All</a></li>
             </ul>
         </div>
 
@@ -76,7 +76,7 @@
                 <li><a href="@routes.Players.playersSkill("Competitive")">Competitive</a></li>
                 <li><a href="@routes.Players.playersSkill("College")">College</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players()">All</a></li>
+                <li><a href="@routes.Players.players(currentPage.getPageIndex)">All</a></li>
             </ul>
         </div>
 
@@ -91,7 +91,7 @@
                 <li><a href="@routes.Players.playersPosition("Power Forward")">Power Forward</a></li>
                 <li><a href="@routes.Players.playersPosition("Small Forward")">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players()">All</a></li>
+                <li><a href="@routes.Players.players(currentPage.getPageIndex)">All</a></li>
             </ul>
         </div>
 
@@ -114,7 +114,7 @@
         </thead>
         
         <tbody data-link="row" class="rowlink">
-        @for(player <- players){
+        @for(player <- currentPage.getList()){
             <tr>
                 <td><a id="noColor" href="#">@player.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
@@ -123,7 +123,31 @@
             </tr>
         }
         </tbody>
-        
+        <div id="pagination" class="pagination">
+          <ul>
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                <a href="@routes.Players.players(currentPage.getPageIndex-1)">&larr;</a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                <a>&larr;</a>
+                </li>
+            } 
+            <li class = "current">
+                <a>@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+            </li>
+            @if(currentPage.hasNext) {
+                <li class="next">
+                  <a href="@routes.Players.players(currentPage.getPageIndex+1)">&rarr;</a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a> &rarr;</a>
+                </li>
+            }
+          </ul>
+        </div>
     </table>
     </div>
 </div>

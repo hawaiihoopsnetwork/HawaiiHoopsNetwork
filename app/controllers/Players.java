@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.avaje.ebean.Page;
 import models.Player;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -23,20 +24,21 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
-  public static Result players() {
+  public static Result players(Integer page) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
+    Page<Player> playerPage = Player.getPlayers(page);
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm));
+    //tempList = Player.getPlayers();
     
-    tempList = Player.getPlayers();
-    
-    return ok(PlayerList.render("PlayerList", Player.getPlayers(), dataForm));
+    //return ok(PlayerList.render("PlayerList", Player.getPlayers(), dataForm));
   }
   
   /**
    * Returns the playerprofiles page
    *
    * @return The Player profiles list page.
-   */
+   *
   public static Result playersSkill(String skillLevel) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -50,7 +52,7 @@ public class Players extends Controller{
    * Returns the playerprofiles page
    *
    * @return The Player profiles list page.
-   */
+   *
   public static Result playersPosition(String position) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -64,7 +66,7 @@ public class Players extends Controller{
    * Returns the playerprofiles page
    *
    * @return The Player profiles list page.
-   */
+   *
   public static Result playersWithName() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -84,7 +86,7 @@ public class Players extends Controller{
    * Returns a page containing a list of the players in alphabetical order.
    * @param pagination is the pagination number
    * @return the page
-   */
+   *
   public static Result sortAllPlayersByName() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -97,7 +99,7 @@ public class Players extends Controller{
    * Returns a page containing all a list of the players in court order.
    * @param pagination is the pagination number
    * @return the page
-   */
+   *
   public static Result sortAllPlayersByCourt() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -110,7 +112,7 @@ public class Players extends Controller{
    * Returns a page containing all a list of the players in skill order.
    * @param pagination is the pagination number
    * @return the page
-   */
+   *
   public static Result sortAllPlayersBySkill() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -123,13 +125,13 @@ public class Players extends Controller{
    * Returns a page containing all a list of the players in position order.
    * @param pagination is the pagination number
    * @return the page
-   */
+   *
   public static Result sortAllPlayersByPosition() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     
     Collections.sort(tempList, new Player.SortByPosition());
     return ok(PlayerList.render("PlayerList", tempList, dataForm));
-  }
+  }*/
 
 }
