@@ -22,7 +22,7 @@ POST        /courts/manage/post         controllers.Courts.postSurfer()
 GET         /players                    controllers.Players.players(sortOrder: String, page: Integer)
 GET         /playerSearch               controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)
 GET         /playerNameSearch           controllers.Players.playerNameSearch()
-
+GET         /player/manage              controllers.Players.playerManage()
 
 GET         /TermsOfUse                 controllers.Application.terms()
 GET         /ContactUs                  controllers.Application.contact()
