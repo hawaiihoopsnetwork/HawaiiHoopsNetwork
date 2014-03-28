@@ -22,9 +22,11 @@ create table players (
   skill                     varchar(255),
   position                  varchar(255),
   rating                    bigint,
+  votes                     bigint,
   height                    varchar(255),
   weight                    varchar(255),
   bio                       varchar(255),
+  looking_for               varchar(255),
   constraint pk_players primary key (id))
 ;
 

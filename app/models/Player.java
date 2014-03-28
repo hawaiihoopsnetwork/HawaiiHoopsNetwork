@@ -24,9 +24,11 @@ public class Player extends Model {
   private String skill;
   private String position;
   private Long rating;
+  private Long votes;
   private String height;
   private String weight;
   private String bio;
+  private String lookingFor;
   
 
   @ManyToMany(mappedBy = "players")
@@ -45,16 +47,18 @@ public class Player extends Model {
    * 
    */
   public Player(String name, String nickname, String homeCourt, String skill, String position, 
-                long rating, String height , String weight, String bio) {
+                long rating, long votes, String height , String weight, String bio, String lookingFor) {
     this.name = name;
     this.nickname = nickname;
     this.homeCourt = homeCourt;
     this.skill = skill;
     this.position = position;
     this.rating = rating;
+    this.setVotes(votes);
     this.height = height;
     this.weight = weight;
     this.bio = bio;
+    this.lookingFor = lookingFor;
   }
   
   /**
@@ -66,7 +70,8 @@ public class Player extends Model {
   public static void addPlayer(PlayerFormData formData) {
     Player player = new Player(formData.name, formData.nickname, formData.homeCourt, 
                                formData.skill, formData.position, formData.rating, 
-                               formData.height, formData.weight, formData.bio);
+                               formData.votes, formData.height, formData.weight, 
+                               formData.bio, formData.lookingFor);
     player.save();
   }
   
@@ -187,6 +192,27 @@ public class Player extends Model {
   }
 
   /**
+   * @return the votes
+   */
+  public Long getVotes() {
+    return votes;
+  }
+
+  /**
+   * @param votes the votes to set
+   */
+  public void setVotes(Long votes) {
+    this.votes = votes;
+  }
+  
+  /**
+   * @return the rank
+   */
+  public int getRank(Long rating, Long votes) {
+    return (int) Math.round(this.rating/this.votes);
+  }
+
+  /**
    * @return the bio
    */
   public String getBio() {
@@ -240,6 +266,20 @@ public class Player extends Model {
    */
   public void setNickname(String nickname) {
     this.nickname = nickname;
+  }
+
+  /**
+   * @return the lookingFor
+   */
+  public String getLookingFor() {
+    return lookingFor;
+  }
+
+  /**
+   * @param lookingFor the lookingFor to set
+   */
+  public void setLookingFor(String lookingFor) {
+    this.lookingFor = lookingFor;
   }
   
   
