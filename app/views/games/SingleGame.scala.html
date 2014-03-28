@@ -47,7 +47,13 @@
         <div class="well">
         
         <div class="hidden-xs">
-            <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+            @if(game.getType() == "Public"){
+                Join
+            } else {
+                Ask To Join
+            }       
+            </button>
             <hr>
         </div>
         

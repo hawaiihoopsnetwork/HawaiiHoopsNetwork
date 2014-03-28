@@ -1,5 +1,6 @@
 package models.games;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,6 +49,12 @@ public class Game extends Model {
   private int updateCount;
 
   /**
+   * Default constructor.
+   */
+  public Game() {
+  }
+
+  /**
    * Constructs a game.
    * 
    * @param name name
@@ -90,12 +97,13 @@ public class Game extends Model {
     // TODO currently does not work with editing of games
     Game game;
     Date date;
-    
+
     String gameDate = gf.month + " " + gf.day;
-    
+    String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
+
     if (!isGame(gf.name)) {
-      
-      game = new Game(gf.name, gf.time, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+
+      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
       date = new Date();
       game.setDateCreated(date.toString());
       game.save();
@@ -103,7 +111,7 @@ public class Game extends Model {
     }
     else {
       game = getGame(gf.name);
-      game.setTime(gf.time);
+      game.setTime(gameTime);
       game.setDate(gameDate);
       game.setLocation(gf.location);
       game.setType(gf.type);
@@ -370,10 +378,68 @@ public class Game extends Model {
    */
   public static Map<String, Boolean> getDays() {
     Map<String, Boolean> days = new LinkedHashMap<>();
-    for (int x = 0; x <= 31; x++) {
+    for (int x = 1; x <= 31; x++) {
       days.put(Integer.toString(x), false);
     }
     return days;
   }
 
+  /**
+   * Returns hours.
+   * 
+   * @return hours
+   */
+  public static Map<String, Boolean> getHours() {
+    Map<String, Boolean> hours = new LinkedHashMap<>();
+    for (int x = 1; x <= 12; x++) {
+      hours.put(Integer.toString(x), false);
+    }
+    return hours;
+  }
+
+  /**
+   * Returns minutes.
+   * 
+   * @return minutes
+   */
+  public static Map<String, Boolean> getMinutes() {
+    String[] minutes = { "00", "15", "30", "45" };
+    Map<String, Boolean> mins = new LinkedHashMap<>();
+    for (int x = 0; x < minutes.length; x++) {
+      mins.put(minutes[x], false);
+    }
+    return mins;
+  }
+
+  /**
+   * Return AmPm.
+   * 
+   * @return ampm
+   */
+  public static List<String> getAmPm() {
+    String[] amPm = { "am", "pm" };
+    return java.util.Arrays.asList(amPm);
+  }
+
+  /**
+   * Search by games.
+   * 
+   * @param term String to be searched for
+   * @return list containing the search results
+   */
+  public static List<Game> searchGames(String term) {
+    List<Game> results = new ArrayList<>();
+    System.out.println("Search: " + term);
+
+    List<Game> byName;
+    List<Game> byLocation;
+
+    byName = Game.find().where().contains("name", term).findList();
+    byLocation = Game.find().where().contains("location", term).findList();
+
+    results.addAll(byName);
+    results.retainAll(byLocation);
+
+    return results;
+  }
 }

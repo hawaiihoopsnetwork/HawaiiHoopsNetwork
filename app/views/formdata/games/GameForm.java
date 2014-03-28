@@ -19,12 +19,21 @@ public class GameForm {
   @Id
   @Constraints.Required(message = "A name is required.")
   public String name;
-  /** Date. **/
-  
-  public String date;
-  /** Time. **/
+  /** Month. **/
+  @Constraints.Required(message = "A Month is Required.")
+  public String month;
+  /** Day. **/
+  @Constraints.Required(message = "A day is required.")
+  public String day;
+  /** Hour. **/
   @Constraints.Required(message = "A time is required.")
-  public String time;
+  public String hour;
+  /** Minute. **/
+  @Constraints.Required(message = "A time is required.")
+  public String minute;
+  /** am pm. **/
+  @Constraints.Required(message = "A time is required.")
+  public String amPm;
   /** Location. **/
   @Constraints.Required(message = "A location is required.")
   public String location;
@@ -38,48 +47,18 @@ public class GameForm {
   /** Players attending. **/
   public String players;
 
-  /** Month. **/
-  @Constraints.Required(message = "A Month is Required.")
-  public String month;
-  /** Day. **/
-  @Constraints.Required(message = "A day is required.")
-  public String day;
+  public String search;
 
   /**
    * Default Constructor.
    * 
    */
   public GameForm() {
+
   }
 
   /**
-   * Game form.
-   * 
-   * @param name name
-   * @param month month
-   * @param day day
-   * @param time time
-   * @param location location
-   * @param type type
-   * @param freq frequency
-   * @param sklLvl Average Skill Level
-   * @param players players attending
-   */
-  public GameForm(String name, String month, String day, String time, String location, String type, String freq,
-      String sklLvl, String players) {
-    this.name = name;
-    this.month = month;
-    this.day = day;
-    this.time = time;
-    this.location = location;
-    this.type = type;
-    this.frequency = freq;
-    this.avgSklLvl = sklLvl;
-    this.players = players;
-  }
-
-  /**
-   * Other constructor.
+   * Main constructor.
    * 
    * @param game the game
    */
@@ -87,29 +66,23 @@ public class GameForm {
     this.name = game.getName();
 
     String date = game.getDate();
+    System.out.println(date);
     String[] dateSplit = date.split("\\s*");
     this.month = dateSplit[0];
     this.day = dateSplit[1];
 
-    this.time = game.getTime();
+    String time = game.getTime();
+    System.out.println(time);
+    // String[] timeSplit = time.split("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)");
+    // this.hour = timeSplit[0];
+    // this.minute = timeSplit[1];
+    // this.amPm = timeSplit[2];
+
     this.location = game.getLocation();
     this.type = game.getType();
     this.frequency = game.getFrequency();
     this.avgSklLvl = game.getAvgSklLvl();
     this.players = game.getPlayers();
-  }
-
-  /**
-   * Validation Method.
-   * 
-   * @return list of errors
-   */
-  public List<ValidationError> validate() {
-    List<ValidationError> errors = new ArrayList<>();
-
-    // TODO check if location is in location database
-
-    return errors.isEmpty() ? null : errors;
   }
 
 }

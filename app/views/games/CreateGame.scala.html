@@ -3,13 +3,6 @@
 @import helper._
 @import bootstrap3._
 
-<style>
-
-.form-group {
-    width: 800px;
-}
-
-</style>
 
 @Main(title) {
 
@@ -41,21 +34,31 @@
         }
         
         @bootstrap3.selectDate(gameForm("month"),
-            label = "Month",
+            label = "Date",
             optionMap = models.games.Game.getMonths(),
             isMultiple = false,
             help = "",
             gameForm("day"),
-            label2 = "Day",
+            label2 = "",
             optionMap2 = models.games.Game.getDays(),
             isMultiple2 = false,
             help2 = "")
             
               
-        @bootstrap3.text(gameForm("time"),
-              label = "Time",
-              placeholder = "3: 30 p.m.",
-              help = "Please enter the time.")
+        @bootstrap3.selectTime(gameForm("hour"),
+            label = "Time",
+            optionMap = models.games.Game.getHours(),
+            isMultiple = false,
+            help = "",
+            gameForm("minute"),
+            label2 = "",
+            optionMap2 = models.games.Game.getMinutes(),
+            isMultiple2 = false,
+            help2 = "",
+            gameForm("amPm"), 
+            label3 = "",
+            buttonNameList3 = models.games.Game.getAmPm(),
+            help3 = "")
               
         @bootstrap3.text(gameForm("location"),
               label = "Location",

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.List;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,7 +21,10 @@ public class Games extends Controller {
    * @return the list of games
    */
   public static Result allGames() {
-    return ok(AllGames.render("All Games", Game.getGames()));
+
+    GameForm searchGame = new GameForm();
+    Form<GameForm> formdata = Form.form(GameForm.class).fill(searchGame);
+    return ok(AllGames.render("All Games", Game.getGames(), formdata));
   }
 
   /**
@@ -81,6 +85,23 @@ public class Games extends Controller {
     GameForm data = new GameForm(Game.find().byId(name));
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
     return ok(CreateGame.render("Edit Game", "Edit", formdata));
+
+  }
+
+  /**
+   * Search for games.
+   * 
+   * @return All games page with the results
+   */
+  public static Result searchResults() {
+    GameForm data = new GameForm();
+    Form<GameForm> gf = Form.form(GameForm.class).fill(data);
+
+    Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
+    GameForm searched = gameForm.get();
+
+    List<Game> results = Game.searchGames(searched.search);
+    return ok(AllGames.render("Results", results, gf));
 
   }
 
