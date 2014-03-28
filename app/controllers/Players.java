@@ -117,4 +117,10 @@ public class Players extends Controller{
     return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none"));
   }
   
-}
+  public static Result playerVote(long id, long rate){
+    Player player = Player.getPlayer(id);
+    player.setVotes(player.getVotes() + 1);
+    player.setRating(player.getRating() + rate);
+    player.save();
+    return ok(PlayerProfile.render("Player Profile", player));  }
+  }

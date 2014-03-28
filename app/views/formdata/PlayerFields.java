@@ -16,7 +16,7 @@ public class PlayerFields {
   
   private static String [] skills = {"Beginner", "Intermediate", "Competitive", "College"};
   private static String [] positions = {"Point Gaurd", "Shooting Gaurd", "Center", "Power Forward", "Small Forward"};
-
+  
   /**********************
    * Player Skill Level *
    **********************/
