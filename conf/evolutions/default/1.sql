@@ -17,10 +17,14 @@ create table courts (
 create table players (
   id                        bigint not null,
   name                      varchar(255),
+  nickname                  varchar(255),
   home_court                varchar(255),
   skill                     varchar(255),
   position                  varchar(255),
   rating                    bigint,
+  height                    varchar(255),
+  weight                    varchar(255),
+  bio                       varchar(255),
   constraint pk_players primary key (id))
 ;
 

@@ -35,12 +35,12 @@
                 Skill Level<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="@routes.Players.playerSearch("skill", "Beginner", "name asc", 1)">Beginner</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "Intermediate", "name asc", 1)">Intermediate</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "Competitive", "name asc", 1)">Competitive</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "College", "name asc", 1)">College</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Beginner", "name asc", 0)">Beginner</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Intermediate", "name asc", 0)">Intermediate</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Competitive", "name asc", 0)">Competitive</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "College", "name asc", 0)">College</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players("name asc", 1)">All</a></li>
+                <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
 
@@ -49,13 +49,13 @@
                 Position<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 1)">Point Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 1)">Shooting Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 1)">Center</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 1)">Power Forward</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 1)">Small Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 0)">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 0)">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 0)">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players("name asc", 1)">All</a></li>
+                <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
 
@@ -70,12 +70,12 @@
                 Skill Level<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="@routes.Players.playerSearch("skill", "Beginner", "name asc", 1)">Beginner</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "Intermediate", "name asc", 1)">Intermediate</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "Competitive", "name asc", 1)">Competitive</a></li>
-                <li><a href="@routes.Players.playerSearch("skill", "College", "name asc", 1)">College</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Beginner", "name asc", 0)">Beginner</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Intermediate", "name asc", 0)">Intermediate</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "Competitive", "name asc", 0)">Competitive</a></li>
+                <li><a href="@routes.Players.playerSearch("skill", "College", "name asc", 0)">College</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players("name asc", 1)">All</a></li>
+                <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
 
@@ -84,13 +84,13 @@
                 Position<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 1)">Point Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 1)">Shooting Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 1)">Center</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 1)">Power Forward</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 1)">Small Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 0)">Point Gaurd</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 0)">Shooting Gaurd</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 0)">Small Forward</a></li>
                 <li class="divider"></li>
-                <li><a href="@routes.Players.players("name asc", 1)">All</a></li>
+                <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
 
@@ -122,7 +122,7 @@
         <tbody data-link="row" class="rowlink">
         @for(player <- currentPage.getList()){
             <tr>
-                <td><a id="noColor" href="#">@player.getName()</a></td>
+                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
                 <td>@player.getSkill()</td>
                 <td>@player.getPosition()</td>
@@ -143,10 +143,10 @@
                     <a>&laquo;</a>
                 </li>
             }
-            @for(index <- 1 until currentPage.getTotalPageCount()) {
+            @for(index <- 0 until currentPage.getTotalPageCount()) {
                 <li class="current">
                 @if(field == "none") {
-                  <a href="@routes.Players.players("name asc", index)">@index</a>
+                  <a href="@routes.Players.players("name asc", index)">@(index+1)</a>
                 } else {
                   <a href="@routes.Players.playerSearch(field, searchWord, "name asc", index)">@index</a>
                 }

@@ -19,10 +19,15 @@ public class Player extends Model {
   @GeneratedValue
   private Long id;
   private String name;
+  private String nickname;
   private String homeCourt;
   private String skill;
   private String position;
   private Long rating;
+  private String height;
+  private String weight;
+  private String bio;
+  
 
   @ManyToMany(mappedBy = "players")
   private List<Court> courts = new ArrayList<Court>();
@@ -39,16 +44,29 @@ public class Player extends Model {
    * @param position = position of player
    * 
    */
-  public Player(String name, String homeCourt, String skill, String position, long rating) {
+  public Player(String name, String nickname, String homeCourt, String skill, String position, 
+                long rating, String height , String weight, String bio) {
     this.name = name;
+    this.nickname = nickname;
     this.homeCourt = homeCourt;
     this.skill = skill;
     this.position = position;
     this.rating = rating;
+    this.height = height;
+    this.weight = weight;
+    this.bio = bio;
   }
   
+  /**
+   * Adds a player to the database
+   * 
+   * @param formData = the PlayerFormData containing the player's info
+   * save's the player's info to the DB
+   */
   public static void addPlayer(PlayerFormData formData) {
-    Player player = new Player(formData.name, formData.homeCourt, formData.skill, formData.position, formData.rating);
+    Player player = new Player(formData.name, formData.nickname, formData.homeCourt, 
+                               formData.skill, formData.position, formData.rating, 
+                               formData.height, formData.weight, formData.bio);
     player.save();
   }
   
@@ -60,7 +78,8 @@ public class Player extends Model {
    }
    
    /**
-    * The EBean Page finder method to implement pagination. 
+    * The EBean Page finder method to implement pagination for all players. 
+    * 
     * @param sortOrder = the order to of the sorting
     * @param page = the current page index
     * @return page object of all players
@@ -69,10 +88,20 @@ public class Player extends Model {
      return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
    }
    
+   /**
+    * The EBean Page finder method to implement pagination, based on a search of players. 
+    * 
+    * @param sortOrder = the order to of the sorting
+    * @param page = the current page index
+    * @return page object of all players
+    */
    public static Page<Player> find(String field, String search, String sortOrder, int page) {
      return find().where().eq(field, search).orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
    }
    
+   public static Player getPlayer(long id) {
+     return find().where().eq("id", id).findUnique();
+   }
    
   /**
    * ********************* *
@@ -155,6 +184,62 @@ public class Player extends Model {
    */
   public void setRating(long rating) {
     this.rating = rating;
+  }
+
+  /**
+   * @return the bio
+   */
+  public String getBio() {
+    return bio;
+  }
+
+  /**
+   * @param bio the bio to set
+   */
+  public void setBio(String bio) {
+    this.bio = bio;
+  }
+
+  /**
+   * @return the height
+   */
+  public String getHeight() {
+    return height;
+  }
+
+  /**
+   * @param height the height to set
+   */
+  public void setHeight(String height) {
+    this.height = height;
+  }
+
+  /**
+   * @return the weight
+   */
+  public String getWeight() {
+    return weight;
+  }
+
+  /**
+   * @param weight the weight to set
+   */
+  public void setWeight(String weight) {
+    this.weight = weight;
+  }
+
+  /**
+   * @return the nickname
+   */
+  public String getNickname() {
+    return nickname;
+  }
+
+  /**
+   * @param nickname the nickname to set
+   */
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
   }
   
   

@@ -13,11 +13,14 @@ public class PlayerFormData {
 
   public long id;
   public String name;
+  public String nickname;
   public String homeCourt;
   public String skill;
   public String position;
   public long rating;
-  
+  public String height;
+  public String weight;
+  public String bio;
   /**
    * constructor for a new player.
    * 
@@ -27,13 +30,18 @@ public class PlayerFormData {
    * @param position = position of player
    * 
    */
-  public PlayerFormData(String name, String homeCourt, String skill, String position, long rating) {
+  public PlayerFormData(String name, String nickname, String homeCourt, String skill, 
+              String position, long rating, String height, String weight, String bio) {
     super();
     this.name = name;
+    this.nickname = nickname;
     this.homeCourt = homeCourt;
     this.skill = skill;
     this.position = position;
     this.rating = rating;
+    this.height = height;
+    this.weight = weight;
+    this.bio = bio;
   }
 
   /**
@@ -50,10 +58,14 @@ public class PlayerFormData {
    */
   public PlayerFormData(Player player) {
     this.name = player.getName();
+    this.nickname = player.getNickname();
     this.homeCourt = player.getHomeCourt();
     this.skill = player.getSkill();
     this.position = player.getPosition();
     this.rating = player.getRating();
+    this.height = player.getHeight();
+    this.weight = player.getWeight();
+    this.bio = player.getBio();
   }
 
   /**

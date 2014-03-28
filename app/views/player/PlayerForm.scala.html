@@ -1,5 +1,5 @@
 @(title: String, playerForm : Form[views.formdata.PlayerFormData], 
-  playerSkillMap : Map[String, Boolean], playerPosition: Map[String, Boolean])
+  playerSkillMap : Map[String, Boolean], playerPositionMap: Map[String, Boolean])
 
 @import helper._ 
 @import bootstrap3._
@@ -7,12 +7,17 @@
 
 @Main(title) {
 <div class="container">
-  @form(routes.Players.playerManage(), 'class -> "form-horizontal"){
+  @form(routes.Players.playerManageSubmit(), 'class -> "form-horizontal"){
     
     @text(playerForm("name"),
         label = "Name",
         placeholder = "Name",
         help = "Your name.")
+        
+    @text(playerForm("nickname"),
+        label = "Nickname",
+        placeholder = "Nickname",
+        help = "Your nickname.")
   
     @text(playerForm("homeCourt"),
         label = "Home Court",
@@ -27,9 +32,25 @@
         
     @bootstrap3.select(playerForm("position"),
         label = "Position",
-        optionMap = playerSkillMap,
+        optionMap = playerPositionMap,
         isMultiple = false,
         help = "The positions you play.")
+        
+    @text(playerForm("height"),
+        label = "Height",
+        placeholder = "Height",
+        help = "Your height.")
+        
+    @text(playerForm("weight"),
+        label = "Weight",
+        placeholder = "Weight",
+        help = "Your weight.")
+        
+    @bootstrap3.textarea(playerForm("bio"),
+        rows = "10",
+        label = "Bio",
+        placeholder = "About yourself",
+        help = "Tell us a little about yourself. Please!")
         
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
