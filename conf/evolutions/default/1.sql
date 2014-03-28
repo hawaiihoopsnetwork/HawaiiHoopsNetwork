@@ -27,6 +27,7 @@ create table players (
   weight                    varchar(255),
   bio                       varchar(255),
   looking_for               varchar(255),
+  pic_url                   varchar(255),
   constraint pk_players primary key (id))
 ;
 

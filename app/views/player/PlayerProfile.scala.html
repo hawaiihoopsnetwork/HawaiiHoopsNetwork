@@ -9,7 +9,11 @@
       <div class="well">
         
         <center>
+        @if(player.getPicUrl() == "") {
             <img src="@routes.Assets.at("images/no-available-image.png")" height="60%" width="60%"> <br>
+        } else {
+            <img src="@player.getPicUrl()" class="img-circle" height="60%" width="60%"> <br>
+        }
         </center>
         <h4>@player.getName()</h4>
 

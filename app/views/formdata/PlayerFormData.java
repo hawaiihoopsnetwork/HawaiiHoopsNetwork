@@ -23,6 +23,8 @@ public class PlayerFormData {
   public String weight;
   public String bio;
   public String lookingFor;
+  public String picUrl;
+  
   /**
    * constructor for a new player.
    * 
@@ -34,7 +36,7 @@ public class PlayerFormData {
    */
   public PlayerFormData(String name, String nickname, String homeCourt, String skill, 
               String position, long rating, long votes, String height, String weight, String bio,
-              String lookingFor) {
+              String lookingFor, String picUrl) {
     super();
     this.name = name;
     this.nickname = nickname;
@@ -47,6 +49,7 @@ public class PlayerFormData {
     this.weight = weight;
     this.bio = bio;
     this.lookingFor = lookingFor;
+    this.picUrl = picUrl;
   }
 
   /**
@@ -73,6 +76,7 @@ public class PlayerFormData {
     this.weight = player.getWeight();
     this.bio = player.getBio();
     this.lookingFor = player.getLookingFor();
+    this.picUrl = player.getPicUrl();
   }
 
   /**
