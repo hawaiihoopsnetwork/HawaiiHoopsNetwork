@@ -29,21 +29,13 @@ public class Game extends Model {
 
   @Id
   private String name;
-
-  @Constraints.Required
   private String time;
-  @Constraints.Required
   private String date;
-  @Constraints.Required
   private String location;
-
-  @Constraints.Required
   private String type;
-
   private String frequency;
   private String avgSklLvl;
   private String players;
-
   private String dateCreated;
   private String dateEdit;
   private int updateCount;
@@ -100,6 +92,10 @@ public class Game extends Model {
 
     String gameDate = gf.month + " " + gf.day;
     String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
+    
+    String[] test = gameDate.split("\\s+");
+    System.out.println("test[0]: " + test[0]);
+    System.out.println("test[1]: " + test[1]);
 
     if (!isGame(gf.name)) {
 
@@ -431,11 +427,8 @@ public class Game extends Model {
     List<Game> results = new ArrayList<>();
     System.out.println("Search: " + term);
 
-    List<Game> byName;
-    List<Game> byLocation;
-
-    byName = Game.find().where().contains("name", term).findList();
-    byLocation = Game.find().where().contains("location", term).findList();
+    List<Game> byName = Game.find().where().contains("name", term).findList();
+    List<Game> byLocation = Game.find().where().contains("location", term).findList();
 
     results.addAll(byName);
     results.retainAll(byLocation);

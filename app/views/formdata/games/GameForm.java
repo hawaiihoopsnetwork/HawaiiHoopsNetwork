@@ -47,8 +47,6 @@ public class GameForm {
   /** Players attending. **/
   public String players;
 
-  public String search;
-
   /**
    * Default Constructor.
    * 

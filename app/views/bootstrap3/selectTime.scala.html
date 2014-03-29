@@ -4,7 +4,7 @@
 
   <div class="form-group @if(field.hasErrors) {has-error}">
     <label class="col-sm-2 control-label" for="@field.id">@label</label>
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       <select
         class="form-control"
         id="@field.id"
@@ -18,8 +18,8 @@
       <span class="help-block">@help</span>
       <span class="help-block">@{field2.error.map { error => error.message }}</span>
     </div>
-    <label class="col-sm-2 control-label" for="@field2.id">@label2</label>
-    <div class="col-sm-3">
+    
+    <div class="col-sm-2">
       <select
         class="form-control"
         id="@field2.id"
@@ -33,7 +33,6 @@
       <span class="help-block">@help2</span>
       <span class="help-block">@{field2.error.map { error => error.message }}</span>
     </div>
-    <label class="col-sm-0 control-label" for="@field3.id">@label3</label>
     <div id="@(field3.id + "s")" class="col-sm-2" >
       @for(buttonName <- buttonNameList3) {
       <label class="radio-inline">
@@ -49,4 +48,5 @@
       <span class="help-block">@help3</span>
       <span class="help-block">@{field3.error.map { error => error.message }}</span>
     </div>
+    <div class="col-sm-4"></div>
   </div>

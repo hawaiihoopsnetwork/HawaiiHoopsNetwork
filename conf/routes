@@ -16,6 +16,8 @@ GET     /games/create                controllers.Games.createGame()
 GET     /games/edit/:name            controllers.Games.editGame(name)
 POST    /games/new                   controllers.Games.addGame()
 POST    /games/search                controllers.Games.searchResults()
+GET     /games/sort/byLocation       controllers.Games.sortByLocation()
+GET     /games/sort/bySkillLevel     controllers.Games.sortBySkillLevel()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

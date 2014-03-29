@@ -1,11 +1,13 @@
 package controllers;
 
+import java.util.Collections;
 import java.util.List;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import views.formdata.games.GameForm;
+import views.formdata.games.SearchSortGames;
 import views.html.games.SingleGame;
 import views.html.games.CreateGame;
 import views.html.games.AllGames;
@@ -21,10 +23,13 @@ public class Games extends Controller {
    * @return the list of games
    */
   public static Result allGames() {
+    SearchSortGames ssg = new SearchSortGames();
+    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
 
-    GameForm searchGame = new GameForm();
-    Form<GameForm> formdata = Form.form(GameForm.class).fill(searchGame);
-    return ok(AllGames.render("All Games", Game.getGames(), formdata));
+    List<Game> games = Game.getGames();
+    Collections.sort(games, new SearchSortGames.ByDate());
+
+    return ok(AllGames.render("All Games", games, ssgBlank));
   }
 
   /**
@@ -34,7 +39,7 @@ public class Games extends Controller {
    * @return the page related to the game
    */
   public static Result getGame(String name) {
-    Game game = Game.find().byId(name);
+    Game game = Game.find().where().eq("name", name).findUnique();
 
     if (game == null) {
       throw new RuntimeException("Not a valid game.");
@@ -94,15 +99,47 @@ public class Games extends Controller {
    * @return All games page with the results
    */
   public static Result searchResults() {
-    GameForm data = new GameForm();
-    Form<GameForm> gf = Form.form(GameForm.class).fill(data);
+    SearchSortGames ssg = new SearchSortGames();
+    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
 
-    Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
-    GameForm searched = gameForm.get();
-
+    Form<SearchSortGames> form = Form.form(SearchSortGames.class).bindFromRequest();
+    SearchSortGames searched = form.get();
     List<Game> results = Game.searchGames(searched.search);
-    return ok(AllGames.render("Results", results, gf));
 
+    return ok(AllGames.render("Results", results, ssgBlank));
+
+  }
+
+  /**
+   * Returns a sorted list of games based on location.
+   * 
+   * @return All Games page
+   */
+  public static Result sortByLocation() {
+
+    SearchSortGames ssg = new SearchSortGames();
+    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
+
+    List<Game> games = Game.getGames();
+    Collections.sort(games, new SearchSortGames.ByLocation());
+
+    return ok(AllGames.render("Games by Date", games, ssgBlank));
+  }
+
+  /**
+   * Returns a sorted list of games based on skill level.
+   * 
+   * @return All Games page.
+   */
+  public static Result sortBySkillLevel() {
+
+    SearchSortGames ssg = new SearchSortGames();
+    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
+
+    List<Game> games = Game.getGames();
+    Collections.sort(games, new SearchSortGames.BySkillLevel());
+
+    return ok(AllGames.render("Games by Date", games, ssgBlank));
   }
 
 }
