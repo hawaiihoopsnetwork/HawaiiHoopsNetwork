@@ -27,21 +27,65 @@
       <div class="tab-content">
             <div class="tab-pane fade in active" id="stats">
                <img src="img/no-available-image.png" height="40%" width="40%">
-               <h4>Quick Information: </h4>
-                 
-                 Location: @team.getLocation()</br>
-                 Type: @team.getGender()</br>
-                 Skill Level: @team.getSklLvl()</br>
-                 Description: @team.getDescription()</br>
+               <h4>Standings & Stats: </h4>
+                  <i>Record: </i>14-10</br>
+                     40% 3pts  <br>
+                     85% 2pts  <br>
+                     90% 1pt  <br>
+                     98 rebounds  <br>
+                     56 steals  <br>
+                     43 blocks  <br>
             </div>
             <div class="tab-pane fade" id="profiles">
                <h4>Player Profiles: </h4>
-                  @for(player <- team.getListPlayers()) {
-                    <li><a href="#">@player</a>
-                  }
+                  <ul>
+                    @for(player <- team.getRosterList()) {
+                        <li><a href="#player">@player</a></li>
+                    }
+                  </ul>
             </div>
             
+ <div id="player" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">"Player Name"</h4>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+      <div class="col-md-4">
+          <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
 
+                <br>
+                 <img src="img/no-available-image.png" height="100%" width="100%">
+                 </div>
+                 <div class="col-md-8">
+                <h4>Awards & Stats: </h4>
+                11 ppg <br>
+                20% 3pts  <br>
+                70% 2pts  <br>
+                10% 1pt  <br>
+                5 rebounds  <br>
+                0 steals  <br>
+                4 blocks  <br>
+
+                <br>
+                </div>
+                </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="#" type="button" class="btn btn-success">See Full Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
             
             <div class="tab-pane fade" id="media">
                <h4>Pictures and Videos</h4>

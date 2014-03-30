@@ -1,17 +1,14 @@
 package models.teams;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
 
 /**
- * Model of a team.
+ * Model of a Team object.
  * 
  * @author AJ
  * 
@@ -24,34 +21,36 @@ public class Team extends Model {
    * 
    */
   private static final long serialVersionUID = 1L;
+
   @Id
   private String teamName;
   private String location;
-  private String gender;
-  private Map<String, Boolean> days;
-  private String sklLvl;
+  private String teamType;
+  private String skillLevel;
   private String roster;
-  @Lob
   private String description;
+
+  /**
+   * Default constructor.
+   */
+  public Team() {
+  }
 
   /**
    * Constructor.
    * 
-   * @param name name
-   * @param loc location
-   * @param gender gender
-   * @param days days
-   * @param sklLvl skill level
-   * @param roster team roster
+   * @param teamName team name
+   * @param location location
+   * @param teamType type of team
+   * @param skillLevel skill level
+   * @param roster roster
    * @param description description
    */
-  public Team(String name, String loc, String gender, Map<String, Boolean> days, String sklLvl, String roster,
-      String description) {
-    this.setTeamName(name);
-    this.setLocation(loc);
-    this.setGender(gender);
-    this.setDays(days);
-    this.setSklLvl(sklLvl);
+  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description) {
+    this.setTeamName(teamName);
+    this.setLocation(location);
+    this.setTeamType(teamType);
+    this.setSkillLevel(skillLevel);
     this.setRoster(roster);
     this.setDescription(description);
   }
@@ -59,78 +58,75 @@ public class Team extends Model {
   /**
    * Finder.
    * 
-   * @return a finder
+   * @return finder
    */
   public static Finder<String, Team> find() {
     return new Finder<String, Team>(String.class, Team.class);
   }
 
   /**
-   * Returns a list of all the teams.
+   * Adds a team to the database if it is new, otherwise edits existing team.
    * 
-   * @return the list of teams
+   * @param tf
    */
-  public static List<Team> getAllTeams() {
+  public static void addTeam(TeamForm tf) {
+    Team team;
+
+    String name = tf.teamName;
+
+    if (!isTeam(name)) {
+      team = new Team(name, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description);
+      team.save();
+    }
+    else {
+      team = getTeam(name);
+      team.setTeamName(name);
+      team.setLocation(tf.location);
+      team.setTeamType(tf.teamType);
+      team.setSkillLevel(tf.skillLevel);
+      team.setRoster(tf.roster);
+      team.setDescription(tf.description);
+      team.save();
+    }
+  }
+
+  /**
+   * Returns a Java list of teams.
+   * 
+   * @return list of teams
+   */
+  public static List<Team> getTeams() {
     return find().all();
   }
 
   /**
-   * Returns the team.
+   * Retursn the team associated with the name.
    * 
-   * @param teamName the name of the team to be found.
-   * @return team
+   * @param teamName team name to be looked for
+   * @return the Team if it exists
    */
   public static Team getTeam(String teamName) {
     return find().where().eq("teamName", teamName).findUnique();
   }
 
   /**
-   * Add a team to the database.
+   * Checks if teamName belongs to a team.
    * 
-   * @param teamForm team data
+   * @param teamName team name
+   * @return true if team exists, false otherwise
    */
-  public static void addTeam(TeamForm teamForm) {
-
-    if (getTeam(teamForm.teamName) == null) {
-      Team team =
-          new Team(teamForm.teamName, teamForm.location, teamForm.gender, teamForm.days, teamForm.sklLvl,
-              teamForm.roster, teamForm.description);
-      team.save();
-    }
-    else {
-      Team team = getTeam(teamForm.teamName);
-      team.setTeamName(teamForm.teamName);
-      team.setLocation(teamForm.location);
-      team.setGender(teamForm.gender);
-      team.setDays(teamForm.days);
-      team.setSklLvl(teamForm.sklLvl);
-      team.setRoster(teamForm.roster);
-      team.setDescription(teamForm.description);
-      team.save();
-    }
+  public static boolean isTeam(String teamName) {
+    Team team = getTeam(teamName);
+    return !(team == null);
   }
 
   /**
-   * Returns a java Map containing the days.
+   * Returns a list of types associated with a team.
    * 
-   * @return the days
+   * @return
    */
-  public static Map<String, Boolean> getMapDays() {
-    Map<String, Boolean> teamDays = new LinkedHashMap<>();
-    String[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    for (int x = 0; x < days.length; x++) {
-      teamDays.put(days[x], false);
-    }
-    return teamDays;
-  }
-
-  /**
-   * Returns the list of types.
-   * 
-   * @return the list of types
-   */
-  public static List<String> getTypes() {
-    String[] types = { "Mens", "Womens", "Coed" };
+  public static List<String> typeOfTeam() {
+    String[] types = { "Mens", "Womens", "Co-ed" };
     return java.util.Arrays.asList(types);
   }
 
@@ -163,31 +159,31 @@ public class Team extends Model {
   }
 
   /**
-   * @return the gender
+   * @return the teamType
    */
-  public String getGender() {
-    return gender;
+  public String getTeamType() {
+    return teamType;
   }
 
   /**
-   * @param gender the gender to set
+   * @param teamType the teamType to set
    */
-  public void setGender(String gender) {
-    this.gender = gender;
+  public void setTeamType(String teamType) {
+    this.teamType = teamType;
   }
 
   /**
-   * @return the sklLvl
+   * @return the skillLevel
    */
-  public String getSklLvl() {
-    return sklLvl;
+  public String getSkillLevel() {
+    return skillLevel;
   }
 
   /**
-   * @param sklLvl the sklLvl to set
+   * @param skillLevel the skillLevel to set
    */
-  public void setSklLvl(String sklLvl) {
-    this.sklLvl = sklLvl;
+  public void setSkillLevel(String skillLevel) {
+    this.skillLevel = skillLevel;
   }
 
   /**
@@ -198,19 +194,21 @@ public class Team extends Model {
   }
 
   /**
+   * Returns the roster as a java list.
+   * 
+   * @return the roster as a list
+   */
+  public List<String> getRosterList() {
+    // TODO check if player name is related to a player profile
+    List<String> rosterList = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
+    return rosterList;
+  }
+
+  /**
    * @param roster the roster to set
    */
   public void setRoster(String roster) {
     this.roster = roster;
-  }
-
-  /**
-   * @return the players as a java List
-   */
-  public List<String> getListPlayers() {
-    // TODO check if player name is related to a player profile
-    List<String> gamePlayers = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
-    return gamePlayers;
   }
 
   /**
@@ -227,17 +225,4 @@ public class Team extends Model {
     this.description = description;
   }
 
-  /**
-   * @return the days
-   */
-  public Map<String, Boolean> getDays() {
-    return days;
-  }
-
-  /**
-   * @param days the days to set
-   */
-  public void setDays(Map<String, Boolean> days) {
-    this.days = days;
-  }
 }

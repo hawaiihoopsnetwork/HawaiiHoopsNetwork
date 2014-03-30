@@ -1,8 +1,7 @@
 @(title: String, teams: List[models.teams.Team])
 
 @Main(title) {
-    
-    <a href="@routes.Teams.createTeam()" class="btn btn-primary btn-md active" role="button">Create a Team</a>
+    <a href="@routes.Teams.createTeam()" class="btn btn-primary btn-md active" role="button">Create</a>
     <table class="table table-striped table-hover">
       <thead>
          <tr>
@@ -11,18 +10,16 @@
             <th>Type</th>
             <th>Roster Size</th>
             <th class="hidden-xs">Skill Level</th>
-            <th class="hidden-xs">Days</th>
          </tr>
       </thead>
       <tbody data-link="row" class="rowlink">
         @for(team <- teams) {
          <tr>
-            <td><a id="noColor" href="@routes.Teams.getTeam(team.getTeamName())">@team.getTeamName()</a></td>
+            <td><a href="@routes.Teams.showTeam(team.getTeamName)">@team.getTeamName()</a></td>
             <td>@team.getLocation()</td>
-            <td>@team.getGender()</td>
-            <td>@team.getListPlayers().size()</td>
-            <td class="hidden-xs">@team.getSklLvl()</td>
-            <td class="hidden-xs">@team.getDays()</td>
+            <td>@team.getTeamType()</td>
+            <td>@team.getRosterList().size()</td>
+            <td class="hidden-xs">@team.getSkillLevel()</td>
          </tr>
         }
       </tbody>

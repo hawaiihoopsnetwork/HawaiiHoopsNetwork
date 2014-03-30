@@ -6,10 +6,10 @@
 create table teams (
   team_name                 varchar(255) not null,
   location                  varchar(255),
-  gender                    varchar(255),
-  skl_lvl                   varchar(255),
+  team_type                 varchar(255),
+  skill_level               varchar(255),
   roster                    varchar(255),
-  description               clob,
+  description               varchar(255),
   constraint pk_teams primary key (team_name))
 ;
 

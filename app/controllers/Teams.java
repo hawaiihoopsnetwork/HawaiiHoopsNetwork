@@ -1,14 +1,13 @@
 package controllers;
 
-import java.util.List;
 import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import views.formdata.teams.TeamForm;
-import views.html.teams.CreateTeam;
 import views.html.teams.AllTeams;
-import views.html.teams.SingleTeam;
+import views.html.teams.CreateTeam;
+import views.html.teams.ShowTeam;
 
 /**
  * Implements the controllers for this application.
@@ -16,33 +15,31 @@ import views.html.teams.SingleTeam;
 public class Teams extends Controller {
 
   /**
-   * Returns a info page about a single team.
+   * Returns the All teams page listing all the teams in the database.
    * 
-   * @param name the team name
-   * @return the page with the team info
+   * @return AllTeams page
    */
-  public static Result getTeam(String name) {
-    Team team = Team.getTeam(name);
-    return ok(SingleTeam.render(team.getTeamName(), team));
+  public static Result allTeams() {
+    return ok(AllTeams.render("All Teams", Team.getTeams()));
   }
 
   /**
-   * A create team page.
+   * Returns the page containing the create team form.
    * 
-   * @return the create team page
+   * @return create team form.
    */
   public static Result createTeam() {
-    TeamForm tf = new TeamForm();
-    Form<TeamForm> formdata = Form.form(TeamForm.class).fill(tf);
-    return ok(CreateTeam.render("Create Team", formdata));
+    TeamForm teamForm = new TeamForm();
+    Form<TeamForm> emptyForm = Form.form(TeamForm.class).fill(teamForm);
+    return ok(CreateTeam.render("Create Team", emptyForm));
   }
 
   /**
-   * Saves the team page.
+   * Adds a team to the database after the create team form has been filled out correctly.
    * 
-   * @return index page
+   * @return the team page related to the team
    */
-  public static Result postTeam() {
+  public static Result addTeam() {
     Form<TeamForm> teamForm = Form.form(TeamForm.class).bindFromRequest();
 
     if (teamForm.hasErrors()) {
@@ -50,20 +47,19 @@ public class Teams extends Controller {
     }
     else {
       TeamForm tf = teamForm.get();
-      // TODO save team
       Team.addTeam(tf);
-
-      return redirect("/");
+      return redirect("/teams/view/" + tf.teamName);
     }
   }
 
   /**
-   * Returns the all teams page with a list of all the teams.
+   * Returns the page containing the teams info.
    * 
-   * @return list of all teams
+   * @param teamName the team name
+   * @return the team page
    */
-  public static Result allTeams() {
-    List<Team> all = Team.getAllTeams();
-    return ok(AllTeams.render("All Teams", all));
+  public static Result showTeam(String teamName) {
+    return ok(ShowTeam.render("View Team", Team.getTeam(teamName)));
   }
+
 }
