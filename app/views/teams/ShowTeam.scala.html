@@ -1,4 +1,7 @@
-@(title: String, team: models.teams.Team)
+@(title: String, team: models.teams.Team, commentForm: Form[views.formdata.CommentForm], comments: List[Comment])
+
+@import helper._
+@import bootstrap3._
 
 @Main(title + team.getTeamName()) {
     
@@ -96,25 +99,37 @@
             </div>
             <div class="tab-pane fade" id="reviews">
                <h4>Comments about This Team: </h4>
-                  <li>Really Good.</li>
-                  <li>Competitive.</li>
+                  @for(comment <- comments) {
+                    <div class="well">
+                        <li>@comment.getAuthor()</li>
+                       <p>@comment.getComment()</p>
+                       <div class="pull-right">@comment.getDate()</div>
+                    </div>
+                 }
                   
                   </br>
                   </br>
                   <hr>
-                  <label class="control-label">Add a comment: </label>
-                    
-                        <textarea class="form-control"
-                                    rows="5" 
-                                    placeholder="Comments about this team."></textarea>
-                    
-                     <div class="form-group">
-                    <div class="col-sm-offset-6 col-sm-2">
-                     </br>
-                    <button type="submit" class="btn btn-default">Add Comment</button>
-                 </div>  
+                  
+              
+              @form(routes.Teams.postComment(team.getTeamName()), 'class -> "form-horizontal") {
+                
+                @bootstrap3.textarea(commentForm("comment"),
+                    rows = "6",
+                    label = "Leave a Comment",
+                    placeholder = "",
+                    help = "")
+              
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        <button id="submitButton" type="submit" class="btn btn-primary">
+                        Add Comment
+                        </button>
+                        </div>
+                    </div>    
+              
+              }
               </div>
-            </div>
          </div>
       </div>
     </div>

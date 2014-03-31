@@ -1,7 +1,10 @@
 package views.formdata.teams;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Id;
 import play.data.validation.Constraints;
+import play.data.validation.ValidationError;
 
 /**
  * The backing class for the team form.
@@ -33,6 +36,18 @@ public class TeamForm {
    * Default constructor.
    */
   public TeamForm() {
+  }
+
+  /**
+   * Validation Method.
+   * 
+   * @return errors
+   */
+  public List<ValidationError> validate() {
+    List<ValidationError> errors = new ArrayList<>();
+
+    // Milestone 3, check if team being added already exists in the database.
+    return errors.isEmpty() ? null : errors;
   }
 
 }

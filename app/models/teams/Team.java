@@ -1,9 +1,12 @@
 package models.teams;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.Comment;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
 
@@ -30,6 +33,9 @@ public class Team extends Model {
   private String roster;
   private String description;
 
+  @OneToMany(mappedBy = "team")
+  private List<Comment> comments = new ArrayList<>();
+
   /**
    * Default constructor.
    */
@@ -53,6 +59,7 @@ public class Team extends Model {
     this.setSkillLevel(skillLevel);
     this.setRoster(roster);
     this.setDescription(description);
+
   }
 
   /**
@@ -67,7 +74,7 @@ public class Team extends Model {
   /**
    * Adds a team to the database if it is new, otherwise edits existing team.
    * 
-   * @param tf
+   * @param tf team form
    */
   public static void addTeam(TeamForm tf) {
     Team team;
@@ -100,7 +107,7 @@ public class Team extends Model {
   }
 
   /**
-   * Retursn the team associated with the name.
+   * Returns the team associated with the name.
    * 
    * @param teamName team name to be looked for
    * @return the Team if it exists
@@ -123,7 +130,7 @@ public class Team extends Model {
   /**
    * Returns a list of types associated with a team.
    * 
-   * @return
+   * @return types as a list
    */
   public static List<String> typeOfTeam() {
     String[] types = { "Mens", "Womens", "Co-ed" };
@@ -223,6 +230,24 @@ public class Team extends Model {
    */
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  /**
+   * Adds a comment to the team's list.
+   * 
+   * @param comment the comment
+   */
+  public void addComment(Comment comment) {
+    this.comments.add(comment);
+  }
+
+  /**
+   * Returns a java list of comments related to the team.
+   * 
+   * @return comments
+   */
+  public List<Comment> getComments() {
+    return this.comments;
   }
 
 }

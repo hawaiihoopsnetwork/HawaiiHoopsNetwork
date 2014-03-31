@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.List;
+import models.Comment;
 import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
+import views.formdata.CommentForm;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
@@ -48,7 +51,7 @@ public class Teams extends Controller {
     else {
       TeamForm tf = teamForm.get();
       Team.addTeam(tf);
-      return redirect("/teams/view/" + tf.teamName);
+      return ok(AllTeams.render("All Teams", Team.getTeams()));
     }
   }
 
@@ -59,7 +62,39 @@ public class Teams extends Controller {
    * @return the team page
    */
   public static Result showTeam(String teamName) {
-    return ok(ShowTeam.render("View Team", Team.getTeam(teamName)));
+    CommentForm cf = new CommentForm();
+    Form<CommentForm> empty = Form.form(CommentForm.class).fill(cf);
+
+    Team team = Team.getTeam(teamName);
+    List<Comment> comments = Comment.getComments(team);
+    return ok(ShowTeam.render("View Team", Team.getTeam(teamName), empty, comments));
+  }
+
+  /**
+   * Posts a comment to the given team's board.
+   * 
+   * @param teamName the team name
+   * @return the team's page if there are no errors.
+   */
+  public static Result postComment(String teamName) {
+    Form<CommentForm> cf = Form.form(CommentForm.class).bindFromRequest();
+
+    Team team = Team.getTeam(teamName);
+    List<Comment> comments = Comment.getComments(team);
+
+    if (cf.hasErrors()) {
+      return badRequest(ShowTeam.render("View Team", Team.getTeam(teamName), cf, comments));
+    }
+    else {
+      CommentForm com = cf.get();
+
+      Team team2 = Team.getTeam(teamName);
+      // Replace /""/ with logged in user
+      Comment.addComment(team2, "", com);
+
+      return redirect("/teams/view/" + teamName);
+    }
+
   }
 
 }
