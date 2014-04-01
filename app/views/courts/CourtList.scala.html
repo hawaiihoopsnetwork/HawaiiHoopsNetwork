@@ -1,0 +1,14 @@
+@(title: String, courts: List[Court])
+
+@Main(title) {
+    <div id="map" class="tab-pane fade in active">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map-canvas"></div>
+                @for(court <- courts){
+                   <h1>@court.getName()</h1>
+                }
+            </div>
+        </div>
+    </div>
+}
