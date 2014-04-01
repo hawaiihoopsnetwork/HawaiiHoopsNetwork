@@ -1,0 +1,70 @@
+@(title: String, game: models.games.Game)
+
+
+@Main(title + game.getName()) {
+
+    
+    
+    <div class="visible-xs">
+     <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
+      <hr>  
+  </div>
+ 
+  
+   <div class="row">
+    <div class="col-md-9">
+        <div class="well">
+        <h2>@game.getName()</h2>
+        <hr>
+        </br>
+        <ul>
+        <!--  Created By: Get user who created the game -->
+        <h10>Type: </h10><i>@game.getType()</i></br></br>
+        <h10>Time: </h10>@game.getTime()</br></br>
+        <h10>Date: </h10>@game.getDate()</br></br>
+        <h10>Location: </h10>@game.getLocation()</br></br>
+        <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
+        <h10>Skill Level (avg years playing): </h10>@game.getAvgSklLvl()</br>
+        </ul>
+        </br>
+        </br>
+        </br>
+      <!-- Need to check if logged in user is user who created the game -->
+        <a href="@routes.Games.editGame(game.getName())">Edit</a>
+        <ul>
+        <h10>Created: </h10>@game.getDateCreated()</br></br>
+        @if(game.getDateEdit() != null) {
+        <h10>Update Count: </h10>@game.getUpdateCount()</br></br>
+        <h10>Last Updated: </h10>@game.getDateEdit()</br></br>
+        }
+        
+        
+        </ul>
+        
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="well">
+        
+        <div class="hidden-xs">
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+            @if(game.getType() == "Public"){
+                Join
+            } else {
+                Ask To Join
+            }       
+            </button>
+            <hr>
+        </div>
+        
+        Players Attending:</br>
+        <ul>
+         @for(player <- game.getListPlayers()) {
+            <li><a href="#">@player</a></li>
+         }
+        </ul>
+        </div>
+    </div>
+   </div>
+    
+}
