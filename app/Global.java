@@ -21,8 +21,11 @@ public class Global extends GlobalSettings {
   public void onStart(Application app) {
       Court.addCourt("Aina Haina", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
       
-      Game.addGame(new GameForm(new Game("Kapolei PUG", "Three PM", "3/13/14", "Kapolei park", "Pick up game", "Nightly", "Beginner",
-      "Loa P., Alex G.")));
+      Game.addGame(new GameForm(new Game("Kapolei PUG", "3:00PM", "3.13.14", "Kapolei park", "Public", "Nightly", "Beginner", "Loa P., Alex G.")));
+      Game.addGame(new GameForm(new Game("Aina Hina PUG", "3:00PM", "3.13.14", "Aina Hina park", "Private", "Nightly", "Beginner","Loa P., Alex G.")));
+      Game.addGame(new GameForm(new Game("Waianae Nightly", "6:00PM", "3.13.14", "Waianae park", "Public", "Nightly", "Beginner", "Loa P., Alex G.")));
+      Game.addGame(new GameForm(new Game("Makakilo Lunchtime", "12:00PM", "3.13.14", "Makakilo Rec", "Public", "Nightly", "Beginner", "Loa P., Alex G.")));
+      Game.addGame(new GameForm(new Game("Ewa Beach Practice", "5:00PM", "3.13.14", "Kapolei park", "Private", "Nightly", "Beginner", "Loa P., Alex G.")));
       
       Player.addPlayer(new PlayerFormData("Alex G.", "Ali G", "Paki Park", "Intermediate", "Center", 10, 5, "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
       Player.addPlayer(new PlayerFormData("Steve F.", "SF", "Kapolei Park", "Beginner", "Power Forward", 15, 5, "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));

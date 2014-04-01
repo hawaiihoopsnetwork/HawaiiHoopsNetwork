@@ -54,7 +54,7 @@
         @for(game <- games) {
         <tr>
           <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate()</a></td>
-          <td>@game.getTime()</td>
+          <td>@*game.getTime()*@</td>
           <td>@game.getLocation()</td>
           <td>@game.getType()</td>
           <!--  <td class="hidden-xs">@game.getFrequency()</td> -->
