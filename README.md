@@ -16,6 +16,8 @@ Connecting basketball players, teams, and leagues on Oahu!
 [Mockup Evaluation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Mockup-Evaluation)
 
 ##Milestone 2.0
+
 [Installation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Installation)
 [Use Cases 2.0](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-2.0)
 [GitHub Issue Milestone 2.0 Review](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/GitHub-Milestone-2.0-issues)
+
