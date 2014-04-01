@@ -14,3 +14,6 @@ Connecting basketball players, teams, and leagues on Oahu!
 [Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases)  
 [Stakeholder Requirements](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Stakeholder-Requirements)  
 [Mockup Evaluation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Mockup-Evaluation)
+
+##Milestone 2.0
+[Installation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Installation)
