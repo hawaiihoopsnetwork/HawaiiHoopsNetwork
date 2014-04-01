@@ -3,7 +3,47 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET         /                           controllers.Application.index()
+GET         /home                       controllers.Application.home()
+
+GET         /login                      controllers.Users.login()
+POST        /login                      controllers.Users.postLogin()
+GET         /register                   controllers.Users.register()
+POST        /register                   controllers.Users.postRegister()
+GET         /logout                     controllers.Users.logout()
+GET         /delete                     controllers.Users.deleteUser()
+
+GET         /courts                     controllers.Courts.index()
+GET         /courts/:name               controllers.Courts.getCourt(name)
+GET         /courts/:name/edit          controllers.Courts.manageCourt(name)
+GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
+GET         /courts/manage/new          controllers.Courts.newCourt()
+POST        /courts/manage/post         controllers.Courts.postSurfer()
+
+GET         /players                    controllers.Players.players(sortOrder: String, page: Integer)
+GET         /playerSearch               controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)
+GET         /playerNameSearch           controllers.Players.playerNameSearch()
+GET         /playerProfile              controllers.Players.playerProfile(id: Long)
+GET         /playerProfile/vote         controllers.Players.playerVote(id: Long, rate: Long)
+GET         /player/manage              controllers.Players.playerManage()
+GET         /player/manage/submit       controllers.Players.playerManageSubmit()
+
+GET         /TermsOfUse                 controllers.Application.terms()
+GET         /ContactUs                  controllers.Application.contact()
+POST        /Send                       controllers.Application.sendMessage()
+GET         /AboutUs                    controllers.Application.about()
+
+# Games
+GET     /games/list                  controllers.Games.allGames()
+GET     /games/view/:name            controllers.Games.getGame(name)
+GET     /games/create                controllers.Games.createGame()
+GET     /games/edit/:name            controllers.Games.editGame(name)
+POST    /games/new                   controllers.Games.addGame()
+POST    /games/search                controllers.Games.searchResults()
+GET     /games/sort/byLocation       controllers.Games.sortByLocation()
+GET     /games/sort/bySkillLevel     controllers.Games.sortBySkillLevel()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+GET         /assets/*file               controllers.Assets.at(path="/public", file)
+
