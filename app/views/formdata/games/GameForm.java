@@ -64,13 +64,13 @@ public class GameForm {
     this.name = game.getName();
 
     String date = game.getDate();
-    System.out.println(date);
+    //System.out.println(date);
     String[] dateSplit = date.split("\\s*");
     this.month = dateSplit[0];
     this.day = dateSplit[1];
 
     String time = game.getTime();
-    System.out.println(time);
+    //System.out.println(time);
     // String[] timeSplit = time.split("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)");
     // this.hour = timeSplit[0];
     // this.minute = timeSplit[1];

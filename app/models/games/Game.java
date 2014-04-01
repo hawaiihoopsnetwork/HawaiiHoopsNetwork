@@ -94,8 +94,8 @@ public class Game extends Model {
     String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
     
     String[] test = gameDate.split("\\s+");
-    System.out.println("test[0]: " + test[0]);
-    System.out.println("test[1]: " + test[1]);
+    //System.out.println("test[0]: " + test[0]);
+    //System.out.println("test[1]: " + test[1]);
 
     if (!isGame(gf.name)) {
 

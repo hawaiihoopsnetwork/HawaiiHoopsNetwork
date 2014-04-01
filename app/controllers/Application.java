@@ -1,10 +1,13 @@
 package controllers;
 
+import java.util.List;
+import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import com.typesafe.plugin.*;
 import views.html.Index;
+import views.html.Home;
 import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
@@ -24,6 +27,11 @@ public class Application extends Controller {
    */
   public static Result index() {
     return ok(Index.render("Hawaii Hoops Network"));
+  }
+  
+  public static Result home() {
+    List<Game> games = Game.getGames();
+    return ok(Home.render("Home", games));
   }
 
   /**
