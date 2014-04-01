@@ -106,3 +106,9 @@ h101 {
 span:hover{
     color: #F77E07;
 }
+
+.glyphicon-search {
+  padding-bottom: 11px;
+  padding-top: 11px;
+  top: 0px;
+}

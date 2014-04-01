@@ -1,0 +1,102 @@
+@(title: String, pageType: String, gameForm: Form[views.formdata.games.GameForm])
+
+@import helper._
+@import bootstrap3._
+
+
+@Main(title) {
+
+<h2>Create A Game</h2>
+<hr>
+</br>
+    
+    @form(routes.Games.addGame(), 'class -> "form-horizontal") {
+    
+        <!-- Make non-editable eventually -->
+        @if(pageType == "Edit"){
+            <input type="hidden"
+                name="id"
+                value="@gameForm("id").value">
+            @bootstrap3.slug(gameForm("name"),
+                pageType = "Edit",
+                label = "Name",
+                placeholder = "The Name of the Game",
+                help = "")
+        } else {
+            <input type="hidden"
+                name="id"
+                value=0>
+            @bootstrap3.slug(gameForm("name"),
+                pageType = "Create",
+                label="Name",
+                placeholder="The Name of the Game",
+                help = "")
+        }
+        
+        @bootstrap3.selectDate(gameForm("month"),
+            label = "Date",
+            optionMap = models.games.Game.getMonths(),
+            isMultiple = false,
+            help = "",
+            gameForm("day"),
+            label2 = "",
+            optionMap2 = models.games.Game.getDays(),
+            isMultiple2 = false,
+            help2 = "")
+            
+              
+        @bootstrap3.selectTime(gameForm("hour"),
+            label = "Time",
+            optionMap = models.games.Game.getHours(),
+            isMultiple = false,
+            help = "",
+            gameForm("minute"),
+            label2 = "",
+            optionMap2 = models.games.Game.getMinutes(),
+            isMultiple2 = false,
+            help2 = "",
+            gameForm("amPm"), 
+            label3 = "",
+            buttonNameList3 = models.games.Game.getAmPm(),
+            help3 = "")
+              
+        @bootstrap3.text(gameForm("location"),
+              label = "Location",
+              placeholder = "Stan Sheriff Center",
+              help = "Please enter the location.")
+              
+        @bootstrap3.radiobuttons(gameForm("type"), 
+              label = "Type",
+              buttonNameList = models.games.Game.getTypes(),
+              help = "")
+        <!-- 
+        @bootstrap3.radiobuttons(gameForm("frequency"), 
+              label = "Frequency",
+              buttonNameList = models.games.Game.getListFrequencies(),
+              help = "")
+        -->      
+        @bootstrap3.text(gameForm("avgSklLvl"),
+              label = "Avg. Skill Level (optional)",
+              placeholder = "2 years",
+              help = "Please enter the average skill level.")
+        
+        @bootstrap3.textarea(gameForm("players"),
+              rows = "6",
+              label = "Players (optional)",
+              placeholder = "Who will be at this game?",
+              help = "Please separate players with a comma.")
+              
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                @if(pageType == "Create"){ 
+                Add Game
+                } else {
+                Done Editing
+                }
+                </button>
+            </div>
+        </div>
+    }
+}
