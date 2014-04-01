@@ -126,7 +126,7 @@ public class Game extends Model {
     }
 
   }
-
+  
   /**
    * Checks if given name is a valid game.
    * 
