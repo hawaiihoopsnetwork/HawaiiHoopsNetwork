@@ -1,0 +1,78 @@
+@(title: String, teamsInLeague: List[Team])
+
+@Main(title) {
+
+  <div class="container">
+    
+    <div class="row">
+      
+      <div class="col-md-8">
+        <div class="well">
+        
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="well">
+          <a href = "#" type="button" class="btn btn-primary">
+            Join as a Team
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-offset-8 col-md-4">
+        <div class="well">
+          <h1>Teams</h1>
+          <table border="1">
+            @for(teams <- teamsInLeague){
+              <tr><td><div class ="img-one" style = "background-image: url('@teams.getImageUrl()')"></div><a href = "#"><span>Golden State Warriors</span></a></td></tr>
+            }
+          </table>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="well">
+          <h1>Standings</h1>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="well">
+          <h1>League Pictures</h1>
+        
+          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            </ol>
+        
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active">
+                <img src="..\img\Basketball_League_300x.JPG" width=300>
+                <div class="carousel-caption">
+                </div>
+              </div>
+            </div>
+        
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+          </div>
+        
+        </div>
+      </div>
+      
+    </div>
+  </div>
+}
