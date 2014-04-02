@@ -51,7 +51,7 @@ public class Users extends Controller
       User user = User.addUser(data);
       session().clear();
       session("email", user.getEmail());
-      flash("registered", "Thank you for signing up with Surferpedia!");
+      flash("registered", "Thank you for signing up with Hawaii Hoops Network!");
       return redirect(routes.Application.index());
     }
   }

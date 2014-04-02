@@ -1,0 +1,55 @@
+@(title: String, court: Court)
+
+
+@Main(title) {
+    <div class="visible-xs">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
+        <hr>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="well">
+                <h1>@court.getName()</h1>
+                <p>@court.getDescription()</p>
+                <h3>General Information</h3>
+                <ul>
+                    <li>@court.getAddress()</li>
+                    <li>@court.getType()</li>
+                    <li>Outdoor Only</li>
+                </ul>
+                <h3>Open Hours</h3>
+                <ul>
+                    <li>Monday: 7:00am</li>
+                    <li>Tuesday: 7:00am</li>
+                    <li>Wednesday: 7:00am</li>
+                    <li>Thursday: 7:00am</li>
+                    <li>Friday: 7:00am</li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="well">
+
+                <div class="hidden-xs">
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
+                    <hr>
+                </div>
+
+                <h3>Players Attending:</h3>
+                <br/>
+                <ul>
+                    <li><a href="#">Jimmie Tuft</a></li>
+                    <li><a href="#">Kerry Fry</a></li>
+                    <li><a href="#">Prudence Alberts</a></li>
+                    <li><a href="#">Claude Ware</a></li>
+                    <li><a href="#">Blair Wesley</a></li>
+                    <li><a href="#">Pat Maynard</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}

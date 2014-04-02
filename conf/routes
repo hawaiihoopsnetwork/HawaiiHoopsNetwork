@@ -13,11 +13,11 @@ GET         /logout                     controllers.Users.logout()
 GET         /delete                     controllers.Users.deleteUser()
 
 GET         /courts                     controllers.Courts.index()
-GET         /courts/:name               controllers.Courts.getCourt(name)
+GET         /courts/:id               controllers.Courts.getCourt(id: Long)
 GET         /courts/:name/edit          controllers.Courts.manageCourt(name)
 GET         /courts/:name/delete        controllers.Courts.deleteCourt(name)
 GET         /courts/manage/new          controllers.Courts.newCourt()
-POST        /courts/manage/post         controllers.Courts.postSurfer()
+#POST        /courts/manage/post         controllers.Courts.postSurfer()
 
 GET         /players                    controllers.Players.players()
 
