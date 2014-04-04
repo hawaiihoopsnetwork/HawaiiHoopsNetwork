@@ -20,7 +20,7 @@ public class Courts extends Controller
      */
     public static Result index()
     {
-        return ok(CourtList.render("Courts", Court.getCourts()));
+        return ok(CourtList.render("Courts", Court.getCourts(), Secured.isLoggedIn(ctx())));
     }
 
     /**
@@ -30,7 +30,7 @@ public class Courts extends Controller
      */
     public static Result getCourt(Long id)
     {
-        return ok(ShowCourt.render(Court.getCourt(id).getName(), Court.getCourt(id)));
+        return ok(ShowCourt.render(Court.getCourt(id).getName(), Court.getCourt(id), Secured.isLoggedIn(ctx())));
     }
 
     /**

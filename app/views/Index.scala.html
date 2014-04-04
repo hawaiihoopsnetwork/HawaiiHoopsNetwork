@@ -1,8 +1,8 @@
-@(title: String, registrationForm: Form[forms.RegistrationForm])
+@(title: String, registrationForm: Form[forms.RegistrationForm], isLoggedIn: Boolean)
 
 @import bootstrap3._
 
-@Main(title) {
+@Main(title, isLoggedIn) {
     <div class="row" id="first">
         <div class="container">
 

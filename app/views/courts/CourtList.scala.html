@@ -1,4 +1,4 @@
-@(title: String, courts: List[Court])
+@(title: String, courts: List[Court], isLoggedIn: Boolean)
 
 @scripts = {
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")">
@@ -6,7 +6,7 @@
     <script src="@routes.Assets.at("javascripts/courts-map.js")" type="text/javascript"></script>
 }
 
-@Main(title, scripts) {
+@Main(title, isLoggedIn: Boolean, scripts) {
 
     <!-- Sorting Dropdown -->
     <div class="row">
