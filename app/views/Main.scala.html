@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, scripts: Html = Html(""))(content: Html)
 
 <!DOCTYPE html>
 
@@ -11,6 +11,7 @@
         <!--  Load site-specific customizations after bootstrap. -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/basketball.jpg")">
+        @scripts
     </head>
     <body>
         <div class="container">
@@ -21,13 +22,22 @@
                             <!--  Display three horizontal lines when navbar collapsed. -->
                             <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                         </button>
+<<<<<<< HEAD
                         <a class="navbar-brand" href="@routes.Application.home()">HiHoopsNetwork</a>
+=======
+                        <a class="navbar-brand" href="@routes.Application.index()">HiHoopsNetwork</a>
+>>>>>>> gyms
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
                             
+<<<<<<< HEAD
                             <li><a href="#">Gyms</a></li>
                             <li><a href="@routes.Games.allGames()">Games</a></li>
+=======
+                            <li><a id="courts" href="@routes.Courts.index()">Gyms</a></li>
+                            <li><a href="#">Games</a></li>
+>>>>>>> gyms
                             <li><a href="#">Leagues</a></li>
                             <li><a href="#">Teams</a></li>
                             
@@ -41,8 +51,7 @@
                             
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a data-toggle="modal" href="#login">Login</a></li>
-                            <li><a href="#"></a></li>
+                            <li><a data-toggle="modal" href="@routes.Users.login()">Login</a></li>
                         </ul>
                     </div>
                 </div>
