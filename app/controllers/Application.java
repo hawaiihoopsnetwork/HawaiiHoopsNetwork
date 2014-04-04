@@ -13,20 +13,23 @@ import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
 import views.html.footer.MessageSent;
 import forms.ContactUsForm;
+import forms.RegistrationForm;
 
 /**
  * Implements the controllers for this application.
  */
 public class Application extends Controller {
 
-  
+
+  private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
+
   /**
    * Returns the colorblock page.
    * 
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    return ok(Index.render("Hawaii Hoops Network"));
+    return ok(Index.render("Hawaii Hoops Network", registrationForm));
   }
   
   public static Result home() {

@@ -15,6 +15,9 @@ public class CourtForm
     @Constraints.Required(message = "Name is required")
     public String name;
 
+    @Constraints.Required(message = "Type is required")
+    public String type;
+
     @Constraints.Required(message = "Description is required")
     public String description;
 
