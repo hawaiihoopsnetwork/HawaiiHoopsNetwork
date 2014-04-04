@@ -8,6 +8,7 @@ import com.avaje.ebean.Page;
 import models.Player;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import play.data.Form;
 import views.html.player.PlayerList;
 import views.html.player.PlayerForm;
@@ -33,6 +34,7 @@ public class Players extends Controller{
    * @param id = the unique id for the profile
    * @return The individual player profile page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
     return ok(PlayerProfile.render("Player Profile", player));
