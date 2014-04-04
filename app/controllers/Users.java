@@ -6,8 +6,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import models.User;
 import forms.*;
-// import views.html.Index;
-// import views.html.Login;
+import views.html.Index;
+import views.html.user.Login;
 // import views.html.Registration;
 
 /**
@@ -16,7 +16,6 @@ import forms.*;
 public class Users extends Controller
 {
   
-  // private static final Form<SearchForm> searchForm = Form.form(SearchForm.class);
   private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
   private static final Form<LoginForm> loginForm = Form.form(LoginForm.class);
 
@@ -43,7 +42,7 @@ public class Users extends Controller
     
     if (filledRegistrationForm.hasErrors())
     {
-      return badRequest();
+      return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
     }
     else
     {
@@ -51,8 +50,8 @@ public class Users extends Controller
       User user = User.addUser(data);
       session().clear();
       session("email", user.getEmail());
-      flash("registered", "Thank you for signing up with Surferpedia!");
-      return redirect(routes.Application.index());
+      flash("registered", "Thank you for signing up with Hawaii Hoops Network!");
+      return redirect(routes.Application.home());
     }
   }
   
@@ -62,7 +61,7 @@ public class Users extends Controller
    */
   public static Result login()
   {
-    return ok();
+    return ok(Login.render("login", loginForm, Secured.isLoggedIn(ctx())));
   }
 
   /**
@@ -82,14 +81,14 @@ public class Users extends Controller
     if (filledLoginForm.hasErrors())
     {
       flash("error", "Login credentials not valid.");
-      return badRequest();
+      return badRequest(Login.render("login", filledLoginForm, Secured.isLoggedIn(ctx())));
     }
     else
     {
       // email/password OK, so now we set the session variable and only go to authenticated pages.
       session().clear();
       session("email", filledLoginForm.get().email);
-      return redirect(routes.Application.index());
+      return redirect(routes.Application.home());
     }
   }
   

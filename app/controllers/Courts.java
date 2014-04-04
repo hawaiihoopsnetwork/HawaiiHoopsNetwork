@@ -5,6 +5,7 @@ import play.mvc.Controller;
 import play.mvc.Security;
 import play.mvc.Result;
 import views.html.courts.CourtList;
+import views.html.courts.ShowCourt;
 
 /**
  * Implements the controller for basketball courts.
@@ -19,17 +20,17 @@ public class Courts extends Controller
      */
     public static Result index()
     {
-        return ok(CourtList.render("Courts", Court.getCourts()));
+        return ok(CourtList.render("Courts", Court.getCourts(), Secured.isLoggedIn(ctx())));
     }
 
     /**
      * Get a court page.
-     * @param name court name.
+     * @param id court name.
      * @return court information page.
      */
-    public static Result getCourt(String name)
+    public static Result getCourt(Long id)
     {
-        return ok();
+        return ok(ShowCourt.render(Court.getCourt(id).getName(), Court.getCourt(id), Secured.isLoggedIn(ctx())));
     }
 
     /**
@@ -67,7 +68,7 @@ public class Courts extends Controller
      * @return home page on success, edit form on error
      */
     @Security.Authenticated(Secured.class)
-    public static Result postSurfer()
+    public static Result postCourt()
     {
         return ok();
     }

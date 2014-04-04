@@ -52,6 +52,21 @@ public class User extends Model {
   }
   
   /**
+   * Processes a registration form submission from an unauthenticated user. 
+   * First we bind the HTTP POST data to an instance of RegistrationForm.
+   * The binding process will invoke the Registration.validate() method.
+   * If errors are found, re-render the page, displaying the error data. 
+   * If errors not found, render the page with the good data. 
+   * @return 
+   * @return The index page with the results of validation. 
+   */
+  public static void defineAdmin(String name, String email, String password) {
+      User.addUser(name, email, password);
+      User user = User.getUser(email);
+      user.setAdmin(true);
+  }
+  
+  /**
    * The EBean ORM finder method for database queries on User.
    */
   public static Finder<Long, User> find = new Finder<Long, User>(
@@ -64,7 +79,11 @@ public class User extends Model {
    */
   public static boolean adminDefined() {
     User user = find.where().eq("admin", true).findUnique();
-    return user != null;
+    if(user != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   /**

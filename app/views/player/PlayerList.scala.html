@@ -1,10 +1,10 @@
 @(currentPage: com.avaje.ebean.Page[Player], title: String, searchForm: Form[views.formdata.SearchFormData],
-  field: String, searchWord: String)
+  field: String, searchWord: String, isLoggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
 
-@Main(title) {
+@Main(title, isLoggedIn) {
     <div class="container">
 
     <div class="well">

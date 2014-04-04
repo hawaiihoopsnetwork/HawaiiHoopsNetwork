@@ -1,10 +1,10 @@
-@(title: String, games: List[models.games.Game], searchForm: Form[views.formdata.games.SearchSortGames])
+@(title: String, games: List[models.games.Game], searchForm: Form[views.formdata.games.SearchSortGames], isLoggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
 
 
-@Main(title) {
+@Main(title, isLoggedIn) {
 <div class="container">
   <div class="well">
   

@@ -1,10 +1,10 @@
-@(title: String, pageType: String, gameForm: Form[views.formdata.games.GameForm])
+@(title: String, pageType: String, gameForm: Form[views.formdata.games.GameForm], isLoggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
 
 
-@Main(title) {
+@Main(title, isLoggedIn) {
 
 <h2>Create A Game</h2>
 <hr>

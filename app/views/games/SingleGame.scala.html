@@ -1,9 +1,7 @@
-@(title: String, game: models.games.Game)
+@(title: String, game: models.games.Game, isLoggedIn: Boolean)
 
 
-@Main(title + game.getName()) {
-
-    
+@Main(title + game.getName(), isLoggedIn) {
     
     <div class="visible-xs">
      <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>

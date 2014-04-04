@@ -1,9 +1,9 @@
-@(title: String, contactForm: Form[forms.ContactUsForm])
+@(title: String, contactForm: Form[forms.ContactUsForm], isLoggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
 
-@Main(title) {
+@Main(title, isLoggedIn) {
 
     <h2>Contact Us</h2>
     </br>
