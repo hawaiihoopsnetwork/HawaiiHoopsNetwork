@@ -45,6 +45,7 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result players(String sortOrder, Integer page) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -57,6 +58,7 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerSearch(String field, String searchWord, String sortOrder, Integer page) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -69,6 +71,7 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerNameSearch() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -89,6 +92,7 @@ public class Players extends Controller{
    * 
    * @return The player form page
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerManage() {
     PlayerFormData data2 = new PlayerFormData();
     Form<PlayerFormData> dataForm = Form.form(PlayerFormData.class).fill(data2);
@@ -107,6 +111,7 @@ public class Players extends Controller{
    * 
    * @return The player profile page, which was just created/edited
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerManageSubmit() {
     //adds the new player from the PlayerForm page to the database.
     Form<PlayerFormData> data = Form.form(PlayerFormData.class).bindFromRequest();
@@ -119,6 +124,7 @@ public class Players extends Controller{
     return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
   }
   
+  @Security.Authenticated(Secured.class)
   public static Result playerVote(long id, long rate){
     Player player = Player.getPlayer(id);
     player.setVotes(player.getVotes() + 1);

@@ -5,6 +5,7 @@ import java.util.List;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import play.data.Form;
 import views.formdata.games.GameForm;
 import views.formdata.games.SearchSortGames;
@@ -22,6 +23,7 @@ public class Games extends Controller {
    * 
    * @return the list of games
    */
+  @Security.Authenticated(Secured.class)
   public static Result allGames() {
     SearchSortGames ssg = new SearchSortGames();
     Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
@@ -38,6 +40,7 @@ public class Games extends Controller {
    * @param name the name of the game
    * @return the page related to the game
    */
+  @Security.Authenticated(Secured.class)
   public static Result getGame(String name) {
     Game game = Game.find().where().eq("name", name).findUnique();
 
@@ -54,6 +57,7 @@ public class Games extends Controller {
    * 
    * @return the Create Game page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result createGame() {
     GameForm gameForm = new GameForm();
     Form<GameForm> formdata = Form.form(GameForm.class).fill(gameForm);
@@ -66,6 +70,7 @@ public class Games extends Controller {
    * 
    * @return the list of upcoming games if the form has no errors
    */
+  @Security.Authenticated(Secured.class)
   public static Result addGame() {
 
     Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
@@ -86,6 +91,7 @@ public class Games extends Controller {
    * @param name name of game
    * @return the create game page
    */
+  @Security.Authenticated(Secured.class)
   public static Result editGame(String name) {
     GameForm data = new GameForm(Game.find().byId(name));
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
@@ -98,6 +104,7 @@ public class Games extends Controller {
    * 
    * @return All games page with the results
    */
+  @Security.Authenticated(Secured.class)
   public static Result searchResults() {
     SearchSortGames ssg = new SearchSortGames();
     Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
@@ -115,6 +122,7 @@ public class Games extends Controller {
    * 
    * @return All Games page
    */
+  @Security.Authenticated(Secured.class)
   public static Result sortByLocation() {
 
     SearchSortGames ssg = new SearchSortGames();
@@ -131,6 +139,7 @@ public class Games extends Controller {
    * 
    * @return All Games page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result sortBySkillLevel() {
 
     SearchSortGames ssg = new SearchSortGames();
