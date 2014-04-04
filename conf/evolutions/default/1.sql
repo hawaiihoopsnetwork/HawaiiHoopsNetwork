@@ -28,10 +28,12 @@ create table players (
 create table users (
   id                        bigint not null,
   email                     varchar(255),
+  user_name                 varchar(255),
   name                      varchar(255),
-  real_name                 varchar(255),
   password                  varchar(255),
   admin                     boolean,
+  activation_key            varchar(255),
+  timestamp                 bigint,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
 ;

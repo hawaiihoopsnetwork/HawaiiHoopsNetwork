@@ -7,8 +7,8 @@
 }
 
 @Main(title, scripts) {
-
-    <!-- Sorting Dropdown -->
+    <div class="container">
+    <!-- Sorting Dropdown
     <div class="row">
         <div class="col-sm-12">
             <div class="pull-right">
@@ -21,15 +21,14 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <!-- Gym Form -->
+    <!-- Gym Form
     <div class="row">
         <div class="col-sm-12">
             <a href="GymForm.html" class="btn-sm btn-primary pull-right active" role="button">Create Gym</a>
         </div>
-    </div>
-
+    </div> -->
 
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" data-tabs="tabs">
@@ -69,7 +68,7 @@
                                     <h3>@court.getName()</h3>
                                     <p>@court.getDescription()</p>
                                     <p>
-                                        <a href="gyms/Gym1.html" class="btn btn-primary" role="button">View</a>
+                                        <a href="@routes.Courts.getCourt(court.getId())" class="btn btn-primary" role="button">View</a>
                                         <a href="#" class="btn btn-default" role="button">Like</a>
                                     </p>
                                 </div>
@@ -96,7 +95,7 @@
                         <tbody data-link="row" class="rowlink">
                             @for(court <- courts) {
                                 <tr>
-                                    <td><a href="gyms/AinaHaina.html">@court.getName()</a></td>
+                                    <td><a href="@routes.Courts.getCourt(court.getId())">@court.getName()</a></td>
                                     <td>@court.getType()</td>
                                 </tr>
                             }
@@ -106,5 +105,6 @@
             </div>
 
         </div>
+    </div>
     </div>
 }
