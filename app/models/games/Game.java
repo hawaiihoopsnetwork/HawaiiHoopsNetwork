@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import models.Player;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import views.formdata.games.GameForm;
@@ -92,10 +93,10 @@ public class Game extends Model {
 
     String gameDate = gf.month + " " + gf.day;
     String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
-    
+
     String[] test = gameDate.split("\\s+");
-    //System.out.println("test[0]: " + test[0]);
-    //System.out.println("test[1]: " + test[1]);
+    // System.out.println("test[0]: " + test[0]);
+    // System.out.println("test[1]: " + test[1]);
 
     if (!isGame(gf.name)) {
 
@@ -126,7 +127,7 @@ public class Game extends Model {
     }
 
   }
-  
+
   /**
    * Checks if given name is a valid game.
    * 
@@ -232,11 +233,34 @@ public class Game extends Model {
     this.type = type;
   }
 
+  private List<String> noProfile = new ArrayList<>();
+
   /**
    * @return the players as a java List
    */
-  public List<String> getListPlayers() {
+  public List<Player> getPlayerProfiles() {
     // TODO check if player name is related to a player profile
+    List<String> gamePlayers = java.util.Arrays.asList(players.split("\\s*,\\s*"));
+
+    List<Player> withProfile = new ArrayList<>();
+    for (int x = 0; x < gamePlayers.size(); x++) {
+      Player player = Player.getPlayer(gamePlayers.get(x));
+
+      if (player != null) {
+        withProfile.add(player);
+      }
+      else {
+        noProfile.add(gamePlayers.get(x));
+      }
+    }
+    return withProfile;
+  }
+
+  public List<String> getNoProfile() {
+    return noProfile;
+  }
+
+  public List<String> getListPlayers() {
     List<String> gamePlayers = java.util.Arrays.asList(players.split("\\s*,\\s*"));
     return gamePlayers;
   }

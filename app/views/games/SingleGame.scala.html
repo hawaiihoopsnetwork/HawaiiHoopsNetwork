@@ -57,12 +57,16 @@
         
         Players Attending:</br>
         <ul>
-         @for(player <- game.getListPlayers()) {
-            <li><a href="#">@player</a></li>
+         @for(player <- game.getPlayerProfiles()) {
+            <li><a href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></li>
+         }
+         @for(player <- game.getNoProfile()) {
+            <li>@player</li>
          }
         </ul>
         </div>
     </div>
    </div>
-    
+   <!-- TODO do modal dialog -->
 }
+
