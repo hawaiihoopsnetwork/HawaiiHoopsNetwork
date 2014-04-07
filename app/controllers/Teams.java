@@ -21,12 +21,13 @@ public class Teams extends Controller {
   /**
    * Returns the All teams page listing all the teams in the database.
    * 
+   * @param sort the sort order
    * @param page the current page number
    * @return AllTeams page
    */
-  public static Result allTeams(Integer page) {
-    Page<Team> currPage = Team.find(page);
-    return ok(AllTeams.render("All teams", currPage));
+  public static Result allTeams(String sort, Integer page) {
+    Page<Team> currPage = Team.find(sort, page);
+    return ok(AllTeams.render("All teams", currPage, sort));
   }
 
   /**

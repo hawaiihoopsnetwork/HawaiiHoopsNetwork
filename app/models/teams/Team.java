@@ -123,8 +123,13 @@ public class Team extends Model {
    * @param page the current page
    * @return the page object
    */
-  public static Page<Team> find(int page) {
-    return find().where().orderBy("teamName asc").findPagingList(10).setFetchAhead(false).getPage(page);
+  public static Page<Team> find(String sort, int page) {
+    return find().where().orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+
+  public static Page<Team> find(String term, String sort, int page) {
+    return find().where().contains(term, "teamName").contains(term, "location").contains(term, "skillLevel")
+        .orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
   }
 
   /**
