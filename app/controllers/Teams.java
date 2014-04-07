@@ -8,6 +8,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import views.formdata.CommentForm;
+import views.formdata.SearchFormData;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
@@ -26,8 +27,30 @@ public class Teams extends Controller {
    * @return AllTeams page
    */
   public static Result allTeams(String sort, Integer page) {
+
+    SearchFormData st = new SearchFormData();
+    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
+
     Page<Team> currPage = Team.find(sort, page);
-    return ok(AllTeams.render("All teams", currPage, sort));
+    return ok(AllTeams.render("All teams", currPage, sort, stuff));
+  }
+
+  /**
+   * Search method.
+   * 
+   * @param page page number.
+   * @return all teams page
+   */
+  public static Result searchTeams(Integer page) {
+    SearchFormData st = new SearchFormData();
+    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
+
+    Form<SearchFormData> searcher = Form.form(SearchFormData.class).bindFromRequest();
+    SearchFormData st2 = searcher.get();
+
+    Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
+
+    return ok(AllTeams.render("All Teams", currPage, "teamName asc", stuff));
   }
 
   /**

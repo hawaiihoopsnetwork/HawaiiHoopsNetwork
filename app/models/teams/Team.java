@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
+import com.avaje.ebean.Query;
 import models.Comment;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
@@ -120,6 +123,7 @@ public class Team extends Model {
   /**
    * Used for pagination.
    * 
+   * @param sort the sort type
    * @param page the current page
    * @return the page object
    */
@@ -127,9 +131,21 @@ public class Team extends Model {
     return find().where().orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
   }
 
+  /**
+   * Searches the Team database with the terms.
+   * 
+   * @param term search term
+   * @param sort sort type, default to "name asc"
+   * @param page page number
+   * @return a paginglist
+   */
   public static Page<Team> find(String term, String sort, int page) {
-    return find().where().contains(term, "teamName").contains(term, "location").contains(term, "skillLevel")
-        .orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
+    System.out.println(term);
+    Query<Team> q = Ebean.createQuery(Team.class);
+    q.where().disjunction().add(Expr.contains("teamName", term)).add(Expr.contains("location", term))
+        .add(Expr.contains("skillLevel", term));
+    return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
+
   }
 
   /**
