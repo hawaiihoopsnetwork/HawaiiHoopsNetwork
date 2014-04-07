@@ -35,6 +35,10 @@ public class LoginForm
     {
         return "Invalid email or password";
     }
+    if (User.getValidUser(User.getUser(email).getActivation_key()) != null)
+    {
+        return "Check your inbox for a validation email.";
+    }
     return null;
   }
 

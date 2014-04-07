@@ -34,7 +34,7 @@ public class User extends Model {
     private String activation_key;
 
     /** Timestamp of when the user registered */
-    private Long timestamp;
+    private Date timestamp;
 
     // timestamp when the users password needs to be changed
     //private Date pass_expiration;
@@ -102,6 +102,11 @@ public class User extends Model {
         return find.where().eq("email", email).findUnique();
     }
 
+
+    public static User getValidUser(String validation_key)
+    {
+        return find.where().eq("activation_key", validation_key).findUnique();
+    }
     /**
      * Check if email exists.
      * @param email email of user
@@ -201,5 +206,13 @@ public class User extends Model {
      */
     public void setActivation_key(String activation_key) {
         this.activation_key = activation_key;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

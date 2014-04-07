@@ -1,0 +1,11 @@
+@(title: String, isLoggedIn: Boolean)
+
+@Main(title) {
+   <div class="container">
+   @if(isLoggedIn) {
+       <p>Congratulations on Registering.</p>
+   } else {
+       <p>An error occurred. Please register again.</p>
+   }
+   </div>
+}

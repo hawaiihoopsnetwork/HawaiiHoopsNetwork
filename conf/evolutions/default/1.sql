@@ -33,7 +33,7 @@ create table users (
   password                  varchar(255),
   admin                     boolean,
   activation_key            varchar(255),
-  timestamp                 bigint,
+  timestamp                 timestamp,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
 ;
