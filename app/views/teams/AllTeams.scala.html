@@ -1,4 +1,4 @@
-@(title: String, teams: List[models.teams.Team])
+@(title: String, currentPage: com.avaje.ebean.Page[models.teams.Team])
 
 @Main(title) {
     <a href="@routes.Teams.createTeam()" class="btn btn-primary btn-md active" role="button">Create</a>
@@ -13,7 +13,7 @@
          </tr>
       </thead>
       <tbody data-link="row" class="rowlink">
-        @for(team <- teams) {
+        @for(team <- currentPage.getList()) {
          <tr>
             <td><a href="@routes.Teams.showTeam(team.getTeamName)">@team.getTeamName()</a></td>
             <td>@team.getLocation()</td>
@@ -24,5 +24,36 @@
         }
       </tbody>
    </table>
+   
+   <div id="pagination" class="pagination">
+          <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                <a href="@routes.Teams.allTeams(currentPage.getPageIndex-1)">&laquo;</a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&laquo;</a>
+                </li>
+            }
+            @for(index <- 0 until currentPage.getTotalPageCount()) {
+                <li class="current">
+                
+                  <a href="@routes.Teams.allTeams(index)">@(index+1)</a>
+                
+                </li>
+            }
+            @if(currentPage.hasNext) {
+                <li class="next">
+                  <a href="@routes.Teams.allTeams(currentPage.getPageIndex+1)">&raquo;</a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a> &raquo;</a>
+                </li>
+            }
+          </ul>
+        </div>
+    
     
 }

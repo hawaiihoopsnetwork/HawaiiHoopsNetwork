@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.avaje.ebean.Page;
 import models.Comment;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
@@ -114,6 +115,16 @@ public class Team extends Model {
    */
   public static Team getTeam(String teamName) {
     return find().where().eq("teamName", teamName).findUnique();
+  }
+
+  /**
+   * Used for pagination.
+   * 
+   * @param page the current page
+   * @return the page object
+   */
+  public static Page<Team> find(int page) {
+    return find().where().orderBy("teamName asc").findPagingList(10).setFetchAhead(false).getPage(page);
   }
 
   /**

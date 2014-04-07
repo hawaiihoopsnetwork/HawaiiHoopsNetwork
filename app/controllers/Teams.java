@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.List;
+import com.avaje.ebean.Page;
 import models.Comment;
 import models.teams.Team;
 import play.mvc.Controller;
@@ -20,10 +21,12 @@ public class Teams extends Controller {
   /**
    * Returns the All teams page listing all the teams in the database.
    * 
+   * @param page the current page number
    * @return AllTeams page
    */
-  public static Result allTeams() {
-    return ok(AllTeams.render("All Teams", Team.getTeams()));
+  public static Result allTeams(Integer page) {
+    Page<Team> currPage = Team.find(page);
+    return ok(AllTeams.render("All teams", currPage));
   }
 
   /**
@@ -51,7 +54,7 @@ public class Teams extends Controller {
     else {
       TeamForm tf = teamForm.get();
       Team.addTeam(tf);
-      return ok(AllTeams.render("All Teams", Team.getTeams()));
+      return redirect("/teams/view/" + tf.teamName);
     }
   }
 
