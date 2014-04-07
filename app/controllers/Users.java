@@ -73,7 +73,7 @@ public class Users extends Controller
             mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
             //mail.setRecipient(user.getEmail());
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
-            mail.sendHtml("<html><a href='" + routes.Users.validate(validation_key) + "'>link</a></html>");
+            mail.sendHtml("<html><a href='http://localhost:9000/validate/" + validation_key + "'>link</a></html>");
 
 
             //session().clear();
@@ -88,7 +88,7 @@ public class Users extends Controller
         User user = User.getValidUser(key);
         Date currentDate = new Date();
 
-        if (user != null && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
+        if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
         {
            user.setActivation_key(null);
            user.update();
