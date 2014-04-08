@@ -13,6 +13,8 @@ POST        /register                   controllers.Users.postRegister()
 GET         /logout                     controllers.Users.logout()
 GET         /delete                     controllers.Users.deleteUser()
 
+GET			/leagues					controllers.LeagueCont.leagues()
+
 GET         /courts                     controllers.Courts.index()
 GET         /courts/:name               controllers.Courts.getCourt(name)
 GET         /courts/:name/edit          controllers.Courts.manageCourt(name)
