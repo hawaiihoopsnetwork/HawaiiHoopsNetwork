@@ -115,13 +115,21 @@ public class Players extends Controller{
   public static Result playerManageSubmit() {
     //adds the new player from the PlayerForm page to the database.
     Form<PlayerFormData> data = Form.form(PlayerFormData.class).bindFromRequest();
-    PlayerFormData formData = data.get();
-    Player.addPlayer(formData);
     
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find("name asc", 0);
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
+    
+    if (data.hasErrors()) {
+      Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
+      Map<String, Boolean> playerPosition = PlayerFields.getPosition();
+      return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+    }
+    else {
+      PlayerFormData formData = data.get();
+      Player.addPlayer(formData);
+      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
+    }
   }
   
   @Security.Authenticated(Secured.class)

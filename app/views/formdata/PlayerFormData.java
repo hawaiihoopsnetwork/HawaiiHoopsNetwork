@@ -90,6 +90,33 @@ public class PlayerFormData {
     if (name == null || name.length() == 0) {
       errors.add(new ValidationError("name", "Name is required"));
     }
+    
+    if (bio == null || bio.length() == 0) {
+      errors.add(new ValidationError("bio", "Some bio is needed"));
+    }
+    
+    if (!position.matches("Point Gaurd") && 
+        !position.matches("Shooting Gaurd") &&
+        !position.matches("Small Forward") &&
+        !position.matches("Power Forward") &&
+        !position.matches("Center") && position == null) {
+      errors.add(new ValidationError("position", "Position is invalid"));
+    }
+    
+    if (!skill.matches("Beginner") && 
+        !skill.matches("Intermediate") &&
+        !skill.matches("Competitive") &&
+        !skill.matches("College") && skill == null) {
+      errors.add(new ValidationError("skill", "Skill level is invalid"));
+    }
+    
+    if (!height.matches("\\d\'\\d\"")) {
+      errors.add(new ValidationError("height", "Height is invalid"));
+    }
+    
+    if (!weight.matches("\\d{2,}")) {
+      errors.add(new ValidationError("weight", "Weight is invalid"));
+    }
 
     return errors.isEmpty() ? null : errors;
   }
