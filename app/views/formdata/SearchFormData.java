@@ -14,6 +14,8 @@ public class SearchFormData {
   public String type = "";
   /** The country of the surfer. */
   public String country = "";
+  
+  public String term = "";
 
   /**Empty constructor. */
   public SearchFormData() {

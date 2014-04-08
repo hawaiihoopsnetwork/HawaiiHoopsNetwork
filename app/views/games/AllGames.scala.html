@@ -1,4 +1,4 @@
-@(title: String, games: List[models.games.Game], searchForm: Form[views.formdata.games.SearchSortGames], isLoggedIn: Boolean)
+@(title: String, currentPage: com.avaje.ebean.Page[models.games.Game], searchForm: Form[views.formdata.SearchFormData], isLoggedIn: Boolean, sort: String)
 
 @import helper._
 @import bootstrap3._
@@ -10,10 +10,10 @@
   
     <div class="row-search hidden-xs">
     <div class="col-md-4">
-          @form(routes.Games.searchResults(), 'class -> "form-horizontal") { 
+          @form(routes.Games.searchResults(0), 'class -> "form-horizontal") { 
           <div class="input-group">
-              @simpleText(searchForm("search"),
-                  placeholder="Search by Name or Location", 
+              @simpleText(searchForm("term"),
+                  placeholder="Search by Name, Location, or players", 
                   label = "", help = "")
               <span class="input-group-btn">
               <div class="form-group">
@@ -29,8 +29,10 @@
         Sort By<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="@routes.Games.sortByLocation()">Location</a></li>
-        <li><a href="@routes.Games.sortBySkillLevel()">Skill Level</a></li>
+        <li><a href="@routes.Games.allGames(0, "name asc")">Name</a></li>
+        <li><a href="@routes.Games.allGames(0, "location asc")">Location</a></li>
+        <hr>
+        <li><a href="@routes.Games.allGames(0, "date asc")">All</a></li>
       </ul>
     </div>
     
@@ -51,7 +53,7 @@
         </tr>
       </thead>
       <tbody data-link="row" class="rowlink">
-        @for(game <- games) {
+        @for(game <- currentPage.getList()) {
         <tr>
           <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate()</a></td>
           <td>@*game.getTime()*@</td>
@@ -64,6 +66,36 @@
         }
       </tbody>
     </table>
+    
+    <div id="pagination" class="pagination">
+          <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                <a href="@routes.Games.allGames(currentPage.getPageIndex-1, sort)">&laquo;</a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&laquo;</a>
+                </li>
+            }
+            @for(index <- 0 until currentPage.getTotalPageCount()) {
+                <li class="current">
+                
+                  <a href="@routes.Games.allGames(index, sort)">@(index+1)</a>
+                
+                </li>
+            }
+            @if(currentPage.hasNext) {
+                <li class="next">
+                  <a href="@routes.Games.allGames(currentPage.getPageIndex+1, sort)">&raquo;</a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a> &raquo;</a>
+                </li>
+            }
+          </ul>
+        </div>
     </div>
     </div>
 }

@@ -35,18 +35,21 @@ public class Global extends GlobalSettings {
       Court.addCourt("I", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
     }
 
+    
     if (Game.getGames().size() == 0) {
-      Game.addGame(new GameForm(new Game("Kapolei PUG", "3:00PM", "3.13.14", "Kapolei park", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G.")));
-      Game.addGame(new GameForm(new Game("Aina Hina PUG", "3:00PM", "3.13.14", "Aina Hina park", "Private", "Nightly",
-          "Beginner", "Loa P., Alex G.")));
-      Game.addGame(new GameForm(new Game("Waianae Nightly", "6:00PM", "3.13.14", "Waianae park", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G.")));
-      Game.addGame(new GameForm(new Game("Makakilo Lunchtime", "12:00PM", "3.13.14", "Makakilo Rec", "Public",
-          "Nightly", "Beginner", "Loa P., Alex G.")));
-      Game.addGame(new GameForm(new Game("Ewa Beach Practice", "5:00PM", "3.13.14", "Kapolei park", "Private",
-          "Nightly", "Beginner", "Loa P., Alex G.")));
+      Game.addGame(new Game("Kapolei PUG", "3:00PM", "March 12", "Kapolei park", "Public", "Nightly",
+          "Beginner", "Loa P., Alex G."));
+      Game.addGame(new Game("Aina Hina PUG", "3:00PM", "March 10", "Aina Hina park", "Private", "Nightly",
+          "Beginner", "Loa P., Alex G."));
+      Game.addGame(new Game("Waianae Nightly", "6:00PM", "March 11", "Waianae park", "Public", "Nightly",
+          "Beginner", "Loa P., Alex G."));
+      Game.addGame(new Game("Makakilo Lunchtime", "12:00PM", "March 25", "Makakilo Rec", "Public",
+          "Nightly", "Beginner", "Loa P., Alex G."));
+      Game.addGame(new Game("Ewa Beach Practice", "5:00PM", "April 2", "Kapolei park", "Private",
+          "Nightly", "Beginner", "Loa P., Alex G."));
     }
+    
+    
 
     if (Player.getPlayers().size() == 0) {
       Player.addPlayer(new PlayerFormData("Alex G.", "Ali G", "Paki Park", "Intermediate", "Center", 10, 5, "5'5\"",

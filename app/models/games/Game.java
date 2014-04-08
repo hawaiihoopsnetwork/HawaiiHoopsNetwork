@@ -8,8 +8,11 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
+import com.avaje.ebean.Query;
 import models.Player;
-import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import views.formdata.games.GameForm;
 
@@ -125,7 +128,10 @@ public class Game extends Model {
 
       game.save();
     }
+  }
 
+  public static void addGame(Game game) {
+    game.save();
   }
 
   /**
@@ -165,6 +171,34 @@ public class Game extends Model {
    */
   public static List<Game> getGames() {
     return find().all();
+  }
+
+  /**
+   * Implements pagination.
+   * 
+   * @param sort sort string
+   * @param page page number
+   * @return page
+   */
+  public static Page<Game> find(String sort, int page) {
+    return find().where().orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+
+  /**
+   * Used for search.
+   * 
+   * @param term the search term
+   * @param sort sort type
+   * @param page page num
+   * @return page
+   */
+  public static Page<Game> find(String term, String sort, int page) {
+    term = "%" + term + "%";
+    Query<Game> q = Ebean.createQuery(Game.class);
+    // ilike is case insensitive
+    q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term))
+        .add(Expr.ilike("players", term));
+    return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
   }
 
   /**
@@ -256,10 +290,20 @@ public class Game extends Model {
     return withProfile;
   }
 
+  /**
+   * Returns a list of the player names that don't have a profile within the site.
+   * 
+   * @return noProfile
+   */
   public List<String> getNoProfile() {
     return noProfile;
   }
 
+  /**
+   * Returns a list of players with profile pages.
+   * 
+   * @return a list
+   */
   public List<String> getListPlayers() {
     List<String> gamePlayers = java.util.Arrays.asList(players.split("\\s*,\\s*"));
     return gamePlayers;
