@@ -140,10 +140,10 @@ public class Team extends Model {
    * @return a paginglist
    */
   public static Page<Team> find(String term, String sort, int page) {
-    System.out.println(term);
+    term = "%" + term + "%";
     Query<Team> q = Ebean.createQuery(Team.class);
-    q.where().disjunction().add(Expr.contains("teamName", term)).add(Expr.contains("location", term))
-        .add(Expr.contains("skillLevel", term));
+    q.where().disjunction().add(Expr.ilike("teamName", term)).add(Expr.ilike("location", term))
+        .add(Expr.ilike("skillLevel", term));
     return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
 
   }
