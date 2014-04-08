@@ -426,8 +426,8 @@ public class Game extends Model {
    */
   public static Map<String, Boolean> getMonths() {
     String[] month =
-        { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
-            "December" };
+        { "aJanuary", "bFebruary", "cMarch", "dApril", "eMay", "fJune", "gJuly", "hAugust", "iSeptember", "jOctober", "kNovember",
+            "lDecember" };
     Map<String, Boolean> months = new LinkedHashMap<>();
     for (int x = 0; x < month.length; x++) {
       months.put(month[x], false);

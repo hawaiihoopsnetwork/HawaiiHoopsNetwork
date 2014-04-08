@@ -10,7 +10,6 @@ import play.mvc.Security;
 import play.data.Form;
 import views.formdata.SearchFormData;
 import views.formdata.games.GameForm;
-import views.formdata.games.SearchSortGames;
 import views.html.games.SingleGame;
 import views.html.games.CreateGame;
 import views.html.games.AllGames;

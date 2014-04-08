@@ -19,7 +19,7 @@
         <!--  Created By: Get user who created the game -->
         <h10>Type: </h10><i>@game.getType()</i></br></br>
         <h10>Time: </h10>@game.getTime()</br></br>
-        <h10>Date: </h10>@game.getDate()</br></br>
+        <h10>Date: </h10>@game.getDate().substring(1, game.getDate().length())</br></br>
         <h10>Location: </h10>@game.getLocation()</br></br>
         <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
         <h10>Skill Level (avg years playing): </h10>@game.getAvgSklLvl()</br>
