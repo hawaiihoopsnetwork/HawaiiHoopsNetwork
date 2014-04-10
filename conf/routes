@@ -25,7 +25,7 @@ GET         /players                    controllers.Players.players(sortOrder: S
 GET         /playerSearch               controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)
 GET         /playerNameSearch           controllers.Players.playerNameSearch()
 GET         /playerProfile              controllers.Players.playerProfile(id: Long)
-GET         /playerProfile/vote         controllers.Players.playerVote(id: Long, rate: Long)
+GET         /playerProfile/:id:rating          controllers.Players.playerVote(id: Long, rating: Long)
 GET         /player/manage              controllers.Players.playerManage()
 GET         /player/manage/submit       controllers.Players.playerManageSubmit()
 
