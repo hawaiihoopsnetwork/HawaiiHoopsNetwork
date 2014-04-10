@@ -2,6 +2,7 @@ package models;
 
 import play.db.ebean.Model;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.*;
 
@@ -28,6 +29,8 @@ public class Court extends Model
 
     private Float lng;
 
+    // private String image;
+
     @Lob
     private String description;
 
@@ -47,8 +50,8 @@ public class Court extends Model
     /**
     * The EBean ORM finder method for database queries on Court.
     **/
-    public static Finder<String, Court> find = new Finder<String, Court>(
-           String.class, Court.class
+    public static Finder<Long, Court> find = new Finder<Long, Court>(
+           Long.class, Court.class
     );
 
     /**
@@ -64,14 +67,24 @@ public class Court extends Model
 
     /**
      * Deletes the specified user from the database.
-     * @param name court name
+     * @param id court name
      */
-    public static void deleteCourt(String name)
+    public static void deleteCourt(Long id)
     {
-        find.ref(name).delete();
+        find.ref(id).delete();
     }
 
     /**
+    * Returns the court associated with a name, or null if not found.
+    * @param id court id.
+    * @return The court info.
+    */
+    public static Court getCourt(Long id)
+    {
+        return find.where().eq("id", id).findUnique();
+    }
+
+        /**
     * Returns the court associated with a name, or null if not found.
     * @param name court name.
     * @return The court info.
@@ -99,6 +112,16 @@ public class Court extends Model
     {
         return (getCourt(name) != null);
     }
+
+    /**
+     * Returns the list of types.
+     *
+     * @return the list of types
+     */
+    public static List<String> getTypes() {
+        return Arrays.asList("public", "private");
+    }
+
 
     public Long getId()
     {

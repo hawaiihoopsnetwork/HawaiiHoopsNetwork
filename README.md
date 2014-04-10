@@ -6,6 +6,7 @@ Connecting basketball players, teams, and leagues on Oahu!
 - Join teams in your area! 
 - Register for leagues online.
 
+
 ## Wiki Links
 [Related Technologies](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Related-Technologies)  
 [User Interviews](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Interviews)  

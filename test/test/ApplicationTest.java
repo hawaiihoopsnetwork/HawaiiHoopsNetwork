@@ -25,11 +25,11 @@ public class ApplicationTest {
 
   /**
    * Illustrates how to render a template for testing.
-   */
   @Test
   public void renderTemplate() {
     Content html = views.html.Index.render("Your new application is ready.");
     assertThat(contentType(html)).isEqualTo("text/html");
     assertThat(contentAsString(html)).contains("Your new application is ready.");
   }
+   */
 }

@@ -1,6 +1,8 @@
-@(title: String, player: Player) 
+@(title: String, player: Player, isLoggedIn: Boolean) 
 
-@Main(title) { 
+@import helper._ 
+
+@Main(title, isLoggedIn) { 
  
 <div class="container">
   <div class="row">
@@ -16,13 +18,19 @@
         }
         </center>
         <h4>@player.getName()</h4>
+        <div class="btn-toolbar" role="toolbar">
 
-            @for(index <- 0 until player.getRank(player.getRating(), player.getVotes())) { 
-                <span class="glyphicon glyphicon-star"></span> 
+            @for(index <- 1 until (player.getRank(player.getRating(), player.getVotes()) + 1)) {
+                @form(routes.Players.playerVote(player.getId(), index), 'id->"vote"){
+                  <button id="submitVote" type="submit" class="glyphicon glyphicon-star"></button>
+                }
             } 
-            @for(index <- 0 until (5 - player.getRank(player.getRating(), player.getVotes()))) {
-                <span class="glyphicon glyphicon-star-empty"></span> 
+            @for(index <- 1 until (5 - player.getRank(player.getRating(), player.getVotes()) + 1)) {
+                @form(routes.Players.playerVote(player.getId(), index + player.getRank(player.getRating(), player.getVotes())), 'id->"vote"){
+                  <button id="submitVote" type="submit" class="glyphicon glyphicon-star-empty"></button>
+                }
             }
+         </div>
          <br> 
             
         <!--<a href="../Message.html" type="button" class="btn btn-primary">Send Message</a> <br>  -->

@@ -8,6 +8,7 @@ import com.avaje.ebean.Page;
 import models.Player;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import play.data.Form;
 import views.html.player.PlayerList;
 import views.html.player.PlayerForm;
@@ -33,9 +34,10 @@ public class Players extends Controller{
    * @param id = the unique id for the profile
    * @return The individual player profile page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
-    return ok(PlayerProfile.render("Player Profile", player));
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx())));
   }
   
   /**
@@ -43,11 +45,12 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result players(String sortOrder, Integer page) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none"));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
   }
   
   /**
@@ -55,11 +58,12 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerSearch(String field, String searchWord, String sortOrder, Integer page) {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(field, searchWord, sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord));
+    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord, Secured.isLoggedIn(ctx())));
   }
   
   /**
@@ -67,6 +71,7 @@ public class Players extends Controller{
    *
    * @return The Player profiles list page.
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerNameSearch() {
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
@@ -75,7 +80,7 @@ public class Players extends Controller{
     SearchFormData formData = data.get();
     Page<Player> playerPage = Player.find("name", formData.name, "name asc", 1);
     
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name, Secured.isLoggedIn(ctx())));
   }
   
   /**************************
@@ -87,6 +92,7 @@ public class Players extends Controller{
    * 
    * @return The player form page
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerManage() {
     PlayerFormData data2 = new PlayerFormData();
     Form<PlayerFormData> dataForm = Form.form(PlayerFormData.class).fill(data2);
@@ -97,7 +103,7 @@ public class Players extends Controller{
     Map<String, Boolean> playerPosition = PlayerFields.getPosition();
     
     Page<Player> playerPage = Player.find("name asc", 1);
-    return ok(PlayerForm.render("Player Form", dataForm, playerSkillMap, playerPosition));
+    return ok(PlayerForm.render("Player Form", dataForm, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
   }
   
   /**
@@ -105,22 +111,32 @@ public class Players extends Controller{
    * 
    * @return The player profile page, which was just created/edited
    */
+  @Security.Authenticated(Secured.class)
   public static Result playerManageSubmit() {
     //adds the new player from the PlayerForm page to the database.
     Form<PlayerFormData> data = Form.form(PlayerFormData.class).bindFromRequest();
-    PlayerFormData formData = data.get();
-    Player.addPlayer(formData);
     
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find("name asc", 0);
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none"));
+    
+    if (data.hasErrors()) {
+      Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
+      Map<String, Boolean> playerPosition = PlayerFields.getPosition();
+      return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+    }
+    else {
+      PlayerFormData formData = data.get();
+      Player.addPlayer(formData);
+      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
+    }
   }
   
+  @Security.Authenticated(Secured.class)
   public static Result playerVote(long id, long rate){
     Player player = Player.getPlayer(id);
     player.setVotes(player.getVotes() + 1);
     player.setRating(player.getRating() + rate);
     player.save();
-    return ok(PlayerProfile.render("Player Profile", player));  }
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx())));  }
   }

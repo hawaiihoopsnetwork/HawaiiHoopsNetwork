@@ -111,6 +111,10 @@ public class Player extends Model {
      return find().where().eq("id", id).findUnique();
    }
    
+   public static List<Player> getPlayers() {
+     return find().all();
+   }
+   
   /**
    * ********************* *
    *  Getters and Setters  *

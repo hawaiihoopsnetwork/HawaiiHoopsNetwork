@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
 
 <!DOCTYPE html>
 
@@ -9,11 +9,13 @@
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/3.0.0/united/bootstrap.min.css">
 
         <!--  Load site-specific customizations after bootstrap. -->
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/basketball.jpg")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        @scripts
     </head>
+
     <body>
-        <div class="container">
+        <!--<div class="container">-->
             <div class="navbar navbar-inverse" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
@@ -21,34 +23,35 @@
                             <!--  Display three horizontal lines when navbar collapsed. -->
                             <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="@routes.Application.home()">HiHoopsNetwork</a>
+                        @if(isLoggedIn) {
+                            <a class="navbar-brand" href="@routes.Application.home()">HiHoopsNetwork</a>
+                        } else {
+                            <a class="navbar-brand" href="@routes.Application.index()">HiHoopsNetwork</a>
+                        }
+                        
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            
-                            <li><a href="#">Gyms</a></li>
-                            <li><a href="@routes.Games.allGames()">Games</a></li>
+                        @if(isLoggedIn) {
+                            <li><a id="courts" href="@routes.Courts.index()">Gyms</a></li>
+                            <li><a id="games" href="@routes.Games.allGames()">Games</a></li>
                             <li><a href="#">Leagues</a></li>
                             <li><a href="#">Teams</a></li>
-                            
-                            <!-- When these pages become available, release (be sure to add at symbol)
-                            <li><a id="gyms" href="routes.Application.gyms()">Gyms</a></li>
-                            <li><a id="games" href="routes.Application.games()">Games</a></li>
-                            <li><a id="leagues" href="routes.Application.leagues()">Leagues</a></li>
-                            <li><a id="teams" href="routes.Application.teams()">Teams</a></li>-->
-                            
                             <li><a id="players" href="@routes.Players.players("name asc", 0)">PlayerList</a></li>
-                            
+                        }
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a data-toggle="modal" href="#login">Login</a></li>
-                            <li><a href="#"></a></li>
+                        @if(isLoggedIn) {
+                            <li><a data-toggle="modal" href="@routes.Users.logout()">Logout</a></li>
+                        } else {
+                            <li><a data-toggle="modal" href="@routes.Users.login()">Login</a></li>
+                        }
                         </ul>
                     </div>
                 </div>
             </div>
             @content
-        </div>
+        <!--</div> -->
      <hr>
      <div id = "footer">
       <div class="container">
