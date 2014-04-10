@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "players")
 public class Player extends Model {
-  
+
   @Id
   @GeneratedValue
   private Long id;
@@ -30,14 +30,13 @@ public class Player extends Model {
   private String bio;
   private String lookingFor;
   private String picUrl;
-  
 
   @ManyToMany(mappedBy = "players")
   private List<Court> courts = new ArrayList<Court>();
 
   // @OneToOne
   // private User user;
-  
+
   /**
    * Creates a new player.
    * 
@@ -47,9 +46,8 @@ public class Player extends Model {
    * @param position = position of player
    * 
    */
-  public Player(String name, String nickname, String homeCourt, String skill, String position, 
-                long rating, long votes, String height , String weight, String bio, 
-                String lookingFor, String picUrl) {
+  public Player(String name, String nickname, String homeCourt, String skill, String position, long rating, long votes,
+      String height, String weight, String bio, String lookingFor, String picUrl) {
     this.name = name;
     this.nickname = nickname;
     this.homeCourt = homeCourt;
@@ -63,60 +61,77 @@ public class Player extends Model {
     this.lookingFor = lookingFor;
     this.picUrl = picUrl;
   }
-  
+
   /**
    * Adds a player to the database
    * 
-   * @param formData = the PlayerFormData containing the player's info
-   * save's the player's info to the DB
+   * @param formData = the PlayerFormData containing the player's info save's the player's info to the DB
    */
   public static void addPlayer(PlayerFormData formData) {
-    Player player = new Player(formData.name, formData.nickname, formData.homeCourt, 
-                               formData.skill, formData.position, formData.rating, 
-                               formData.votes, formData.height, formData.weight, 
-                               formData.bio, formData.lookingFor, formData.picUrl);
+    Player player =
+        new Player(formData.name, formData.nickname, formData.homeCourt, formData.skill, formData.position,
+            formData.rating, formData.votes, formData.height, formData.weight, formData.bio, formData.lookingFor,
+            formData.picUrl);
     player.save();
   }
-  
-   /**
+
+  /**
    * The EBean ORM finder method for database queries on PlayerList.
    **/
-   public static Finder<Long, Player> find() {
-     return new Finder<Long, Player>(Long.class, Player.class);
-   }
-   
-   /**
-    * The EBean Page finder method to implement pagination for all players. 
-    * 
-    * @param sortOrder = the order to of the sorting
-    * @param page = the current page index
-    * @return page object of all players
-    */
-   public static Page<Player> find(String sortOrder, int page) {
-     return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
-   }
-   
-   /**
-    * The EBean Page finder method to implement pagination, based on a search of players. 
-    * 
-    * @param sortOrder = the order to of the sorting
-    * @param page = the current page index
-    * @return page object of all players
-    */
-   public static Page<Player> find(String field, String search, String sortOrder, int page) {
-     return find().where().eq(field, search).orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
-   }
-   
-   public static Player getPlayer(long id) {
-     return find().where().eq("id", id).findUnique();
-   }
-   
+  public static Finder<Long, Player> find() {
+    return new Finder<Long, Player>(Long.class, Player.class);
+  }
+
   /**
-   * ********************* *
-   *  Getters and Setters  *
-   * ********************* *
+   * The EBean Page finder method to implement pagination for all players.
+   * 
+   * @param sortOrder = the order to of the sorting
+   * @param page = the current page index
+   * @return page object of all players
    */
+  public static Page<Player> find(String sortOrder, int page) {
+    return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+
+  /**
+   * Temporary for now, used in Global.java Stops multiple addition in database.
+   * 
+   * DELETE WHEN NEEDED IN ANYMORE
+   * 
+   * @return java list of players
+   */
+  public static List<Player> getPlayers() {
+    return find().all();
+  }
+
+  /**
+   * The EBean Page finder method to implement pagination, based on a search of players.
+   * 
+   * @param sortOrder = the order to of the sorting
+   * @param page = the current page index
+   * @return page object of all players
+   */
+  public static Page<Player> find(String field, String search, String sortOrder, int page) {
+    return find().where().eq(field, search).orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+
+  public static Player getPlayer(long id) {
+    return find().where().eq("id", id).findUnique();
+  }
   
+  /**
+   * Used when finding if profile belongs to a name
+   * @param name the player's name
+   * @return Player
+   */
+  public static Player getPlayer(String name) {
+    return find().where().eq("name", name).findUnique();
+  }
+
+  /**
+   * ********************* * Getters and Setters * ********************* *
+   */
+
   /**
    * @return the id
    */
@@ -207,15 +222,16 @@ public class Player extends Model {
   public void setVotes(Long votes) {
     this.votes = votes;
   }
-  
+
   /**
    * @return the rank
    */
   public int getRank(Long rating, Long votes) {
-    if(rating == 0 || votes == 0 ) {
+    if (rating == 0 || votes == 0) {
       return 0;
-    } else {
-      return (int) Math.round(this.rating/this.votes);
+    }
+    else {
+      return (int) Math.round(this.rating / this.votes);
     }
   }
 
@@ -302,6 +318,5 @@ public class Player extends Model {
   public void setPicUrl(String picUrl) {
     this.picUrl = picUrl;
   }
-  
-  
+
 }

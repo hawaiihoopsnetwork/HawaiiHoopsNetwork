@@ -19,7 +19,7 @@
         <!--  Created By: Get user who created the game -->
         <h10>Type: </h10><i>@game.getType()</i></br></br>
         <h10>Time: </h10>@game.getTime()</br></br>
-        <h10>Date: </h10>@game.getDate()</br></br>
+        <h10>Date: </h10>@game.getDate().substring(1, game.getDate().length())</br></br>
         <h10>Location: </h10>@game.getLocation()</br></br>
         <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
         <h10>Skill Level (avg years playing): </h10>@game.getAvgSklLvl()</br>
@@ -57,12 +57,16 @@
         
         Players Attending:</br>
         <ul>
-         @for(player <- game.getListPlayers()) {
-            <li><a href="#">@player</a></li>
+         @for(player <- game.getPlayerProfiles()) {
+            <li><a href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></li>
+         }
+         @for(player <- game.getNoProfile()) {
+            <li>@player</li>
          }
         </ul>
         </div>
     </div>
    </div>
-    
+   <!-- TODO do modal dialog -->
 }
+

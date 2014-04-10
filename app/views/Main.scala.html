@@ -33,7 +33,7 @@
                         <ul class="nav navbar-nav">
                         @if(isLoggedIn) {
                             <li><a id="courts" href="@routes.Courts.index()">Gyms</a></li>
-                            <li><a id="games" href="@routes.Games.allGames()">Games</a></li>
+                            <li><a id="games" href="@routes.Games.allGames(0, "date asc")">Games</a></li>
                             <li><a href="#">Leagues</a></li>
                             <li><a href="#">Teams</a></li>
                             <li><a id="players" href="@routes.Players.players("name asc", 0)">PlayerList</a></li>
