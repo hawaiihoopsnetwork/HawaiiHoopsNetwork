@@ -2,6 +2,7 @@ package controllers;
 
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+import org.joda.time.DateTime;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -64,14 +65,14 @@ public class Users extends Controller
             } while((User.getValidUser(validation_key) != null));
 
             user.setActivation_key(validation_key);
-            user.setTimestamp(new Date());
+            user.setTimestamp(new DateTime());
             user.update();
 
 
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
-            mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
-            //mail.setRecipient(user.getEmail());
+            //mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
+            mail.setRecipient(user.getEmail());
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
             mail.sendHtml("<html><a href='http://localhost:9000/validate/" + validation_key + "'>link</a></html>");
 
@@ -86,7 +87,7 @@ public class Users extends Controller
     public static Result validate(String key)
     {
         User user = User.getValidUser(key);
-        Date currentDate = new Date();
+        //DateTime currentDate = new DateTime();
 
         if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
         {

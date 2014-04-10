@@ -1,6 +1,7 @@
 package models;
 
 
+import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import play.db.ebean.Model;
 import forms.RegistrationForm;
@@ -34,7 +35,8 @@ public class User extends Model {
     private String activation_key;
 
     /** Timestamp of when the user registered */
-    private Date timestamp;
+    //private Date timestamp;
+    private DateTime timestamp;
 
     // timestamp when the users password needs to be changed
     //private Date pass_expiration;
@@ -78,9 +80,10 @@ public class User extends Model {
      * @param email Their email.
      * @param password Their password.
      */
-    public static void addUser(String name, String email, String password) {
+    public static User addUser(String name, String email, String password) {
         User user = new User(name, email, password);
         user.save();
+        return user;
     }
 
     /**
@@ -208,11 +211,11 @@ public class User extends Model {
         this.activation_key = activation_key;
     }
 
-    public Date getTimestamp() {
+    public DateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
     }
 }
