@@ -47,6 +47,7 @@
           <div class="help-block">@{confirmField.error.map { error => error.message }}</div>
         </div>
         <input id="submitRegister" class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
+        <p class="help-block">By clicking "Register", you agree to our <a href="@routes.Application.terms()">terms of service</a></p>
       </fieldset>
     }
 

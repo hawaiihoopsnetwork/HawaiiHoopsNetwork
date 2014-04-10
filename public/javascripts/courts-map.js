@@ -25,6 +25,7 @@ function initialize() {
         radius : 50000,
         query : [ 'basketball' ]
     };
+
     infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, callback);
