@@ -44,6 +44,8 @@ public class Game extends Model {
   private String dateEdit;
   private int updateCount;
 
+  private String userCreator;
+
   /**
    * Default constructor.
    */
@@ -63,7 +65,7 @@ public class Game extends Model {
    * @param players players
    */
   public Game(String name, String time, String date, String location, String type, String freq, String sklLvl,
-      String players) {
+      String players, String user) {
     this.setName(name);
     this.setTime(time);
     this.setDate(date);
@@ -73,6 +75,7 @@ public class Game extends Model {
     this.setAvgSklLvl(sklLvl);
     this.setPlayers(players);
     this.setUpdateCount(0);
+    this.setUserCreator(user);
   }
 
   /**
@@ -89,7 +92,7 @@ public class Game extends Model {
    * 
    * @param gf the game form
    */
-  public static void addGame(GameForm gf) {
+  public static void addGame(GameForm gf, String user) {
     // TODO currently does not work with editing of games
     Game game;
     Date date;
@@ -103,9 +106,10 @@ public class Game extends Model {
 
     if (!isGame(gf.name)) {
 
-      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players, user);
       date = new Date();
       game.setDateCreated(date.toString());
+      // game.setUserCreator(user);
       game.save();
 
     }
@@ -426,8 +430,8 @@ public class Game extends Model {
    */
   public static Map<String, Boolean> getMonths() {
     String[] month =
-        { "aJanuary", "bFebruary", "cMarch", "dApril", "eMay", "fJune", "gJuly", "hAugust", "iSeptember", "jOctober", "kNovember",
-            "lDecember" };
+        { "aJanuary", "bFebruary", "cMarch", "dApril", "eMay", "fJune", "gJuly", "hAugust", "iSeptember", "jOctober",
+            "kNovember", "lDecember" };
     Map<String, Boolean> months = new LinkedHashMap<>();
     for (int x = 0; x < month.length; x++) {
       months.put(month[x], false);
@@ -486,21 +490,16 @@ public class Game extends Model {
   }
 
   /**
-   * Search by games.
-   * 
-   * @param term String to be searched for
-   * @return list containing the search results
+   * @return the userCreator
    */
-  public static List<Game> searchGames(String term) {
-    List<Game> results = new ArrayList<>();
-    System.out.println("Search: " + term);
+  public String getUserCreator() {
+    return userCreator;
+  }
 
-    List<Game> byName = Game.find().where().contains("name", term).findList();
-    List<Game> byLocation = Game.find().where().contains("location", term).findList();
-
-    results.addAll(byName);
-    results.retainAll(byLocation);
-
-    return results;
+  /**
+   * @param userCreator the userCreator to set
+   */
+  public void setUserCreator(String userCreator) {
+    this.userCreator = userCreator;
   }
 }

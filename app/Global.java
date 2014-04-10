@@ -38,15 +38,15 @@ public class Global extends GlobalSettings {
     
     if (Game.getGames().size() == 0) {
       Game.addGame(new Game("Kapolei PUG", "3:00PM", "cMarch 12", "Kapolei park", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G."));
+          "Beginner", "Loa P., Alex G.", "admin"));
       Game.addGame(new Game("Aina Hina PUG", "3:00PM", "cMarch 10", "Aina Hina park", "Private", "Nightly",
-          "Beginner", "Loa P., Alex G."));
+          "Beginner", "Loa P., Alex G.", "admin"));
       Game.addGame(new Game("Waianae Nightly", "6:00PM", "cMarch 11", "Waianae park", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G."));
+          "Beginner", "Loa P., Alex G.", "admin"));
       Game.addGame(new Game("Makakilo Lunchtime", "12:00PM", "cMarch 25", "Makakilo Rec", "Public",
-          "Nightly", "Beginner", "Loa P., Alex G."));
+          "Nightly", "Beginner", "Loa P., Alex G.", "admin"));
       Game.addGame(new Game("Ewa Beach Practice", "5:00PM", "dApril 2", "Kapolei park", "Private",
-          "Nightly", "Beginner", "Loa P., Alex G."));
+          "Nightly", "Beginner", "Loa P., Alex G.", "admin"));
     }
     
     

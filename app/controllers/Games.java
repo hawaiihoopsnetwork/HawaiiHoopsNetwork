@@ -3,6 +3,7 @@ package controllers;
 import java.util.Collections;
 import java.util.List;
 import com.avaje.ebean.Page;
+import models.User;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -80,7 +81,12 @@ public class Games extends Controller {
     }
     else {
       GameForm game = gameForm.get();
-      Game.addGame(game);
+
+      User user = Secured.getUserInfo(ctx());
+      String realName = user.getName();
+
+      Game.addGame(game, realName);
+
       return redirect("/games/view/" + game.name);
     }
   }

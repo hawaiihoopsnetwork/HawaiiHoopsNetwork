@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # --- Created by Ebean DDL
 # To stop Ebean DDL generation, remove this comment and start using Evolutions
 
@@ -13,6 +12,22 @@ create table courts (
   lng                       float,
   description               clob,
   constraint pk_courts primary key (id))
+;
+
+create table game (
+  name                      varchar(255) not null,
+  time                      varchar(255),
+  date                      varchar(255),
+  location                  varchar(255),
+  type                      varchar(255),
+  frequency                 varchar(255),
+  avg_skl_lvl               varchar(255),
+  players                   varchar(255),
+  date_created              varchar(255),
+  date_edit                 varchar(255),
+  update_count              integer,
+  user_creator              varchar(255),
+  constraint pk_game primary key (name))
 ;
 
 create table players (
@@ -51,6 +66,8 @@ create table courts_players (
 ;
 create sequence courts_seq;
 
+create sequence game_seq;
+
 create sequence players_seq;
 
 create sequence users_seq;
@@ -70,6 +87,8 @@ drop table if exists courts;
 
 drop table if exists courts_players;
 
+drop table if exists game;
+
 drop table if exists players;
 
 drop table if exists users;
@@ -78,43 +97,9 @@ SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists courts_seq;
 
+drop sequence if exists game_seq;
+
 drop sequence if exists players_seq;
 
 drop sequence if exists users_seq;
-=======
-# --- Created by Ebean DDL
-# To stop Ebean DDL generation, remove this comment and start using Evolutions
-
-# --- !Ups
-
-create table game (
-  name                      varchar(255) not null,
-  time                      varchar(255),
-  date                      varchar(255),
-  location                  varchar(255),
-  type                      varchar(255),
-  frequency                 varchar(255),
-  avg_skl_lvl               varchar(255),
-  players                   varchar(255),
-  date_created              varchar(255),
-  date_edit                 varchar(255),
-  update_count              integer,
-  constraint pk_game primary key (name))
-;
-
-create sequence game_seq;
-
-
-
-
-# --- !Downs
-
-SET REFERENTIAL_INTEGRITY FALSE;
-
-drop table if exists game;
-
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists game_seq;
->>>>>>> games-pages
 

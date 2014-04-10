@@ -41,6 +41,7 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                         @if(isLoggedIn) {
+                            <li><p class="navbar-text">@Secured.getUserInfo(ctx()).getName()</p></li>
                             <li><a data-toggle="modal" href="@routes.Users.logout()">Logout</a></li>
                         } else {
                             <li><a data-toggle="modal" href="@routes.Users.login()">Login</a></li>
