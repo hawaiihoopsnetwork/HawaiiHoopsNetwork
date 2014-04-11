@@ -1,0 +1,29 @@
+@(title: String, LeagueFD: Form[views.formdata.LeagueFormData], teamMap: Map[String, Boolean])
+
+@import helper.form
+@import bootstrap3._
+
+@Main(title) {
+
+    <div class = "container">
+      @form(routes.Application.postLeague(), 'class -> "form-horizontal"){
+
+        @text(LeagueFD("LeagueName"),
+          label = "League Name",
+          placeholder = "Oahu Basketball League",
+          help = "Please enter League name")
+        @select(LeagueFD("teams"),
+          label = "Teams",
+          optionMap = teamMap,
+          isMultiple = true,
+          help = "Please select the teams in the league")
+          
+        <div class = "form-group">
+          <div class = "col-sm-offset-2 col-sm-10">
+            <button id="submit" type = "submit" class = "btn btn default">Add</button>
+          </div>
+        </div> 
+     </div>
+    }
+    
+}

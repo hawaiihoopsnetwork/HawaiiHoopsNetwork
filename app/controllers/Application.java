@@ -15,6 +15,8 @@ import views.html.footer.ContactUs;
 import views.html.footer.MessageSent;
 import views.html.Leagues;
 import views.formdata.ContactUsForm;
+import views.formdata.LeagueFormData;
+import forms.html.LeagueForm;
 
 /**
  * Implements the controllers for this application.
@@ -100,4 +102,17 @@ public class Application extends Controller {
     return ok(AboutUs.render("About Us"));
   }
 
+  public static Result newLeague(){
+    
+    Form<LeagueFormData> formData = Form.form(LeagueFormData.class).bindFromRequest();
+    
+    return ok(LeagueForm.render("League Form", formData));
+  }
+  
+  public static Result postLeague() {
+    
+    List<Team> listTeam = TeamDB.getTeams();
+    
+    return ok(Leagues.render("Leagues", listTeam));
+  }
 }
