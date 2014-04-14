@@ -18,6 +18,7 @@ public class Player extends Model {
   @Id
   @GeneratedValue
   private Long id;
+  
   private String name;
   private String nickname;
   private String homeCourt;
@@ -30,6 +31,9 @@ public class Player extends Model {
   private String bio;
   private String lookingFor;
   private String picUrl;
+  
+  @OneToOne(mappedBy = "players")
+  public User user;
   
 
   @ManyToMany(mappedBy = "players")

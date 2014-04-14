@@ -32,6 +32,22 @@ public class Global extends GlobalSettings {
           User newUser = User.addUser("user", adminEmail, adminPassword);
           newUser.setActivation_key(null);
           newUser.update();
+          
+          User SteveF = User.addUser("Steve", "Steve@gmail.com", "password");
+          SteveF.setActivation_key(null);
+          SteveF.update();
+          
+          User Loa = User.addUser("Loa", "Loa@gmail.com", "password");
+          Loa.setActivation_key(null);
+          Loa.update();
+          
+          User Keith = User.addUser("Keith", "Keith@gmail.com", "password");
+          Keith.setActivation_key(null);
+          Keith.update();
+          
+          User Hector = User.addUser("Hector", "Hector@gmail.com", "password");
+          Hector.setActivation_key(null);
+          Hector.update();
       }
 
       if (Court.getCourts().isEmpty()) {

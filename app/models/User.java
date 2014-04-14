@@ -30,6 +30,9 @@ public class User extends Model {
     private String password;
 
     private boolean admin;
+    
+    private static boolean hasProfile = false;
+    
 
     /** Token used for email registration */
     private String activation_key;
@@ -44,6 +47,8 @@ public class User extends Model {
     // Timestamp when the user email was authenticated default null
     //private Date email_auth;
 
+    @OneToOne
+    public Player players;
 
     /**
      * Initializes new User.
@@ -142,6 +147,10 @@ public class User extends Model {
    */
 
     }
+    
+    public Long getId() {
+      return id; 
+    }
 
     /**
      * @return the email
@@ -217,5 +226,13 @@ public class User extends Model {
 
     public void setTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
+    }
+    
+    public boolean getHasProfile() {
+      return hasProfile;
+    }
+    
+    public static void setHasProfile(boolean value) {
+      hasProfile = value;
     }
 }
