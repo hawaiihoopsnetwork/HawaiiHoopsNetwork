@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import com.avaje.ebean.Page;
 import models.Player;
+import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -37,7 +38,7 @@ public class Players extends Controller{
   @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx())));
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
   }
   
   /**
@@ -50,7 +51,7 @@ public class Players extends Controller{
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
   }
   
   /**
@@ -63,7 +64,7 @@ public class Players extends Controller{
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(field, searchWord, sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord, Secured.isLoggedIn(ctx())));
+    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
   }
   
   /**
@@ -80,7 +81,7 @@ public class Players extends Controller{
     SearchFormData formData = data.get();
     Page<Player> playerPage = Player.find("name", formData.name, "name asc", 1);
     
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name, Secured.isLoggedIn(ctx())));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
   }
   
   /**************************
@@ -128,7 +129,8 @@ public class Players extends Controller{
     else {
       PlayerFormData formData = data.get();
       Player.addPlayer(formData);
-      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx())));
+      User.setHasProfile(true);
+      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
     }
   }
   
@@ -138,5 +140,7 @@ public class Players extends Controller{
     player.setVotes(player.getVotes() + 1);
     player.setRating(player.getRating() + rate);
     player.save();
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx())));  }
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
   }
+  
+}

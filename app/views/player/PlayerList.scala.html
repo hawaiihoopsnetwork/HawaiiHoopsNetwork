@@ -1,5 +1,5 @@
 @(currentPage: com.avaje.ebean.Page[Player], title: String, searchForm: Form[views.formdata.SearchFormData],
-  field: String, searchWord: String, isLoggedIn: Boolean)
+  field: String, searchWord: String, isLoggedIn: Boolean, user: User)
 
 @import helper._
 @import bootstrap3._
@@ -29,7 +29,7 @@
         }
         </div>
         <!-- /.col-lg-6 -->
-
+        
         <div class="btn-group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Skill Level<span class="caret"></span>
@@ -58,9 +58,14 @@
                 <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
-
-        <a href="@routes.Players.playerManage()" class="btn btn-primary pull-right" role="button">Create Profile</a>
-
+        @if(isLoggedIn){
+            @if(user.getHasProfile()) {
+                <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
+            } else {
+                <a href="@routes.Players.playerManage()" class="btn btn-primary pull-right" role="button">Create Profile</a>
+            }
+        }
+        
     </div>
 
     <div class="row-search visible-xs">
