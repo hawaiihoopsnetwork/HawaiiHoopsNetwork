@@ -1,4 +1,4 @@
-package models.teams;
+package models.leagues;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,29 +6,22 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import models.leagues.League;
+import models.teams.Team;
 
 @Entity
-public class Team {
-
+public class League {
+  
   @Id
   private long id;
 
-  private String imageUrl;
-
   private String name;
   
-  @ManyToMany(cascade=CascadeType.ALL)
-  private List<League> leagues = new ArrayList<>();
+  @ManyToMany(mappedBy = "teams", cascade=CascadeType.ALL)
+  private List<Team> teams = new ArrayList<>();
   
-  public Team(String name, String imageUrl, long id){
-    this.imageUrl = imageUrl;
+  public League(String name, long id){
     this.name = name;
     this.id = id;
-  }
-  
-  public String getImageUrl(){
-    return imageUrl;
   }
   
   public String getName(){
@@ -42,5 +35,4 @@ public class Team {
   public void setId(long id) {
     this.id = id;
   }
-  
 }

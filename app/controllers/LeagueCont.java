@@ -3,10 +3,11 @@ package controllers;
 import java.util.List;
 import models.teams.Team;
 import models.teams.TeamDB;
+import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.leagues.Leagues;
 
-public class LeagueCont {
+public class LeagueCont extends Controller{
 
   /**
    * returns the LeaguesPage
