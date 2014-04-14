@@ -30,13 +30,17 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
+      List<Game> games = null;
+      if (Secured.isLoggedIn(ctx())) {
+          games = Game.getGames();
+      }
+    return ok(Index.render("Hawaii Hoops Network", registrationForm, games, Secured.isLoggedIn(ctx())));
   }
   
-  public static Result home() {
+  /*public static Result home() {
     List<Game> games = Game.getGames();
     return ok(Home.render("Home", games, Secured.isLoggedIn(ctx())));
-  }
+  }*/
 
   /**
    * Returns the terms of use page.

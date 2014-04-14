@@ -7,10 +7,17 @@ create table courts (
   id                        bigint not null,
   name                      varchar(255),
   type                      varchar(255),
+  image                     varchar(255),
+  website                   varchar(255),
+  description               clob,
   address                   varchar(255),
   lat                       float,
   lng                       float,
-  description               clob,
+  num_courts                bigint,
+  court_size                varchar(255),
+  court_surface             varchar(255),
+  court_quality             varchar(255),
+  lighted                   boolean,
   constraint pk_courts primary key (id))
 ;
 
