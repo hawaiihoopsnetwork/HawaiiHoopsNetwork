@@ -14,6 +14,8 @@ GET         /logout                     controllers.Users.logout()
 GET         /delete                     controllers.Users.deleteUser()
 GET         /validate/:key              controllers.Users.validate(key)
 
+GET			/leagues					controllers.Leagues.leagues()
+
 GET         /courts                     controllers.Courts.index()
 GET         /courts/:id                 controllers.Courts.getCourt(id: Long)
 GET         /courts/:name/edit          controllers.Courts.manageCourt(name)

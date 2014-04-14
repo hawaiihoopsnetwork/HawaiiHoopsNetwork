@@ -36,6 +36,12 @@ create table game (
   constraint pk_game primary key (name))
 ;
 
+create table league (
+  id                        bigint not null,
+  name                      varchar(255),
+  constraint pk_league primary key (id))
+;
+
 create table players (
   id                        bigint not null,
   name                      varchar(255),
@@ -51,6 +57,13 @@ create table players (
   looking_for               varchar(255),
   pic_url                   varchar(255),
   constraint pk_players primary key (id))
+;
+
+create table team (
+  id                        bigint not null,
+  image_url                 varchar(255),
+  name                      varchar(255),
+  constraint pk_team primary key (id))
 ;
 
 create table users (
@@ -73,11 +86,21 @@ create table courts_players (
   players_id                     bigint not null,
   constraint pk_courts_players primary key (courts_id, players_id))
 ;
+
+create table team_league (
+  team_id                        bigint not null,
+  league_id                      bigint not null,
+  constraint pk_team_league primary key (team_id, league_id))
+;
 create sequence courts_seq;
 
 create sequence game_seq;
 
+create sequence league_seq;
+
 create sequence players_seq;
+
+create sequence team_seq;
 
 create sequence users_seq;
 
@@ -90,6 +113,10 @@ alter table courts_players add constraint fk_courts_players_courts_01 foreign ke
 
 alter table courts_players add constraint fk_courts_players_players_02 foreign key (players_id) references players (id) on delete restrict on update restrict;
 
+alter table team_league add constraint fk_team_league_team_01 foreign key (team_id) references team (id) on delete restrict on update restrict;
+
+alter table team_league add constraint fk_team_league_league_02 foreign key (league_id) references league (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
@@ -100,7 +127,13 @@ drop table if exists courts_players;
 
 drop table if exists game;
 
+drop table if exists league;
+
+drop table if exists team_league;
+
 drop table if exists players;
+
+drop table if exists team;
 
 drop table if exists users;
 
@@ -110,7 +143,11 @@ drop sequence if exists courts_seq;
 
 drop sequence if exists game_seq;
 
+drop sequence if exists league_seq;
+
 drop sequence if exists players_seq;
+
+drop sequence if exists team_seq;
 
 drop sequence if exists users_seq;
 
