@@ -55,6 +55,7 @@ create table users (
   admin                     boolean,
   activation_key            varchar(255),
   timestamp                 timestamp,
+  players_id                bigint,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
 ;
@@ -73,6 +74,8 @@ create sequence players_seq;
 
 create sequence users_seq;
 
+alter table users add constraint fk_users_players_1 foreign key (players_id) references players (id) on delete restrict on update restrict;
+create index ix_users_players_1 on users (players_id);
 
 
 
