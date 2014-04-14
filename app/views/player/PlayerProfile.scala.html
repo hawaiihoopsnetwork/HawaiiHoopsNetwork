@@ -1,4 +1,4 @@
-@(title: String, player: Player, isLoggedIn: Boolean) 
+@(title: String, player: Player, isLoggedIn: Boolean, user: User) 
 
 @import helper._ 
 
@@ -19,7 +19,7 @@
         </center>
         <h4>@player.getName()</h4>
         <div class="btn-toolbar" role="toolbar">
-
+        @if(player.getId() != user.getId()){
             @for(index <- 1 until (player.getRank(player.getRating(), player.getVotes()) + 1)) {
                 @form(routes.Players.playerVote(player.getId(), index), 'id->"vote"){
                   <button id="submitVote" type="submit" class="glyphicon glyphicon-star"></button>
@@ -30,6 +30,14 @@
                   <button id="submitVote" type="submit" class="glyphicon glyphicon-star-empty"></button>
                 }
             }
+         } else {
+            @for(index <- 1 until (player.getRank(player.getRating(), player.getVotes()) + 1)) {
+               <span id="submitVote"class="glyphicon glyphicon-star"></span>
+            } 
+            @for(index <- 1 until (5 - player.getRank(player.getRating(), player.getVotes()) + 1)) {
+               <span id="submitVote" class="glyphicon glyphicon-star-empty"></span>
+            }
+         }
          </div>
          <br> 
             
@@ -45,6 +53,12 @@
         <h5><small>Position:</small>    @player.getPosition()</h5>
         <h5><small>Skill Level:</small>    @player.getSkill()</h5>
         <h5><small>Looking For:</small>   @player.getLookingFor()</h5>
+        
+        @*if(isLoggedIn){
+            @if(user.getId() == player.getId()) {
+                <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
+            }
+        }*@
         
       </div> <!-- well -->
     </div> <!-- col-md-3 -->
