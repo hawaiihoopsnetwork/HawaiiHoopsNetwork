@@ -20,7 +20,7 @@ public class RegistrationForm
     @MaxLength(value = 20, message = "First name is too long.")
     public String first;
 
-    @Required(message = "Enter last name.")
+  //  @Required(message = "Enter last name.")
     public String last;
 
     @Required(message = "Password is required.")

@@ -7,7 +7,7 @@ package views.formdata;
  * 
  */
 public class SearchFormData {
-  
+
   /** The name to be searched for. */
   public String name = "";
   /** The gender of the surfer. */
@@ -15,7 +15,9 @@ public class SearchFormData {
   /** The country of the surfer. */
   public String country = "";
 
-  /**Empty constructor. */
+  public String term = "";
+
+  /** Empty constructor. */
   public SearchFormData() {
   }
 

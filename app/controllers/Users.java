@@ -56,7 +56,7 @@ public class Users extends Controller
                 games = Game.getGames();
             }
 
-            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, games, Secured.isLoggedIn(ctx())));
+            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
         }
         else
         {

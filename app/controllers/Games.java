@@ -2,13 +2,15 @@ package controllers;
 
 import java.util.Collections;
 import java.util.List;
+import com.avaje.ebean.Page;
+import models.User;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.data.Form;
+import views.formdata.SearchFormData;
 import views.formdata.games.GameForm;
-import views.formdata.games.SearchSortGames;
 import views.html.games.SingleGame;
 import views.html.games.CreateGame;
 import views.html.games.AllGames;
@@ -24,14 +26,13 @@ public class Games extends Controller {
    * @return the list of games
    */
   @Security.Authenticated(Secured.class)
-  public static Result allGames() {
-    SearchSortGames ssg = new SearchSortGames();
-    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
+  public static Result allGames(Integer page, String sort) {
 
-    List<Game> games = Game.getGames();
-    Collections.sort(games, new SearchSortGames.ByDate());
+    SearchFormData sfd = new SearchFormData();
+    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
 
-    return ok(AllGames.render("All Games", games, ssgBlank, Secured.isLoggedIn(ctx())));
+    Page<Game> games = Game.find("date asc", page);
+    return ok(AllGames.render("All Games", games, stuff, Secured.isLoggedIn(ctx()), sort));
   }
 
   /**
@@ -80,7 +81,12 @@ public class Games extends Controller {
     }
     else {
       GameForm game = gameForm.get();
-      Game.addGame(game);
+
+      User user = Secured.getUserInfo(ctx());
+      String realName = user.getName();
+
+      Game.addGame(game, realName);
+
       return redirect("/games/view/" + game.name);
     }
   }
@@ -105,50 +111,16 @@ public class Games extends Controller {
    * @return All games page with the results
    */
   @Security.Authenticated(Secured.class)
-  public static Result searchResults() {
-    SearchSortGames ssg = new SearchSortGames();
-    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
+  public static Result searchResults(Integer page) {
+    SearchFormData sfd = new SearchFormData();
+    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
 
-    Form<SearchSortGames> form = Form.form(SearchSortGames.class).bindFromRequest();
-    SearchSortGames searched = form.get();
-    List<Game> results = Game.searchGames(searched.search);
+    Form<SearchFormData> sfd2 = Form.form(SearchFormData.class).bindFromRequest();
+    SearchFormData search = sfd2.get();
 
-    return ok(AllGames.render("Results", results, ssgBlank, Secured.isLoggedIn(ctx())));
+    Page<Game> results = Game.find(search.term, "date asc", page);
+    return ok(AllGames.render("Results", results, stuff, Secured.isLoggedIn(ctx()), "date asc"));
 
-  }
-
-  /**
-   * Returns a sorted list of games based on location.
-   * 
-   * @return All Games page
-   */
-  @Security.Authenticated(Secured.class)
-  public static Result sortByLocation() {
-
-    SearchSortGames ssg = new SearchSortGames();
-    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
-
-    List<Game> games = Game.getGames();
-    Collections.sort(games, new SearchSortGames.ByLocation());
-
-    return ok(AllGames.render("Games by Date", games, ssgBlank, Secured.isLoggedIn(ctx())));
-  }
-
-  /**
-   * Returns a sorted list of games based on skill level.
-   * 
-   * @return All Games page.
-   */
-  @Security.Authenticated(Secured.class)
-  public static Result sortBySkillLevel() {
-
-    SearchSortGames ssg = new SearchSortGames();
-    Form<SearchSortGames> ssgBlank = Form.form(SearchSortGames.class).fill(ssg);
-
-    List<Game> games = Game.getGames();
-    Collections.sort(games, new SearchSortGames.BySkillLevel());
-
-    return ok(AllGames.render("Games by Date", games, ssgBlank, Secured.isLoggedIn(ctx())));
   }
 
 }
