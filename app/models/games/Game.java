@@ -8,7 +8,11 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import play.data.validation.Constraints;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
+import com.avaje.ebean.Query;
+import models.Player;
 import play.db.ebean.Model;
 import views.formdata.games.GameForm;
 
@@ -40,6 +44,8 @@ public class Game extends Model {
   private String dateEdit;
   private int updateCount;
 
+  private String userCreator;
+
   /**
    * Default constructor.
    */
@@ -59,7 +65,7 @@ public class Game extends Model {
    * @param players players
    */
   public Game(String name, String time, String date, String location, String type, String freq, String sklLvl,
-      String players) {
+      String players, String user) {
     this.setName(name);
     this.setTime(time);
     this.setDate(date);
@@ -69,6 +75,7 @@ public class Game extends Model {
     this.setAvgSklLvl(sklLvl);
     this.setPlayers(players);
     this.setUpdateCount(0);
+    this.setUserCreator(user);
   }
 
   /**
@@ -85,23 +92,24 @@ public class Game extends Model {
    * 
    * @param gf the game form
    */
-  public static void addGame(GameForm gf) {
+  public static void addGame(GameForm gf, String user) {
     // TODO currently does not work with editing of games
     Game game;
     Date date;
 
     String gameDate = gf.month + " " + gf.day;
     String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
-    
+
     String[] test = gameDate.split("\\s+");
-    //System.out.println("test[0]: " + test[0]);
-    //System.out.println("test[1]: " + test[1]);
+    // System.out.println("test[0]: " + test[0]);
+    // System.out.println("test[1]: " + test[1]);
 
     if (!isGame(gf.name)) {
 
-      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players);
+      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players, user);
       date = new Date();
       game.setDateCreated(date.toString());
+      // game.setUserCreator(user);
       game.save();
 
     }
@@ -124,9 +132,12 @@ public class Game extends Model {
 
       game.save();
     }
-
   }
-  
+
+  public static void addGame(Game game) {
+    game.save();
+  }
+
   /**
    * Checks if given name is a valid game.
    * 
@@ -164,6 +175,34 @@ public class Game extends Model {
    */
   public static List<Game> getGames() {
     return find().all();
+  }
+
+  /**
+   * Implements pagination.
+   * 
+   * @param sort sort string
+   * @param page page number
+   * @return page
+   */
+  public static Page<Game> find(String sort, int page) {
+    return find().where().orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+
+  /**
+   * Used for search.
+   * 
+   * @param term the search term
+   * @param sort sort type
+   * @param page page num
+   * @return page
+   */
+  public static Page<Game> find(String term, String sort, int page) {
+    term = "%" + term + "%";
+    Query<Game> q = Ebean.createQuery(Game.class);
+    // ilike is case insensitive
+    q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term))
+        .add(Expr.ilike("players", term));
+    return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
   }
 
   /**
@@ -232,11 +271,44 @@ public class Game extends Model {
     this.type = type;
   }
 
+  private List<String> noProfile = new ArrayList<>();
+
   /**
    * @return the players as a java List
    */
-  public List<String> getListPlayers() {
+  public List<Player> getPlayerProfiles() {
     // TODO check if player name is related to a player profile
+    List<String> gamePlayers = java.util.Arrays.asList(players.split("\\s*,\\s*"));
+
+    List<Player> withProfile = new ArrayList<>();
+    for (int x = 0; x < gamePlayers.size(); x++) {
+      Player player = Player.getPlayer(gamePlayers.get(x));
+
+      if (player != null) {
+        withProfile.add(player);
+      }
+      else {
+        noProfile.add(gamePlayers.get(x));
+      }
+    }
+    return withProfile;
+  }
+
+  /**
+   * Returns a list of the player names that don't have a profile within the site.
+   * 
+   * @return noProfile
+   */
+  public List<String> getNoProfile() {
+    return noProfile;
+  }
+
+  /**
+   * Returns a list of players with profile pages.
+   * 
+   * @return a list
+   */
+  public List<String> getListPlayers() {
     List<String> gamePlayers = java.util.Arrays.asList(players.split("\\s*,\\s*"));
     return gamePlayers;
   }
@@ -358,8 +430,8 @@ public class Game extends Model {
    */
   public static Map<String, Boolean> getMonths() {
     String[] month =
-        { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
-            "December" };
+        { "aJanuary", "bFebruary", "cMarch", "dApril", "eMay", "fJune", "gJuly", "hAugust", "iSeptember", "jOctober",
+            "kNovember", "lDecember" };
     Map<String, Boolean> months = new LinkedHashMap<>();
     for (int x = 0; x < month.length; x++) {
       months.put(month[x], false);
@@ -418,21 +490,16 @@ public class Game extends Model {
   }
 
   /**
-   * Search by games.
-   * 
-   * @param term String to be searched for
-   * @return list containing the search results
+   * @return the userCreator
    */
-  public static List<Game> searchGames(String term) {
-    List<Game> results = new ArrayList<>();
-    System.out.println("Search: " + term);
+  public String getUserCreator() {
+    return userCreator;
+  }
 
-    List<Game> byName = Game.find().where().contains("name", term).findList();
-    List<Game> byLocation = Game.find().where().contains("location", term).findList();
-
-    results.addAll(byName);
-    results.retainAll(byLocation);
-
-    return results;
+  /**
+   * @param userCreator the userCreator to set
+   */
+  public void setUserCreator(String userCreator) {
+    this.userCreator = userCreator;
   }
 }

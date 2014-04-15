@@ -11,7 +11,7 @@
         @if(isMultiple) {multiple="multiple"}>
         @if(!isMultiple) {<option class="blank" value="">Month</option>}
         @for((optionName, isSelected) <- optionMap) {
-          <option id="@optionName" value="@optionName" @if(isSelected) {selected}>@optionName</option>
+          <option id="@optionName" value="@optionName" @if(isSelected) {selected}>@optionName.substring(1, optionName.length())</option>
         }
       </select>
       <span class="help-block">@help</span>

@@ -1,6 +1,8 @@
 /**
  * 
+ */
+/**
  * @author AJ
  *
  */
-package models.teams;
+package views.teams;

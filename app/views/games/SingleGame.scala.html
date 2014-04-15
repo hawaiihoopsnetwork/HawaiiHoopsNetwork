@@ -4,9 +4,15 @@
 @Main(title + game.getName(), isLoggedIn) {
     
     <div class="visible-xs">
-     <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
-      <hr>  
-  </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+            @if(game.getType() == "Public"){
+                Join
+            } else {
+                Ask To Join
+            }       
+            </button>
+            <hr>
+        </div>
  
   
    <div class="row">
@@ -19,7 +25,7 @@
         <!--  Created By: Get user who created the game -->
         <h10>Type: </h10><i>@game.getType()</i></br></br>
         <h10>Time: </h10>@game.getTime()</br></br>
-        <h10>Date: </h10>@game.getDate()</br></br>
+        <h10>Date: </h10>@game.getDate().substring(1, game.getDate().length())</br></br>
         <h10>Location: </h10>@game.getLocation()</br></br>
         <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
         <h10>Skill Level (avg years playing): </h10>@game.getAvgSklLvl()</br>
@@ -28,9 +34,12 @@
         </br>
         </br>
       <!-- Need to check if logged in user is user who created the game -->
+      @if(Secured.getUserInfo(ctx()).getName() == game.getUserCreator()) {
         <a href="@routes.Games.editGame(game.getName())">Edit</a>
+      }
         <ul>
         <h10>Created: </h10>@game.getDateCreated()</br></br>
+        <h10>Created by: </h10>@game.getUserCreator()</br></br>
         @if(game.getDateEdit() != null) {
         <h10>Update Count: </h10>@game.getUpdateCount()</br></br>
         <h10>Last Updated: </h10>@game.getDateEdit()</br></br>
@@ -57,12 +66,16 @@
         
         Players Attending:</br>
         <ul>
-         @for(player <- game.getListPlayers()) {
-            <li><a href="#">@player</a></li>
+         @for(player <- game.getPlayerProfiles()) {
+            <li><a href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></li>
+         }
+         @for(player <- game.getNoProfile()) {
+            <li>@player</li>
          }
         </ul>
         </div>
     </div>
    </div>
-    
+   <!-- TODO do modal dialog -->
 }
+

@@ -1,4 +1,4 @@
-@(title: String, registrationForm: Form[forms.RegistrationForm], games: List[models.games.Game], isLoggedIn: Boolean)
+@(title: String, registrationForm: Form[forms.RegistrationForm], isLoggedIn: Boolean)
 
 @import bootstrap3._
 
@@ -20,7 +20,7 @@
                             <thead>
                             </thead>
                             <tbody data-link="row" class="rowlink">
-                            @for(game <- games) {
+                            @for(game <- models.games.Game.getGames()) {
                                 <tr>
                                     <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getName()</a></td>
                                 </tr>
