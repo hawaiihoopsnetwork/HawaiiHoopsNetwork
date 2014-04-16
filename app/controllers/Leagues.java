@@ -15,12 +15,12 @@ public class Leagues extends Controller{
    * 
    * @return the LeaguesPage
    */
-  //@Security.Authenticated(Secured.class)
-  //public static Result leagues() {
-    //List<Team> listTeam = TeamDB.getTeams();
+  @Security.Authenticated(Secured.class)
+  public static Result leagues() {
+    List<Team> listTeam = TeamDB.getTeams();
     
-    //return ok(LeagueList.render("Leagues", listTeam, Secured.isLoggedIn(ctx())));
-  //}
+    return ok(LeagueList.render("Leagues", listTeam, Secured.isLoggedIn(ctx())));
+  }
  
   
 }

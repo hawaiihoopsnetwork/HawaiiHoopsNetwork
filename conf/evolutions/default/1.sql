@@ -76,6 +76,7 @@ create table teams (
   skill_level               varchar(255),
   roster                    varchar(255),
   description               varchar(255),
+  image_url                 varchar(255),
   constraint pk_teams primary key (team_name))
 ;
 

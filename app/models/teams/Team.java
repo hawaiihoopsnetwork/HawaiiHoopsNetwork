@@ -36,6 +36,7 @@ public class Team extends Model {
   private String skillLevel;
   private String roster;
   private String description;
+  private String imageUrl;
 
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
@@ -239,6 +240,22 @@ public class Team extends Model {
    */
   public String getRoster() {
     return roster;
+  }
+  
+  
+
+  /**
+   * @return the imageUrl
+   */
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  /**
+   * @param imageUrl the imageUrl to set
+   */
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   /**

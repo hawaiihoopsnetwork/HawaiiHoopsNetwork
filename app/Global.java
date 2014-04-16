@@ -38,6 +38,11 @@ public class Global extends GlobalSettings {
       Court.addCourt("I", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
     }
 
+    if (TeamDB.getTeams().size() == 0) {
+      TeamDB.addTeam(new Team("teamName", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
+      TeamDB.addTeam(new Team("teamName2", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
+    }
+    
     String adminEmail = Play.application().configuration().getString("hihoops.admin.email");
     String adminPassword = Play.application().configuration().getString("hihoops.admin.password");
 
