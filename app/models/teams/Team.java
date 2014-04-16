@@ -102,6 +102,15 @@ public class Team extends Model {
   }
 
   /**
+   * Used in Global.java
+   * 
+   * @param team the team to be saved.
+   */
+  public static void addTeam(Team team) {
+    team.save();
+  }
+
+  /**
    * Returns a Java list of teams.
    * 
    * @return list of teams
