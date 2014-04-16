@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import play.db.ebean.Model.Finder;
 import models.teams.Team;
 
 @Entity
@@ -34,5 +35,13 @@ public class League {
 
   public void setId(long id) {
     this.id = id;
+  }
+  
+  /**
+   * The EBean ORM finder method for database queries on ID.
+   * @return The finder method for Favorites.
+   */
+  public static Finder<Long, League> find() {
+    return new Finder<Long, League>(Long.class, League.class);
   }
 }
