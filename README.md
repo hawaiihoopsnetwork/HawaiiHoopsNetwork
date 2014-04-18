@@ -5,10 +5,10 @@ Connecting basketball players, teams, and leagues on Oahu!
 - Network with players 
 - Join teams in your area! 
 - Register for leagues online.
+- [Live app here!](http://hihoops.scotthonda.cloudbees.net/)
 
 
-## Wiki Links
-[Live app here](http://hihoops.scotthonda.cloudbees.net/)
+## Wiki Links 
 [Related Technologies](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Related-Technologies)  
 [User Interviews](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Interviews)  
 [Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings)  
