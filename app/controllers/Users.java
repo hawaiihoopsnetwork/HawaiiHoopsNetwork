@@ -2,6 +2,7 @@ package controllers;
 
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+import models.games.Game;
 import org.joda.time.DateTime;
 import play.data.Form;
 import play.mvc.Controller;
@@ -14,6 +15,7 @@ import views.html.user.Login;
 import views.html.user.Validate;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 // import views.html.Registration;
 
@@ -49,6 +51,11 @@ public class Users extends Controller
 
         if (filledRegistrationForm.hasErrors())
         {
+            List<Game> games = null;
+            if (Secured.isLoggedIn(ctx())) {
+                games = Game.getGames();
+            }
+
             return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
         }
         else
@@ -79,8 +86,8 @@ public class Users extends Controller
 
             //session().clear();
             //session("email", user.getEmail());
-            flash("registered", "Thank you for signing up with Hawaii Hoops Network!");
-            return redirect(routes.Application.home());
+            flash("registered", "Thank you for signing up with Hawaii Hoops Network! Check your email for a verification link before logging in.");
+            return redirect(routes.Application.index());
         }
     }
 

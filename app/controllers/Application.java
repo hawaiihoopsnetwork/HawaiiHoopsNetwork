@@ -33,10 +33,10 @@ public class Application extends Controller {
     return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
   }
   
-  public static Result home() {
+  /*public static Result home() {
     List<Game> games = Game.getGames();
     return ok(Home.render("Home", games, Secured.isLoggedIn(ctx())));
-  }
+  }*/
 
   /**
    * Returns the terms of use page.

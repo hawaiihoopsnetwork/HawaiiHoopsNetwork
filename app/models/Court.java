@@ -19,23 +19,43 @@ public class Court extends Model
     @GeneratedValue
     private Long id;
 
+    /** general info **/
     private String name;
 
-    private String type;
+    private String type; // public or private
 
+    private String image;
+
+    private String website;
+
+    @Lob
+    private String description;
+
+    /** address info **/
     private String address;
 
     private Float lat;
 
     private Float lng;
 
-    // private String image;
+    /** court specifics **/
+    private Long num_courts;
 
-    @Lob
-    private String description;
+    private String court_size;
+
+    private String court_surface;
+
+    private String court_quality;
+
+    private boolean lighted;
+
+    /** player info **/
+    @ManyToOne
+    private List<Player> regular_players;
 
     @ManyToMany
     private List<Player> players = new ArrayList<Player>();
+
 
     public Court(String name, String type, String address, Float lat, Float lng, String description)
     {
