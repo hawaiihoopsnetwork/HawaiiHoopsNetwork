@@ -1,5 +1,4 @@
 # HawaiiHoopsNetwork
-[Live app here](http://hihoops.scotthonda.cloudbees.net/)
 Connecting basketball players, teams, and leagues on Oahu! 
 - Get information on open gyms
 - Find pick up games
@@ -9,6 +8,7 @@ Connecting basketball players, teams, and leagues on Oahu!
 
 
 ## Wiki Links
+[Live app here](http://hihoops.scotthonda.cloudbees.net/)
 [Related Technologies](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Related-Technologies)  
 [User Interviews](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Interviews)  
 [Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings)  
