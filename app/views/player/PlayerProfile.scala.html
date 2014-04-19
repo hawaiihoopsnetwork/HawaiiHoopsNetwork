@@ -1,4 +1,4 @@
-@(title: String, player: Player, isLoggedIn: Boolean, user: User, games: List[Game]) 
+@(title: String, player: Player, isLoggedIn: Boolean, user: User, playerGames: List[models.games.Game]) 
 
 @import helper._
 @import models._
@@ -136,8 +136,8 @@
                 </tr>
               </thead>
               <tbody data-link="row" class="rowlink">
-              @if(games != null) {
-                @for(game <- games) {
+              @if(playerGames != null) {
+                @for(game <- playerGames) {
                 <tr>
                   <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate().substring(1, game.getDate().length())</a></td>
                   <td>@*game.getTime()*@</td>

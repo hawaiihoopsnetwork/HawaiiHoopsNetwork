@@ -218,7 +218,7 @@ public class Game extends Model {
     Query<Game> q = Ebean.createQuery(Game.class);
     // ilike is case insensitive
     q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term)).add(Expr.ilike("players", term));
-    return find().where().eq("players", term).findList();
+    return q.findList();
   }
 
   /**
