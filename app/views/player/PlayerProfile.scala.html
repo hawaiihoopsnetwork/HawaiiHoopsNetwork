@@ -1,6 +1,7 @@
-@(title: String, player: Player, isLoggedIn: Boolean, user: User) 
+@(title: String, player: Player, isLoggedIn: Boolean, user: User, games: List[Game]) 
 
-@import helper._ 
+@import helper._
+@import models._
 
 @Main(title, isLoggedIn) { 
  
@@ -123,6 +124,34 @@
 
           <div id="Schedule" class="tab-pane fade">
             <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <!-- <th class="hidden-xs">Frequency</th> -->
+                  <th class="hidden-xs">Skill Level</th>
+                  <th class="hidden-xs">Number of Players</th>
+                </tr>
+              </thead>
+              <tbody data-link="row" class="rowlink">
+              @if(games != null) {
+                @for(game <- games) {
+                <tr>
+                  <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate().substring(1, game.getDate().length())</a></td>
+                  <td>@*game.getTime()*@</td>
+                  <td>@game.getLocation()</td>
+                  <td>@game.getType()</td>
+                  <!--  <td class="hidden-xs">@game.getFrequency()</td> -->
+                  <td class="hidden-xs">@game.getAvgSklLvl()</td>
+                  <td class="hidden-xs">@game.getListPlayers().size()</td>
+                </tr>
+                }
+              }
+              </tbody>
+            </table>
+            <!--<table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Time</th>

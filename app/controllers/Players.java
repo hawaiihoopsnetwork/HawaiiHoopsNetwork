@@ -7,6 +7,7 @@ import java.util.Map;
 import com.avaje.ebean.Page;
 import models.Player;
 import models.User;
+import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -38,7 +39,8 @@ public class Players extends Controller{
   @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    List<Game> games = Game.findPlayerGames(player.getName());
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games ));
   }
   
   /**
@@ -54,7 +56,8 @@ public class Players extends Controller{
     player.setVotes(player.getVotes() + 1);
     player.setRating(player.getRating() + rate);
     player.save();
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    List<Game> games = Game.findPlayerGames(player.getName());
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games));
   }
   
   /**************************

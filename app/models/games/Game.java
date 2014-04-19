@@ -204,6 +204,22 @@ public class Game extends Model {
         .add(Expr.ilike("players", term));
     return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
   }
+  
+  /**
+   * Used for player profile.
+   * 
+   * @param term the search term
+   * @param sort sort type
+   * @param page page num
+   * @return page
+   */
+  public static List<Game> findPlayerGames(String term) {
+    term = "%" + term + "%";
+    Query<Game> q = Ebean.createQuery(Game.class);
+    // ilike is case insensitive
+    q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term)).add(Expr.ilike("players", term));
+    return find().where().eq("players", term).findList();
+  }
 
   /**
    * @return the time
