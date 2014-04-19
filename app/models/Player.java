@@ -79,7 +79,26 @@ public class Player extends Model {
             formData.picUrl);
     player.save();
   }
-
+  
+  /**
+   * Updates a player's info
+   */
+  public static void updatePlayer(PlayerFormData formData, long id) {
+    
+    Player player = getPlayer(id);
+    player.setName(formData.name);
+    player.setNickname(formData.nickname);
+    player.setHomeCourt(formData.homeCourt);
+    player.setSkill(formData.skill);
+    player.setPosition(formData.position);
+    player.setHeight(formData.height);
+    player.setWeight(formData.weight);
+    player.setBio(formData.bio);
+    player.setLookingFor(formData.lookingFor);
+    player.setPicUrl(formData.picUrl);
+    player.save();
+  }
+  
   /**
    * The EBean ORM finder method for database queries on PlayerList.
    **/

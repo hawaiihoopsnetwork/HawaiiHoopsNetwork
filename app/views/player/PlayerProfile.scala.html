@@ -54,11 +54,11 @@
         <h5><small>Skill Level:</small>    @player.getSkill()</h5>
         <h5><small>Looking For:</small>   @player.getLookingFor()</h5>
         
-        @*if(isLoggedIn){
+        @if(isLoggedIn){
             @if(user.getId() == player.getId()) {
-                <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
+                <a href="@routes.Players.playerEdit(player.getId())" class="btn btn-primary" role="button">Edit Profile</a>
             }
-        }*@
+        }
         
       </div> <!-- well -->
     </div> <!-- col-md-3 -->
