@@ -7,6 +7,7 @@ import java.util.Map;
 import com.avaje.ebean.Page;
 import models.Player;
 import models.User;
+import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -26,9 +27,9 @@ import views.formdata.SearchFormData;
  */
 public class Players extends Controller{
   
-  /**************************
-   * PlayerList Controllers *
-   **************************/
+  /*****************************
+   * PlayerProfile Controllers *
+   *****************************/
   
   /**
    * Returns the individual player's profile.
@@ -38,8 +39,30 @@ public class Players extends Controller{
   @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    List<Game> games = Game.findPlayerGames(player.getName());
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games ));
   }
+  
+  /**
+   * Returns the current profile but submits a vote to the player's ranking.
+   * 
+   * @param id = id of player
+   * @param rate = rating given to player by user
+   * @return PlayerProfile page.
+   */
+  @Security.Authenticated(Secured.class)
+  public static Result playerVote(long id, long rate){
+    Player player = Player.getPlayer(id);
+    player.setVotes(player.getVotes() + 1);
+    player.setRating(player.getRating() + rate);
+    player.save();
+    List<Game> games = Game.findPlayerGames(player.getName());
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games));
+  }
+  
+  /**************************
+   * PlayerList Controllers *
+   **************************/
   
   /**
    * Returns the player list page with all players.
@@ -120,6 +143,7 @@ public class Players extends Controller{
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find("name asc", 0);
+    User user = Secured.getUserInfo(ctx());
     
     if (data.hasErrors()) {
       Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
@@ -127,20 +151,29 @@ public class Players extends Controller{
       return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
     }
     else {
-      PlayerFormData formData = data.get();
-      Player.addPlayer(formData);
+      PlayerFormData formData = data.get();;
+      if (Player.getPlayer(user.getId()) == null) {
+        Player.addPlayer(formData);
+      } else {
+        Player.updatePlayer(formData, user.getId());
+      }
+      
       User.setHasProfile(true);
       return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
     }
   }
   
   @Security.Authenticated(Secured.class)
-  public static Result playerVote(long id, long rate){
-    Player player = Player.getPlayer(id);
-    player.setVotes(player.getVotes() + 1);
-    player.setRating(player.getRating() + rate);
-    player.save();
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+  public static Result playerEdit(long id) {
+    PlayerFormData playerData = new PlayerFormData(Player.getPlayer(id));
+    Form<PlayerFormData> playerFormData = Form.form(PlayerFormData.class).fill(playerData);
+    
+    //Map of players skill levels and positions. 
+    //When user selects either their skill or position that skill or position is set as true. 
+    Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
+    Map<String, Boolean> playerPosition = PlayerFields.getPosition();
+    
+    return ok(PlayerForm.render("Player Form", playerFormData, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+
   }
-  
 }

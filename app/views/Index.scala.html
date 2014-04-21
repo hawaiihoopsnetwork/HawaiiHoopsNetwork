@@ -125,7 +125,6 @@
                     <p class="lead">
                         The HIHoops site is designed to make it easy for players to connect
                         with players of a similar skill level, location, and even gender.
-                        <a href="GamesPublic.html" class="btn btn-primary btn-sm">Find Games</a> near your area.
                     </p>
                     <img class="img-responsive" src="@routes.Assets.at("images/players.png")"/>
                 </div>
@@ -140,9 +139,8 @@
                     <h1>Find gyms & courts</h1>
                     <p class="lead">
                         Looking for a court to play at? Our gyms page can locate gyms & courts near you!
-                        <a href="@routes.Courts.index()" class="btn btn-primary btn-sm">Find Gyms</a>
                     </p>
-                    <img class="img-responsive" src="@routes.Assets.at("images/GymsMap")"/>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/GymsMap.png")"/>
                 </div>
             </div>
         </div>
@@ -154,9 +152,8 @@
                     <h1>Build your rep.</h1>
                     <p class="lead">
                         Find other b-ballers to play with and check their sportsmanship rating!
-                        <a href="playerProfiles.html" class="btn btn-primary btn-sm">Search Players</a>
                     </p>
-                    <img class="img-responsive" src="@routes.Assets.at("images/PlayerProfiles.png")"/>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/PlayerProfiles.png")"/>
                 </div>
             </div>
         </div>
@@ -169,9 +166,8 @@
                     <h1>Find teams to play in.</h1>
                     <p class="lead">
                         Search for teams to join based on skill level and position!
-                        <a href="TeamsPublic.html" class="btn btn-primary btn-sm">Search Teams</a>
                     </p>
-                    <img class="img-responsive" src="@routes.Assets.at("images/Teams.png")"/>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/Teams.png")"/>
                 </div>
             </div>
         </div>
@@ -184,9 +180,8 @@
                     <h1>Find, create, and manage leagues</h1>
                     <p class="lead">
                         Advertise, create, and manage your league! Or search for leagues that your team can play in!
-                        <a href="LeaguesListPublic.html" class="btn btn-primary btn-sm">Search Leagues</a>
                     </p>
-                    <img class="img-responsive" src="@routes.Assets.at("images/Leagues.png")"/>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/Leagues.png")"/>
                 </div>
             </div>
         </div>
@@ -206,7 +201,6 @@
                         basketball players on the islands. Hawaii Hoops Network was created by a group of local students who have a passion
                         for amateur basketball.
                     </p>
-                    <a href="#" class="btn btn-primary btn">Learn More About Us</a>
                 </div>
             </div>
         </div>
@@ -214,6 +208,17 @@
         <br/>
 
         <!-- Register Button -->
-        <div align="center"><a class="btn btn-primary btn-xlg" href="#">Ready to register?</a></div>
+        <div align="center"><a data-toggle="modal" href="#registration" class="btn btn-primary btn-lg">Ready to register?</a></div>
+        
+        <div id="registration" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-body">
+                    @registrationform(routes.Users.postRegister(), registrationForm("first"), registrationForm("last"), registrationForm("email"),registrationForm("password"), registrationForm("confirmPassword"))
+                    <a href="" data-dismiss="modal">Cancel</a>
+                </div>
+                </div>
+            </div>
+        </div>
     }
 }

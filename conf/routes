@@ -14,7 +14,7 @@ GET         /logout                     controllers.Users.logout()
 GET         /delete                     controllers.Users.deleteUser()
 GET         /validate/:key              controllers.Users.validate(key)
 
-#GET			/leagues					controllers.Leagues.leagues()
+GET			/leagues					controllers.Leagues.leagues()
 
 GET         /courts                     controllers.Courts.index()
 GET         /courts/:id                 controllers.Courts.getCourt(id: Long)
@@ -30,6 +30,7 @@ GET         /playerProfile              controllers.Players.playerProfile(id: Lo
 GET         /playerProfile/:id:rating          controllers.Players.playerVote(id: Long, rating: Long)
 GET         /player/manage              controllers.Players.playerManage()
 GET         /player/manage/submit       controllers.Players.playerManageSubmit()
+GET         /player/edit                controllers.Players.playerEdit(id: Long)
 
 GET         /TermsOfUse                 controllers.Application.terms()
 GET         /ContactUs                  controllers.Application.contact()
