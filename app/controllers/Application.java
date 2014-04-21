@@ -30,7 +30,6 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    Users.logout();
     return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
   }
   
