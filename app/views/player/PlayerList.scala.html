@@ -58,13 +58,6 @@
                 <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
-        @if(isLoggedIn){
-            @if(user.getHasProfile()) {
-                <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
-            } else {
-                <a href="@routes.Players.playerManage()" class="btn btn-primary pull-right" role="button">Create Profile</a>
-            }
-        }
         
     </div>
 
