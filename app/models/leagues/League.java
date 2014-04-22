@@ -16,7 +16,7 @@ public class League {
 
   private String name;
   
- // @ManyToMany(mappedBy = "leagues", cascade=CascadeType.ALL)
+  @ManyToMany(mappedBy = "leagues", cascade=CascadeType.ALL)
   private List<Team> teams = new ArrayList<>();
   
   public League(String name, long id){

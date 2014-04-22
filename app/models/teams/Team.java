@@ -2,8 +2,10 @@ package models.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.avaje.ebean.Ebean;
@@ -40,6 +42,9 @@ public class Team extends Model {
 
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
+  
+  @ManyToMany(cascade=CascadeType.ALL)
+  private List<Team> leagues = new ArrayList<>();
 
   /**
    * Default constructor.
@@ -57,14 +62,15 @@ public class Team extends Model {
    * @param roster roster
    * @param description description
    */
-  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description) {
+  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
+      String imageUrl) {
     this.setTeamName(teamName);
     this.setLocation(location);
     this.setTeamType(teamType);
     this.setSkillLevel(skillLevel);
     this.setRoster(roster);
     this.setDescription(description);
-
+    this.setImageUrl(imageUrl);
   }
 
   /**
@@ -87,7 +93,7 @@ public class Team extends Model {
     String name = tf.teamName;
 
     if (!isTeam(name)) {
-      team = new Team(name, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description);
+      team = new Team(name, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
       team.save();
     }
     else {
@@ -98,6 +104,7 @@ public class Team extends Model {
       team.setSkillLevel(tf.skillLevel);
       team.setRoster(tf.roster);
       team.setDescription(tf.description);
+      team.setImageUrl(tf.imageUrl);
       team.save();
     }
   }

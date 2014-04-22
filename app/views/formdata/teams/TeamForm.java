@@ -31,6 +31,8 @@ public class TeamForm {
   public String roster;
   /** Description of the team. **/
   public String description;
+  /** Team logo*/
+  public String imageUrl;
 
   /**
    * Default constructor.
