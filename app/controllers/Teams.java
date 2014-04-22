@@ -13,6 +13,7 @@ import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
 import views.html.teams.ShowTeam;
+import views.html.teams.SearchTeams;
 
 /**
  * Implements the controllers for this application.
@@ -50,7 +51,7 @@ public class Teams extends Controller {
 
     Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
 
-    return ok(AllTeams.render("All Teams", currPage, "teamName asc", stuff, Secured.isLoggedIn(ctx())));
+    return ok(SearchTeams.render(" Teams", currPage, Secured.isLoggedIn(ctx()), st2.term));
   }
 
   /**

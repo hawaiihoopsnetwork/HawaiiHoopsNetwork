@@ -37,6 +37,10 @@ public class Team extends Model {
   private String roster;
   private String description;
   private String imageUrl;
+  
+  private String record;
+  private 
+  
 
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
