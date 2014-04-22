@@ -158,7 +158,7 @@ public class Players extends Controller{
         Player.updatePlayer(formData, user.getId());
       }
       
-      User.setHasProfile(true);
+      //User.setHasProfile(true);
       return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
     }
   }

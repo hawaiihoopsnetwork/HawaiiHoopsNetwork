@@ -31,7 +31,7 @@ public class User extends Model {
 
   private boolean admin;
 
-  private static boolean hasProfile = false;
+  //private static boolean hasProfile = false;
 
   /** Token used for email registration */
   private String activation_key;
@@ -234,11 +234,11 @@ public class User extends Model {
     this.timestamp = timestamp;
   }
 
-  public boolean getHasProfile() {
+  /**public boolean getHasProfile() {
     return hasProfile;
   }
 
   public static void setHasProfile(boolean value) {
     hasProfile = value;
-  }
+  }*/
 }
