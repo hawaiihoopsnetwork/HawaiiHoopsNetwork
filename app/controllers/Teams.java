@@ -9,11 +9,13 @@ import play.mvc.Result;
 import play.data.Form;
 import views.formdata.CommentForm;
 import views.formdata.SearchFormData;
+import views.formdata.teams.StatForm;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
 import views.html.teams.ShowTeam;
 import views.html.teams.SearchTeams;
+import views.html.teams.EditTeamStats;
 
 /**
  * Implements the controllers for this application.
@@ -123,6 +125,38 @@ public class Teams extends Controller {
       return redirect("/teams/view/" + teamName);
     }
 
+  }
+
+  public static Result editStats(String teamName) {
+
+    StatForm st = new StatForm(Team.getTeam(teamName));
+    Form<StatForm> stats = Form.form(StatForm.class).fill(st);
+
+    Team team = Team.getTeam(teamName);
+    return ok(EditTeamStats.render("Edit Stats: " + teamName, team, stats, Secured.isLoggedIn(ctx())));
+  }
+
+  public static Result postStats(String teamName) {
+    Team team = Team.getTeam(teamName);
+
+    Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
+
+    if (st.hasErrors()) {
+      return badRequest(EditTeamStats.render("Edit Stats: " + teamName, team, st, Secured.isLoggedIn(ctx())));
+    }
+    else {
+      StatForm stat = st.get();
+      team.setRecord(stat.record);
+      team.setThreePt(stat.threePt);
+      team.setTwoPt(stat.twoPt);
+      team.setOnePt(stat.onePt);
+      team.setRebounds(stat.rebounds);
+      team.setSteals(stat.steals);
+      team.setBlocks(stat.blocks);
+      team.save();
+
+      return redirect("/teams/view/" + teamName);
+    }
   }
 
 }

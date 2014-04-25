@@ -1,4 +1,4 @@
-@(title: String, team: models.teams.Team, commentForm: Form[views.formdata.CommentForm], comments: List[Comment], loggedIn: Boolean)
+@(title: String, team: models.teams.Team, statForm: Form[views.formdata.teams.StatForm], loggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
@@ -11,18 +11,18 @@
       <div class="col-md-3 hidden-xs">
       <ul class="nav nav-tabs nav-stacked" data-tabs="tabs">
          <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
-         <li><a href="#profiles" data-toggle="tab">Roster</a></li>
-         <li><a href="#media" data-toggle="tab">Media</a></li>
-         <li><a href="#reviews" data-toggle="tab">Comments</a></li>
+         <li class="disabled"><a>Roster</a></li>
+         <li class="disabled"><a>Media</a></li>
+         <li class="disabled"><a>Comments</a></li>
       </ul>
       </div>
       
        <div class="col-md-3 visible-xs">
       <ul class="nav nav-tabs" data-tabs="tabs">
          <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
-         <li><a href="#profiles" data-toggle="tab">Roster</a></li>
-         <li><a href="#media" data-toggle="tab">Media</a></li>
-         <li><a href="#reviews" data-toggle="tab">Comments</a></li>
+         <li class="disabled"><a>Roster</a></li>
+         <li class="disabled"><a>Media</a></li>
+         <li class="disabled"><a>Comments</a></li>
       </ul>
       </div>
       
@@ -30,28 +30,63 @@
       <div class="tab-content">
             <div class="tab-pane fade in active" id="stats">
                <img src="@routes.Assets.at("images/no-available-image.png")" height="40%" width="40%"> <br>
-               <h4>Stats: </h4>
-               
-               <ul>
-                  <li><i>Record: </i>@team.getRecord()</br></li>
-                     <li>@team.getThreePt() % 3pts  <br></li>
-                     <li>@team.getTwoPt() % 2pts  <br></li>
-                     <li>@team.getOnePt() % 1pt  <br></li>
-                     <li>@team.getRebounds() rebounds  <br></li>
-                     <li>@team.getSteals() steals  <br></li>
-                     <li>@team.getBlocks() blocks  <br></li>
-                </ul>     
-                <a href="@routes.Teams.editStats(team.getTeamName())" class="btn btn-primary btn-md pull-right" role="button">Edit Stats</a> </br>
-    
+               <h4>Edit Stats: </h4>
+                  @form(routes.Teams.postStats(team.getTeamName()), 'class -> "form-horizontal") {
+                  
+                    @bootstrap3.text(statForm("record"),
+                        label = "Record",
+                        placeholder = "0-0",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("threePt"),
+                        label = "Three Points %",
+                        placeholder = "65",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("twoPt"),
+                        label = "Two Point %",
+                        placeholder = "80",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("onePt"),
+                        label = "Free Throw %",
+                        placeholder = "95",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("rebounds"),
+                        label = "# of Rebounds",
+                        placeholder = "90",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("steals"),
+                        label = "# of Steals",
+                        placeholder = "65",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("blocks"),
+                        label = "# of Blocks",
+                        placeholder = "80",
+                        help = "")
+                        
+                     <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        
+                        <button id="submitButton" type="submit" class="btn btn-primary">
+                        Done Editing
+                        </button>
+                        </div>
+                    </div>    
+              
+                  
+                  }
+                    <a href="@routes.Teams.showTeam(team.getTeamName)">Cancel</a>
+                  
             </div>
             <div class="tab-pane fade" id="profiles">
                <h4>Player Profiles: </h4>
                   <ul>
-                    @for(player <- team.getPlayerProfiles()) {
-                        <li><a href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></li>
-                    }
-                    @for(player <- team.getNoProfile()) {
-                        <li>@player</li>                    
+                    @for(player <- team.getRosterList()) {
+                        <li><a href="#player">@player</a></li>
                     }
                   </ul>
             </div>
@@ -108,36 +143,14 @@
             </div>
             <div class="tab-pane fade" id="reviews">
                <h4>Comments about This Team: </h4>
-                  @for(comment <- comments) {
-                    <div class="well">
-                        <li>@comment.getAuthor()</li>
-                       <p>@comment.getComment()</p>
-                       <div class="pull-right">@comment.getDate()</div>
-                    </div>
-                 }
+                  
                   
                   </br>
                   </br>
                   <hr>
                   
               
-              @form(routes.Teams.postComment(team.getTeamName()), 'class -> "form-horizontal") {
-                
-                @bootstrap3.textarea(commentForm("comment"),
-                    rows = "6",
-                    label = "Leave a Comment",
-                    placeholder = "",
-                    help = "")
-              
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                        <button id="submitButton" type="submit" class="btn btn-primary">
-                        Add Comment
-                        </button>
-                        </div>
-                    </div>    
-              
-              }
+             
               </div>
          </div>
       </div>

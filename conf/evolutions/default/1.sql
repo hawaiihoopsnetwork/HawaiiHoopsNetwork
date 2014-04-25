@@ -77,6 +77,13 @@ create table teams (
   roster                    varchar(255),
   description               varchar(255),
   image_url                 varchar(255),
+  record                    varchar(255),
+  three_pt                  double,
+  two_pt                    double,
+  one_pt                    double,
+  rebounds                  integer,
+  steals                    integer,
+  blocks                    integer,
   constraint pk_teams primary key (team_name))
 ;
 
