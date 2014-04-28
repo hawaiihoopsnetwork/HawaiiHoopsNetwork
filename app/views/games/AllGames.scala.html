@@ -57,7 +57,11 @@
         <tr>
           <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate().substring(1, game.getDate().length())</a></td>
           <td>@*game.getTime()*@</td>
-          <td>@game.getLocation()</td>
+          @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+            <td>@game.getLocation()</td>
+          } else {
+            <td></td>
+          }
           <td>@game.getType()</td>
           <!--  <td class="hidden-xs">@game.getFrequency()</td> -->
           <td class="hidden-xs">@game.getAvgSklLvl()</td>

@@ -43,6 +43,10 @@ GET     /games/create                controllers.Games.createGame()
 GET     /games/edit/:name            controllers.Games.editGame(name)
 POST    /games/new                   controllers.Games.addGame()
 POST    /games/list/search           controllers.Games.searchResults(page: Integer)
+GET     /games/view/:name/join       controllers.Games.joinPublic(name)
+GET     /games/view/:name/joinPrivate controllers.Games.joinPrivate(name)
+GET     /games/view/:name/allow     controllers.Games.allowPrivate(name, user: String)
+GET     /games/view/:name/unjoin     controllers.Games.unjoin(name)
 
 
 # Teams
