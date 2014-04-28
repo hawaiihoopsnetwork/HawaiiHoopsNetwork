@@ -86,9 +86,8 @@ public class Games extends Controller {
       GameForm game = gameForm.get();
 
       User user = Secured.getUserInfo(ctx());
-      String realName = user.getName();
-
-      Game.addGame(game, realName);
+      
+      Game.addGame(game, user);
 
       return redirect("/games/view/" + game.name);
     }
@@ -153,19 +152,19 @@ public class Games extends Controller {
     String user = Secured.getUserInfo(ctx()).getName();
     MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
 
-    // User user = User.getUserByName(game.getUserCreator());
-    // Null pointer when at User
-    // String email = user.getEmail();
+    // Null pointer when getting user creator
+    User creator = game.getCreator();
+    String email = creator.getEmail();
 
     String url = routes.Games.allowPrivate(gameName, user).absoluteURL(request());
 
     mail.setSubject(user + " would like to join: " + gameName);
     // Set recipient to game creator after null pointer is sorted out.
     // Used for testing purposes
-    mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
+    mail.setRecipient(email);
     mail.setFrom("hawaiihoopsnetwork@gmail.com");
     mail.sendHtml("<html> <h1>A player wants to join your game!</h1>" + "<hr><br>" + user
-        + " would like to join your game " + gameName + "<a href='" + url
+        + " would like to join your game " + gameName + "<br><br><a href='" + url
         + "'>Confirm</a> <br><br>If you don't want this player to join this game, ignore this email.</html>");
     return ok(RequestSent.render("Request Sent", Secured.isLoggedIn(ctx()), gameName));
   }

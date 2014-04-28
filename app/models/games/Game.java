@@ -7,14 +7,16 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import models.Player;
+import models.User;
+import play.db.ebean.Model;
+import views.formdata.games.GameForm;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
-import models.Player;
-import play.db.ebean.Model;
-import views.formdata.games.GameForm;
 
 /**
  * Game model.
@@ -44,7 +46,8 @@ public class Game extends Model {
   private String dateEdit;
   private int updateCount;
 
-  private String userCreator;
+  @OneToOne
+  private User creator;
 
   /**
    * Default constructor.
@@ -65,7 +68,7 @@ public class Game extends Model {
    * @param players players
    */
   public Game(String name, String time, String date, String location, String type, String freq, String sklLvl,
-      String players, String user) {
+      String players, User creator) {
     this.setName(name);
     this.setTime(time);
     this.setDate(date);
@@ -75,7 +78,7 @@ public class Game extends Model {
     this.setAvgSklLvl(sklLvl);
     this.setPlayers(players);
     this.setUpdateCount(0);
-    this.setUserCreator(user);
+    this.setCreator(creator);
   }
 
   /**
@@ -92,7 +95,7 @@ public class Game extends Model {
    * 
    * @param gf the game form
    */
-  public static void addGame(GameForm gf, String user) {
+  public static void addGame(GameForm gf, User user) {
     // TODO currently does not work with editing of games
     Game game;
     Date date;
@@ -109,7 +112,6 @@ public class Game extends Model {
       game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players, user);
       date = new Date();
       game.setDateCreated(date.toString());
-      // game.setUserCreator(user);
       game.save();
 
     }
@@ -490,16 +492,16 @@ public class Game extends Model {
   }
 
   /**
-   * @return the userCreator
+   * @return the creator
    */
-  public String getUserCreator() {
-    return userCreator;
+  public User getCreator() {
+    return creator;
   }
 
   /**
-   * @param userCreator the userCreator to set
+   * @param creator the creator to set
    */
-  public void setUserCreator(String userCreator) {
-    this.userCreator = userCreator;
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 }

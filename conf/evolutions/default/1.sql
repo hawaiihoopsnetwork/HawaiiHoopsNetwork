@@ -42,7 +42,7 @@ create table game (
   date_created              varchar(255),
   date_edit                 varchar(255),
   update_count              integer,
-  user_creator              varchar(255),
+  creator_id                bigint,
   constraint pk_game primary key (name))
 ;
 
@@ -123,8 +123,10 @@ create sequence users_seq;
 
 alter table comment add constraint fk_comment_team_1 foreign key (team_team_name) references teams (team_name) on delete restrict on update restrict;
 create index ix_comment_team_1 on comment (team_team_name);
-alter table users add constraint fk_users_players_2 foreign key (players_id) references players (id) on delete restrict on update restrict;
-create index ix_users_players_2 on users (players_id);
+alter table game add constraint fk_game_creator_2 foreign key (creator_id) references users (id) on delete restrict on update restrict;
+create index ix_game_creator_2 on game (creator_id);
+alter table users add constraint fk_users_players_3 foreign key (players_id) references players (id) on delete restrict on update restrict;
+create index ix_users_players_3 on users (players_id);
 
 
 

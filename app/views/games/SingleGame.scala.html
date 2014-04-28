@@ -46,12 +46,12 @@
         </br>
         </br>
       <!-- Need to check if logged in user is user who created the game -->
-      @if(Secured.getUserInfo(ctx()).getName() == game.getUserCreator()) {
+      @if(Secured.getUserInfo(ctx()).getName() == game.getCreator().getName()) {
         <a href="@routes.Games.editGame(game.getName())">Edit</a>
       }
         <ul>
         <h10>Created: </h10>@game.getDateCreated()</br></br>
-        <h10>Created by: </h10>@game.getUserCreator()</br></br>
+        <h10>Created by: </h10>@game.getCreator().getName()</br></br>
         @if(game.getDateEdit() != null) {
         <h10>Update Count: </h10>@game.getUpdateCount()</br></br>
         <h10>Last Updated: </h10>@game.getDateEdit()</br></br>

@@ -48,24 +48,31 @@ public class Global extends GlobalSettings {
 
     User user = User.getUser(adminEmail);
 
+    User newUser = null;
+    User SteveF = null;
+    User Loa = null;
+    User Keith = null;
+    User Hector = null;
+    
     if (user == null) {
-      User newUser = User.addUser("Alex G.", adminEmail, adminPassword);
+      
+      newUser = User.addUser("Alex G.", adminEmail, adminPassword);
       newUser.setActivation_key(null);
       newUser.update();
 
-      User SteveF = User.addUser("Steve F.", "Steve@gmail.com", "password");
+      SteveF = User.addUser("Steve F.", "Steve@gmail.com", "password");
       SteveF.setActivation_key(null);
       SteveF.update();
 
-      User Loa = User.addUser("Loa P.", "Loa@gmail.com", "password");
+      Loa = User.addUser("Loa P.", "Loa@gmail.com", "password");
       Loa.setActivation_key(null);
       Loa.update();
 
-      User Keith = User.addUser("Keith A.", "Keith@gmail.com", "password");
+      Keith = User.addUser("Keith A.", "Keith@gmail.com", "password");
       Keith.setActivation_key(null);
       Keith.update();
 
-      User Hector = User.addUser("Hector M.", "Hector@gmail.com", "password");
+      Hector = User.addUser("Hector M.", "Hector@gmail.com", "password");
       Hector.setActivation_key(null);
       Hector.update();
     }
@@ -95,15 +102,15 @@ public class Global extends GlobalSettings {
 
     if (Game.getGames().size() == 0) {
       Game.addGame(new Game("Kapolei PUG", "3:00PM", "cMarch 12", "Kapolei park", "Public", "Nightly", "Beginner",
-          "Loa P., Alex G.", "admin"));
+          "Loa P., Alex G.", SteveF));
       Game.addGame(new Game("Aina Hina PUG", "3:00PM", "cMarch 10", "Aina Hina park", "Private", "Nightly", "Beginner",
-          "Loa P., Alex G.", "admin"));
+          "Loa P., Alex G.", Loa));
       Game.addGame(new Game("Waianae Nightly", "6:00PM", "cMarch 11", "Waianae park", "Public", "Nightly", "Beginner",
-          "Loa P., Alex G.", "admin"));
+          "Loa P., Alex G.", Keith));
       Game.addGame(new Game("Makakilo Lunchtime", "12:00PM", "cMarch 25", "Makakilo Rec", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G.", "admin"));
+          "Beginner", "Loa P., Alex G.", Hector));
       Game.addGame(new Game("Ewa Beach Practice", "5:00PM", "dApril 2", "Kapolei park", "Private", "Nightly",
-          "Beginner", "Loa P., Alex G.", "admin"));
+          "Beginner", "Loa P., Alex G.", newUser));
     }
 
     if (Player.getPlayers().size() == 0) {
