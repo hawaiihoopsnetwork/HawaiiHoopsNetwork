@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import models.Player;
 import models.User;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.db.ebean.Model;
@@ -27,6 +28,8 @@ import com.avaje.ebean.Query;
 @Entity
 @Table(name = "game")
 public class Game extends Model {
+
+  private static final int DAYS_PAST = -31;
 
   /**
    * 
@@ -78,8 +81,8 @@ public class Game extends Model {
    * @param players players
    * @param creator creator
    */
-  public Game(String name, String month, String day, String year, String hour, String minute, String location, String type,
-      String frequency, String avgSklLvl, String players, User creator) {
+  public Game(String name, String month, String day, String year, String hour, String minute, String location,
+      String type, String frequency, String avgSklLvl, String players, User creator) {
 
     // Month
     int mon = Integer.parseInt(month);
@@ -87,9 +90,9 @@ public class Game extends Model {
     int da = Integer.parseInt(day);
     // Year
     int ye = Integer.parseInt(year);
-    
+
     int ho = Integer.parseInt(hour);
-    
+
     int min = Integer.parseInt(minute);
 
     DateTime event = new DateTime(ye, mon, da, ho, min);
@@ -178,6 +181,11 @@ public class Game extends Model {
     }
   }
 
+  /**
+   * Add game.
+   * 
+   * @param game game
+   */
   public static void addGame(Game game) {
     game.save();
   }
@@ -573,7 +581,7 @@ public class Game extends Model {
   }
 
   private static DateTime today = new DateTime();
-  
+
   public static int getCurrMonth() {
     return today.monthOfYear().get();
   }
@@ -585,13 +593,23 @@ public class Game extends Model {
   public static int getCurrYear() {
     return today.year().get();
   }
-  
+
   public static int getCurrHour() {
     return today.hourOfDay().get();
   }
-  
+
   public static int getCurrMinute() {
     return today.minuteOfHour().get();
   }
-  
+
+  public static void deletePastGames() {
+    List<Game> allGames = find().all();
+    for (Game game : allGames) {
+      int days = Days.daysBetween(today, game.getGameTime()).getDays();
+      if (days < DAYS_PAST) {
+        System.out.println("YESS");
+        Game.deleteGame(game.getName());
+      }
+    }
+  }
 }

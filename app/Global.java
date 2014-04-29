@@ -103,16 +103,20 @@ public class Global extends GlobalSettings {
     }
 
     if (Game.getGames().size() == 0) {
-      Game.addGame(new Game("Ewa Beach Practice", "4", "2", "2014", "17", "00", "Ewa Beach", "Private", "Nightly", "Beginner",
-          "Loa P., Alex G.", SteveF));
-      Game.addGame(new Game("Makakilo Lunchtime", "5", "2", "2014", "13", "00", "Makakilo Rec Center", "Public", "Nightly",
-          "Advanced", "Loa P., Alex G.", Keith));
+      // This shouldn't show up when the app is loaded.
+      Game.addGame(new Game("Test Delete", "3", "25", "2014", "5", "00", "test", "Public", "Daily", "Beginner",
+          "Alex G.", SteveF));
+      // These should
+      Game.addGame(new Game("Ewa Beach Practice", "4", "2", "2014", "17", "00", "Ewa Beach", "Private", "Nightly",
+          "Beginner", "Loa P., Alex G.", SteveF));
+      Game.addGame(new Game("Makakilo Lunchtime", "5", "2", "2014", "13", "00", "Makakilo Rec Center", "Public",
+          "Nightly", "Advanced", "Loa P., Alex G.", Keith));
       Game.addGame(new Game("School PUG", "6", "4", "2014", "18", "00", "UH Manoa", "Public", "Bi-Weekly", "Rookie",
           "Loa P., Alex G.", Hector));
-      Game.addGame(new Game("Kapolei PUG", "9", "24", "2014", "5", "00", "Kapolei Park", "Private", "Daily", "Competitive",
-          "Loa P., Alex G.", Loa));
-      Game.addGame(new Game("Waianae PUG", "4", "2", "2014", "17", "00", "Waianae Park", "Public", "One Time", "Advanced",
-          "Loa P., Alex G.", newUser));
+      Game.addGame(new Game("Kapolei PUG", "9", "24", "2014", "5", "00", "Kapolei Park", "Private", "Daily",
+          "Competitive", "Loa P., Alex G.", Loa));
+      Game.addGame(new Game("Waianae PUG", "4", "2", "2014", "17", "00", "Waianae Park", "Public", "One Time",
+          "Advanced", "Loa P., Alex G.", newUser));
 
     }
 
