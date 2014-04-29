@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table comment (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   author                    varchar(255),
   comment                   varchar(255),
   date                      varchar(255),
@@ -13,12 +13,12 @@ create table comment (
 ;
 
 create table courts (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   type                      varchar(255),
   image                     varchar(255),
   website                   varchar(255),
-  description               clob,
+  description               longtext,
   address                   varchar(255),
   lat                       float,
   lng                       float,
@@ -26,7 +26,7 @@ create table courts (
   court_size                varchar(255),
   court_surface             varchar(255),
   court_quality             varchar(255),
-  lighted                   boolean,
+  lighted                   tinyint(1) default 0,
   constraint pk_courts primary key (id))
 ;
 
@@ -47,13 +47,13 @@ create table game (
 ;
 
 create table league (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   constraint pk_league primary key (id))
 ;
 
 create table players (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   nickname                  varchar(255),
   home_court                varchar(255),
@@ -81,14 +81,14 @@ create table teams (
 ;
 
 create table users (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   email                     varchar(255),
   user_name                 varchar(255),
   name                      varchar(255),
   password                  varchar(255),
-  admin                     boolean,
+  admin                     tinyint(1) default 0,
   activation_key            varchar(255),
-  timestamp                 timestamp,
+  timestamp                 datetime,
   players_id                bigint,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
@@ -100,20 +100,6 @@ create table courts_players (
   players_id                     bigint not null,
   constraint pk_courts_players primary key (courts_id, players_id))
 ;
-create sequence comment_seq;
-
-create sequence courts_seq;
-
-create sequence game_seq;
-
-create sequence league_seq;
-
-create sequence players_seq;
-
-create sequence teams_seq;
-
-create sequence users_seq;
-
 alter table comment add constraint fk_comment_team_1 foreign key (team_team_name) references teams (team_name) on delete restrict on update restrict;
 create index ix_comment_team_1 on comment (team_team_name);
 alter table users add constraint fk_users_players_2 foreign key (players_id) references players (id) on delete restrict on update restrict;
@@ -127,37 +113,23 @@ alter table courts_players add constraint fk_courts_players_players_02 foreign k
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists comment;
+drop table comment;
 
-drop table if exists courts;
+drop table courts;
 
-drop table if exists courts_players;
+drop table courts_players;
 
-drop table if exists game;
+drop table game;
 
-drop table if exists league;
+drop table league;
 
-drop table if exists players;
+drop table players;
 
-drop table if exists teams;
+drop table teams;
 
-drop table if exists users;
+drop table users;
 
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists comment_seq;
-
-drop sequence if exists courts_seq;
-
-drop sequence if exists game_seq;
-
-drop sequence if exists league_seq;
-
-drop sequence if exists players_seq;
-
-drop sequence if exists teams_seq;
-
-drop sequence if exists users_seq;
+SET FOREIGN_KEY_CHECKS=1;
 
