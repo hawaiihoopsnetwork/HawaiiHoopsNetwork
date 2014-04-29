@@ -11,6 +11,7 @@ import play.GlobalSettings;
 import views.formdata.PlayerFormData;
 import views.formdata.games.GameForm;
 import play.Play;
+import play.mvc.Http.Context;
 
 /**
  * Initialization for the application. will have three player's bios.

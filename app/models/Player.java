@@ -81,6 +81,18 @@ public class Player extends Model {
   }
 
   /**
+   * Adds a player to the database
+   * @param formData = the PlayerFormData containing the player's info save's the player's info to the DB
+   */
+  public static void addPlayer(String name) {
+    /**Player player =
+        new Player(name, "", "unknown", "unknown", "unknown",
+            0, 0, "", "", "", "",
+            "");
+    player.save();**/
+  }
+  
+  /**
    * Updates a player's info
    */
   public static void updatePlayer(PlayerFormData formData, long id) {

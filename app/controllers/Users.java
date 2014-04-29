@@ -8,12 +8,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import models.Player;
 import models.User;
 import forms.*;
 import views.html.Index;
 import views.html.user.Login;
 import views.html.user.Validate;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -73,12 +73,14 @@ public class Users extends Controller
 
             user.setActivation_key(validation_key);
             user.setTimestamp(new DateTime());
+            /** TODO **/
+            //user.setPlayer();
             user.update();
+            
 
 
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
-            //mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
             mail.setRecipient(user.getEmail());
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
 

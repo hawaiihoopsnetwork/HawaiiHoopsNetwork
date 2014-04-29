@@ -241,4 +241,6 @@ public class User extends Model {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+
 }
