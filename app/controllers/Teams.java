@@ -88,13 +88,13 @@ public class Teams extends Controller {
    * @param teamName the team name
    * @return the team page
    */
-  public static Result showTeam(String teamName) {
+  public static Result showTeam(Long id) {
     CommentForm cf = new CommentForm();
     Form<CommentForm> empty = Form.form(CommentForm.class).fill(cf);
 
-    Team team = Team.getTeam(teamName);
+    Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
-    return ok(ShowTeam.render("View Team", Team.getTeam(teamName), empty, comments, Secured.isLoggedIn(ctx())));
+    return ok(ShowTeam.render("View Team", Team.getTeam(id), empty, comments, Secured.isLoggedIn(ctx())));
   }
 
   /**
@@ -103,23 +103,23 @@ public class Teams extends Controller {
    * @param teamName the team name
    * @return the team's page if there are no errors.
    */
-  public static Result postComment(String teamName) {
+  public static Result postComment(Long id) {
     Form<CommentForm> cf = Form.form(CommentForm.class).bindFromRequest();
 
-    Team team = Team.getTeam(teamName);
+    Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
 
     if (cf.hasErrors()) {
-      return badRequest(ShowTeam.render("View Team", Team.getTeam(teamName), cf, comments, Secured.isLoggedIn(ctx())));
+      return badRequest(ShowTeam.render("View Team", Team.getTeam(id), cf, comments, Secured.isLoggedIn(ctx())));
     }
     else {
       CommentForm com = cf.get();
 
-      Team team2 = Team.getTeam(teamName);
+      Team team2 = Team.getTeam(id);
       // Replace /""/ with logged in user
       Comment.addComment(team2, "", com);
 
-      return redirect("/teams/view/" + teamName);
+      return redirect("/teams/view/" + id);
     }
 
   }

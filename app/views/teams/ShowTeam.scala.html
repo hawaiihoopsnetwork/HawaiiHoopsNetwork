@@ -112,7 +112,7 @@
                   <hr>
                   
               
-              @form(routes.Teams.postComment(team.getTeamName()), 'class -> "form-horizontal") {
+              @form(routes.Teams.postComment(team.getId()), 'class -> "form-horizontal") {
                 
                 @bootstrap3.textarea(commentForm("comment"),
                     rows = "6",

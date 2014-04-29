@@ -8,7 +8,7 @@ create table comment (
   author                    varchar(255),
   comment                   varchar(255),
   date                      varchar(255),
-  team_team_name            varchar(255),
+  team_id                   bigint,
   constraint pk_comment primary key (id))
 ;
 
@@ -48,7 +48,13 @@ create table game (
 
 create table league (
   id                        bigint not null,
-  name                      varchar(255),
+  league_name               varchar(255),
+  num_teams                 integer,
+  start_date                varchar(255),
+  end_date                  varchar(255),
+  description               varchar(255),
+  pub_or_private            varchar(255),
+  location                  varchar(255),
   constraint pk_league primary key (id))
 ;
 
@@ -70,14 +76,15 @@ create table players (
 ;
 
 create table teams (
-  team_name                 varchar(255) not null,
+  id                        bigint not null,
+  team_name                 varchar(255),
   location                  varchar(255),
   team_type                 varchar(255),
   skill_level               varchar(255),
   roster                    varchar(255),
   description               varchar(255),
   image_url                 varchar(255),
-  constraint pk_teams primary key (team_name))
+  constraint pk_teams primary key (id))
 ;
 
 create table users (
@@ -100,6 +107,12 @@ create table courts_players (
   players_id                     bigint not null,
   constraint pk_courts_players primary key (courts_id, players_id))
 ;
+
+create table teams_league (
+  teams_id                       bigint not null,
+  league_id                      bigint not null,
+  constraint pk_teams_league primary key (teams_id, league_id))
+;
 create sequence comment_seq;
 
 create sequence courts_seq;
@@ -114,8 +127,8 @@ create sequence teams_seq;
 
 create sequence users_seq;
 
-alter table comment add constraint fk_comment_team_1 foreign key (team_team_name) references teams (team_name) on delete restrict on update restrict;
-create index ix_comment_team_1 on comment (team_team_name);
+alter table comment add constraint fk_comment_team_1 foreign key (team_id) references teams (id) on delete restrict on update restrict;
+create index ix_comment_team_1 on comment (team_id);
 alter table users add constraint fk_users_players_2 foreign key (players_id) references players (id) on delete restrict on update restrict;
 create index ix_users_players_2 on users (players_id);
 
@@ -124,6 +137,10 @@ create index ix_users_players_2 on users (players_id);
 alter table courts_players add constraint fk_courts_players_courts_01 foreign key (courts_id) references courts (id) on delete restrict on update restrict;
 
 alter table courts_players add constraint fk_courts_players_players_02 foreign key (players_id) references players (id) on delete restrict on update restrict;
+
+alter table teams_league add constraint fk_teams_league_teams_01 foreign key (teams_id) references teams (id) on delete restrict on update restrict;
+
+alter table teams_league add constraint fk_teams_league_league_02 foreign key (league_id) references league (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -138,6 +155,8 @@ drop table if exists courts_players;
 drop table if exists game;
 
 drop table if exists league;
+
+drop table if exists teams_league;
 
 drop table if exists players;
 

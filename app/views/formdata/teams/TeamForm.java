@@ -16,6 +16,8 @@ public class TeamForm {
 
   /** The team name. **/
   @Id
+  /** team id **/
+  public long id;
   @Constraints.Required(message = "A team name is required.")
   public String teamName;
   /** Team location. **/
@@ -31,7 +33,7 @@ public class TeamForm {
   public String roster;
   /** Description of the team. **/
   public String description;
-  /** Team logo*/
+  /** Team logo **/
   public String imageUrl;
 
   /**

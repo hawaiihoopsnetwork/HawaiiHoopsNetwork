@@ -1,4 +1,5 @@
-@(title: String, currentPage: com.avaje.ebean.Page[models.teams.Team], sort: String, searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
+@(title: String, currentPage: com.avaje.ebean.Page[models.teams.Team], sort: String, 
+searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
@@ -52,7 +53,7 @@
       <tbody data-link="row" class="rowlink">
         @for(team <- currentPage.getList()) {
          <tr>
-            <td><a href="@routes.Teams.showTeam(team.getTeamName)">@team.getTeamName()</a></td>
+            <td><a href="@routes.Teams.showTeam(team.getId)">@team.getTeamName()</a></td>
             <td>@team.getLocation()</td>
             <td>@team.getTeamType()</td>
             <td>@team.getRosterList().size()</td>

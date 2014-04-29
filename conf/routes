@@ -14,7 +14,10 @@ GET         /logout                     controllers.Users.logout()
 GET         /delete                     controllers.Users.deleteUser()
 GET         /validate/:key              controllers.Users.validate(key)
 
-GET			/leagues					controllers.Leagues.leagues()
+GET			/leagues					controllers.Leagues.leagues(id: Long)
+GET         /leagues/LeagueSchedule     controllers.Leagues.editSchedule()
+POST        /leagues                    controllers.Leagues.addLeague()
+GET         /leagues/view/:id           controllers.Leagues.showLeague(id: Long)
 
 GET         /courts                     controllers.Courts.index()
 GET         /courts/:id                 controllers.Courts.getCourt(id: Long)
@@ -51,8 +54,8 @@ GET     /teams/all                  controllers.Teams.allTeams(sort: String, pag
 POST     /teams/all/search           controllers.Teams.searchTeams(page: Integer)
 GET     /teams/create               controllers.Teams.createTeam()
 POST    /teams/post                 controllers.Teams.addTeam()
-GET     /teams/view/:name           controllers.Teams.showTeam(name)
-POST    /teams/view/:name/comment   controllers.Teams.postComment(name)
+GET     /teams/view/:id           controllers.Teams.showTeam(id: Long)
+POST    /teams/view/:id/comment   controllers.Teams.postComment(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 

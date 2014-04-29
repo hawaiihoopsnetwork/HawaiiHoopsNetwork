@@ -13,6 +13,7 @@ import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
 import models.Comment;
+import models.leagues.League;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
 
@@ -32,6 +33,7 @@ public class Team extends Model {
   private static final long serialVersionUID = 1L;
 
   @Id
+  private long id;
   private String teamName;
   private String location;
   private String teamType;
@@ -44,7 +46,7 @@ public class Team extends Model {
   private List<Comment> comments = new ArrayList<>();
   
   @ManyToMany(cascade=CascadeType.ALL)
-  private List<Team> leagues = new ArrayList<>();
+  private List<League> leagues = new ArrayList<>();
 
   /**
    * Default constructor.
@@ -78,8 +80,8 @@ public class Team extends Model {
    * 
    * @return finder
    */
-  public static Finder<String, Team> find() {
-    return new Finder<String, Team>(String.class, Team.class);
+  public static Finder<Long, Team> find() {
+    return new Finder<Long, Team>(Long.class, Team.class);
   }
 
   /**
@@ -90,15 +92,15 @@ public class Team extends Model {
   public static void addTeam(TeamForm tf) {
     Team team;
 
-    String name = tf.teamName;
+    long id = tf.id;
 
-    if (!isTeam(name)) {
-      team = new Team(name, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
+    if (!isTeam(id)) {
+      team = new Team(tf.teamName, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
       team.save();
     }
     else {
-      team = getTeam(name);
-      team.setTeamName(name);
+      team = getTeam(id);
+      team.setTeamName(tf.teamName);
       team.setLocation(tf.location);
       team.setTeamType(tf.teamType);
       team.setSkillLevel(tf.skillLevel);
@@ -133,8 +135,8 @@ public class Team extends Model {
    * @param teamName team name to be looked for
    * @return the Team if it exists
    */
-  public static Team getTeam(String teamName) {
-    return find().where().eq("teamName", teamName).findUnique();
+  public static Team getTeam(long id) {
+    return find().where().eq("id", id).findUnique();
   }
 
   /**
@@ -171,8 +173,8 @@ public class Team extends Model {
    * @param teamName team name
    * @return true if team exists, false otherwise
    */
-  public static boolean isTeam(String teamName) {
-    Team team = getTeam(teamName);
+  public static boolean isTeam(long id) {
+    Team team = getTeam(id);
     return !(team == null);
   }
 
@@ -288,6 +290,14 @@ public class Team extends Model {
    */
   public String getDescription() {
     return description;
+  }
+  
+  public long getId(){
+    return id;
+  }
+  
+  public void setId(long id) {
+    this.id = id;
   }
 
   /**
