@@ -32,8 +32,13 @@ create table courts (
 
 create table game (
   name                      varchar(255) not null,
-  time                      varchar(255),
-  date                      varchar(255),
+  game_time                 timestamp,
+  month                     varchar(255),
+  day                       varchar(255),
+  year                      varchar(255),
+  hour                      varchar(255),
+  minute                    varchar(255),
+  am_pm_time                varchar(255),
   location                  varchar(255),
   type                      varchar(255),
   frequency                 varchar(255),

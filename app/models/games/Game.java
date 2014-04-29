@@ -1,16 +1,16 @@
 package models.games;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import models.Player;
 import models.User;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import play.db.ebean.Model;
 import views.formdata.games.GameForm;
 import com.avaje.ebean.Ebean;
@@ -35,8 +35,15 @@ public class Game extends Model {
 
   @Id
   private String name;
-  private String time;
-  private String date;
+
+  private DateTime gameTime;
+
+  private String month;
+  private String day;
+  private String year;
+  private String hour;
+  private String minute;
+  private String amPmTime;
   private String location;
   private String type;
   private String frequency;
@@ -50,35 +57,56 @@ public class Game extends Model {
   private User creator;
 
   /**
-   * Default constructor.
+   * Default Constructor.
    */
   public Game() {
   }
 
   /**
-   * Constructs a game.
+   * Constructor.
    * 
    * @param name name
-   * @param time time
-   * @param date date
+   * @param month month
+   * @param day day
+   * @param year year
+   * @param hour hour
+   * @param minute minute
    * @param location location
    * @param type type
-   * @param freq frequency
-   * @param sklLvl skill level
+   * @param frequency frequency
+   * @param avgSklLvl skill level
    * @param players players
+   * @param creator creator
    */
-  public Game(String name, String time, String date, String location, String type, String freq, String sklLvl,
-      String players, User creator) {
+  public Game(String name, String month, String day, String year, String hour, String minute, String location, String type,
+      String frequency, String avgSklLvl, String players, User creator) {
+
+    // Month
+    int mon = Integer.parseInt(month);
+    // Day
+    int da = Integer.parseInt(day);
+    // Year
+    int ye = Integer.parseInt(year);
+    
+    int ho = Integer.parseInt(hour);
+    
+    int min = Integer.parseInt(minute);
+
+    DateTime event = new DateTime(ye, mon, da, ho, min);
+    this.setGameTime(event);
     this.setName(name);
-    this.setTime(time);
-    this.setDate(date);
+    this.setMonth(month);
+    this.setDay(day);
+    this.setYear(year);
+    this.setHour(hour);
+    this.setMinute(minute);
     this.setLocation(location);
     this.setType(type);
-    this.setFrequency(freq);
-    this.setAvgSklLvl(sklLvl);
+    this.setFrequency(frequency);
+    this.setAvgSklLvl(avgSklLvl);
     this.setPlayers(players);
-    this.setUpdateCount(0);
     this.setCreator(creator);
+    this.setUpdateCount(0);
   }
 
   /**
@@ -94,38 +122,52 @@ public class Game extends Model {
    * Adds a game to the database.
    * 
    * @param gf the game form
+   * @param user the creator of the game
    */
   public static void addGame(GameForm gf, User user) {
-    // TODO currently does not work with editing of games
+
     Game game;
-    Date date;
+    DateTime gameDate;
+    DateTime date;
 
-    String gameDate = gf.month + " " + gf.day;
-    String gameTime = gf.hour + ":" + gf.minute + " " + gf.amPm;
-
-    String[] test = gameDate.split("\\s+");
-    // System.out.println("test[0]: " + test[0]);
-    // System.out.println("test[1]: " + test[1]);
+    int month = Integer.parseInt(gf.month);
+    int day = Integer.parseInt(gf.day);
+    int year = Integer.parseInt(gf.year);
+    int hour = Integer.parseInt(gf.hour);
+    int minute = Integer.parseInt(gf.minute);
 
     if (!isGame(gf.name)) {
 
-      game = new Game(gf.name, gameTime, gameDate, gf.location, gf.type, gf.frequency, gf.avgSklLvl, gf.players, user);
-      date = new Date();
+      game =
+          new Game(gf.name, gf.month, gf.day, gf.year, gf.hour, gf.minute, gf.location, gf.type, gf.frequency,
+              gf.avgSklLvl, gf.players, user);
+
+      gameDate = new DateTime(year, month, day, hour, minute);
+      game.setGameTime(gameDate);
+
+      date = new DateTime();
       game.setDateCreated(date.toString());
       game.save();
 
     }
     else {
       game = getGame(gf.name);
-      game.setTime(gameTime);
-      game.setDate(gameDate);
+
+      gameDate = new DateTime(year, month, day, hour, minute);
+      game.setGameTime(gameDate);
+
+      game.setMonth(gf.month);
+      game.setDay(gf.day);
+      game.setYear(gf.year);
+      game.setHour(gf.hour);
+      game.setMinute(gf.minute);
       game.setLocation(gf.location);
       game.setType(gf.type);
       game.setFrequency(gf.frequency);
       game.setAvgSklLvl(gf.avgSklLvl);
       game.setPlayers(gf.players);
 
-      date = new Date();
+      date = new DateTime();
       game.setDateEdit(date.toString());
 
       int count = game.getUpdateCount();
@@ -205,34 +247,6 @@ public class Game extends Model {
     q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term))
         .add(Expr.ilike("players", term));
     return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
-  }
-
-  /**
-   * @return the time
-   */
-  public String getTime() {
-    return time;
-  }
-
-  /**
-   * @param time the time to set
-   */
-  public void setTime(String time) {
-    this.time = time;
-  }
-
-  /**
-   * @return the date
-   */
-  public String getDate() {
-    return date;
-  }
-
-  /**
-   * @param date the date to set
-   */
-  public void setDate(String date) {
-    this.date = date;
   }
 
   /**
@@ -426,72 +440,6 @@ public class Game extends Model {
   }
 
   /**
-   * Returns a map of the months.
-   * 
-   * @return a map of the months
-   */
-  public static Map<String, Boolean> getMonths() {
-    String[] month =
-        { "aJanuary", "bFebruary", "cMarch", "dApril", "eMay", "fJune", "gJuly", "hAugust", "iSeptember", "jOctober",
-            "kNovember", "lDecember" };
-    Map<String, Boolean> months = new LinkedHashMap<>();
-    for (int x = 0; x < month.length; x++) {
-      months.put(month[x], false);
-    }
-    return months;
-  }
-
-  /**
-   * A java Map of days.
-   * 
-   * @return a map of days
-   */
-  public static Map<String, Boolean> getDays() {
-    Map<String, Boolean> days = new LinkedHashMap<>();
-    for (int x = 1; x <= 31; x++) {
-      days.put(Integer.toString(x), false);
-    }
-    return days;
-  }
-
-  /**
-   * Returns hours.
-   * 
-   * @return hours
-   */
-  public static Map<String, Boolean> getHours() {
-    Map<String, Boolean> hours = new LinkedHashMap<>();
-    for (int x = 1; x <= 12; x++) {
-      hours.put(Integer.toString(x), false);
-    }
-    return hours;
-  }
-
-  /**
-   * Returns minutes.
-   * 
-   * @return minutes
-   */
-  public static Map<String, Boolean> getMinutes() {
-    String[] minutes = { "00", "15", "30", "45" };
-    Map<String, Boolean> mins = new LinkedHashMap<>();
-    for (int x = 0; x < minutes.length; x++) {
-      mins.put(minutes[x], false);
-    }
-    return mins;
-  }
-
-  /**
-   * Return AmPm.
-   * 
-   * @return ampm
-   */
-  public static List<String> getAmPm() {
-    String[] amPm = { "am", "pm" };
-    return java.util.Arrays.asList(amPm);
-  }
-
-  /**
    * @return the creator
    */
   public User getCreator() {
@@ -504,4 +452,146 @@ public class Game extends Model {
   public void setCreator(User creator) {
     this.creator = creator;
   }
+
+  /**
+   * @return the month
+   */
+  public String getMonth() {
+    return month;
+  }
+
+  /**
+   * @param month2 the month to set
+   */
+  public void setMonth(String month2) {
+    this.month = month2;
+  }
+
+  /**
+   * @return the day
+   */
+  public String getDay() {
+    return day;
+  }
+
+  /**
+   * @param day2 the day to set
+   */
+  public void setDay(String day2) {
+    this.day = day2;
+  }
+
+  /**
+   * @return the hour
+   */
+  public String getHour() {
+    return hour;
+  }
+
+  /**
+   * @param hour the hour to set
+   */
+  public void setHour(String hour) {
+    this.hour = hour;
+  }
+
+  /**
+   * @return the minute
+   */
+  public String getMinute() {
+    return minute;
+  }
+
+  /**
+   * @param minute the minute to set
+   */
+  public void setMinute(String minute) {
+    this.minute = minute;
+  }
+
+  /**
+   * @return the year
+   */
+  public String getYear() {
+    return year;
+  }
+
+  /**
+   * @param year the year to set
+   */
+  public void setYear(String year) {
+    this.year = year;
+  }
+
+  /**
+   * @return the amPmTime
+   */
+  public String getAmPmTime() {
+    return amPmTime;
+  }
+
+  /**
+   * @param amPm the amPmTime to set
+   */
+  public void setAmPmTime(String amPm) {
+    this.amPmTime = amPm;
+  }
+
+  /**
+   * @return the gameTime
+   */
+  public DateTime getGameTime() {
+    return gameTime;
+  }
+
+  /**
+   * @param gameTime the gameTime to set
+   */
+  public void setGameTime(DateTime gameTime) {
+    this.gameTime = gameTime;
+  }
+
+  /**
+   * @return the game date as a string object.
+   */
+  public String getGameDateString() {
+    String pattern = "MM-dd-yy";
+    DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+    String gameDateString = fmt.print(gameTime);
+    return gameDateString;
+  }
+
+  /**
+   * @return the game time as a string object.
+   */
+  public String getGameTimeString() {
+    String pattern = "hh : mm aa";
+    DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+    String gameTimeString = fmt.print(gameTime);
+    return gameTimeString;
+
+  }
+
+  private static DateTime today = new DateTime();
+  
+  public static int getCurrMonth() {
+    return today.monthOfYear().get();
+  }
+
+  public static int getCurrDay() {
+    return today.dayOfMonth().get();
+  }
+
+  public static int getCurrYear() {
+    return today.year().get();
+  }
+  
+  public static int getCurrHour() {
+    return today.hourOfDay().get();
+  }
+  
+  public static int getCurrMinute() {
+    return today.minuteOfHour().get();
+  }
+  
 }

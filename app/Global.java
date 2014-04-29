@@ -39,10 +39,12 @@ public class Global extends GlobalSettings {
     }
 
     if (TeamDB.getTeams().size() == 0) {
-      TeamDB.addTeam(new Team("teamName", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
-      TeamDB.addTeam(new Team("teamName2", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
+      TeamDB.addTeam(new Team("teamName", "String location", "String teamType", "String skillLevel", "String roster",
+          "String description"));
+      TeamDB.addTeam(new Team("teamName2", "String location", "String teamType", "String skillLevel", "String roster",
+          "String description"));
     }
-    
+
     String adminEmail = Play.application().configuration().getString("hihoops.admin.email");
     String adminPassword = Play.application().configuration().getString("hihoops.admin.password");
 
@@ -53,9 +55,9 @@ public class Global extends GlobalSettings {
     User Loa = null;
     User Keith = null;
     User Hector = null;
-    
+
     if (user == null) {
-      
+
       newUser = User.addUser("Alex G.", adminEmail, adminPassword);
       newUser.setActivation_key(null);
       newUser.update();
@@ -101,16 +103,17 @@ public class Global extends GlobalSettings {
     }
 
     if (Game.getGames().size() == 0) {
-      Game.addGame(new Game("Kapolei PUG", "3:00PM", "cMarch 12", "Kapolei park", "Public", "Nightly", "Beginner",
+      Game.addGame(new Game("Ewa Beach Practice", "4", "2", "2014", "17", "00", "Ewa Beach", "Private", "Nightly", "Beginner",
           "Loa P., Alex G.", SteveF));
-      Game.addGame(new Game("Aina Hina PUG", "3:00PM", "cMarch 10", "Aina Hina park", "Private", "Nightly", "Beginner",
+      Game.addGame(new Game("Makakilo Lunchtime", "5", "2", "2014", "13", "00", "Makakilo Rec Center", "Public", "Nightly",
+          "Advanced", "Loa P., Alex G.", Keith));
+      Game.addGame(new Game("School PUG", "6", "4", "2014", "18", "00", "UH Manoa", "Public", "Bi-Weekly", "Rookie",
+          "Loa P., Alex G.", Hector));
+      Game.addGame(new Game("Kapolei PUG", "9", "24", "2014", "5", "00", "Kapolei Park", "Private", "Daily", "Competitive",
           "Loa P., Alex G.", Loa));
-      Game.addGame(new Game("Waianae Nightly", "6:00PM", "cMarch 11", "Waianae park", "Public", "Nightly", "Beginner",
-          "Loa P., Alex G.", Keith));
-      Game.addGame(new Game("Makakilo Lunchtime", "12:00PM", "cMarch 25", "Makakilo Rec", "Public", "Nightly",
-          "Beginner", "Loa P., Alex G.", Hector));
-      Game.addGame(new Game("Ewa Beach Practice", "5:00PM", "dApril 2", "Kapolei park", "Private", "Nightly",
-          "Beginner", "Loa P., Alex G.", newUser));
+      Game.addGame(new Game("Waianae PUG", "4", "2", "2014", "17", "00", "Waianae Park", "Public", "One Time", "Advanced",
+          "Loa P., Alex G.", newUser));
+
     }
 
     if (Player.getPlayers().size() == 0) {

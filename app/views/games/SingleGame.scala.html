@@ -34,8 +34,8 @@
         <ul>
         <!--  Created By: Get user who created the game -->
         <h10>Type: </h10><i><h11>@game.getType()</h11></i></br></br>
-        <h10>Time: </h10><h11>@game.getTime()</h11></br></br>
-        <h10>Date: </h10><h11>@game.getDate().substring(1, game.getDate().length())</h11></br></br>
+        <h10>Time: </h10><h11>@game.getGameTimeString()</h11></br></br>
+        <h10>Date: </h10><h11>@game.getGameDateString()</h11></br></br>
         @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
          <h10>Location: </h10><h11>@game.getLocation()</h11></br></br>
         }

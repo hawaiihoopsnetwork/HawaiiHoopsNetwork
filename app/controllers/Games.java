@@ -34,7 +34,7 @@ public class Games extends Controller {
     SearchFormData sfd = new SearchFormData();
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
 
-    Page<Game> games = Game.find("date asc", page);
+    Page<Game> games = Game.find("gameTime asc", page);
     return ok(AllGames.render("All Games", games, stuff, Secured.isLoggedIn(ctx()), sort));
   }
 
