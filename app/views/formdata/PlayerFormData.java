@@ -95,7 +95,8 @@ public class PlayerFormData {
       errors.add(new ValidationError("bio", "Some bio is needed"));
     }
     
-    if (!position.matches("Point Gaurd") && 
+    if (!position.matches("unknown") && 
+        !position.matches("Point Gaurd") && 
         !position.matches("Shooting Gaurd") &&
         !position.matches("Small Forward") &&
         !position.matches("Power Forward") &&
@@ -103,7 +104,8 @@ public class PlayerFormData {
       errors.add(new ValidationError("position", "Position is invalid"));
     }
     
-    if (!skill.matches("Beginner") && 
+    if (!skill.matches("unknown") && 
+        !skill.matches("Beginner") &&
         !skill.matches("Intermediate") &&
         !skill.matches("Competitive") &&
         !skill.matches("College") && skill == null) {
