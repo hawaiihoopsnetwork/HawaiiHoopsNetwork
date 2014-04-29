@@ -19,9 +19,7 @@ public class Player extends Model {
   @GeneratedValue
   private Long id;
   
-  private String name;
   private String nickname;
-  private String homeCourt;
   private String skill;
   private String position;
   private Long rating;
@@ -32,9 +30,11 @@ public class Player extends Model {
   private String lookingFor;
   private String picUrl;
   
-  @OneToOne(mappedBy = "players")
-  public User user;
+  @OneToOne(mappedBy = "player")
+  private User user;
 
+  @ManyToOne
+  private Court homeCourt;
 
   @ManyToMany(mappedBy = "players")
   private List<Court> courts = new ArrayList<Court>();
@@ -44,18 +44,14 @@ public class Player extends Model {
 
   /**
    * Creates a new player.
-   * 
-   * @param name = name of player
-   * @param homeCourt = home court of player
+   *
    * @param skill = skill level of player
    * @param position = position of player
    * 
    */
-  public Player(String name, String nickname, String homeCourt, String skill, String position, long rating, long votes,
+  public Player(String nickname, String skill, String position, long rating, long votes,
       String height, String weight, String bio, String lookingFor, String picUrl) {
-    this.name = name;
     this.nickname = nickname;
-    this.homeCourt = homeCourt;
     this.skill = skill;
     this.position = position;
     this.rating = rating;
@@ -67,28 +63,31 @@ public class Player extends Model {
     this.picUrl = picUrl;
   }
 
-  /**
-   * Adds a player to the database
-   * 
-   * @param formData = the PlayerFormData containing the player's info save's the player's info to the DB
-   */
-  public static void addPlayer(PlayerFormData formData) {
-    Player player =
-        new Player(formData.name, formData.nickname, formData.homeCourt, formData.skill, formData.position,
-            formData.rating, formData.votes, formData.height, formData.weight, formData.bio, formData.lookingFor,
-            formData.picUrl);
-    player.save();
+    /**public Player(User user) {
+       this.user = user;
+    }
+
+  public static Player addPlayer(User user) {
+      Player player = new Player(user);
+      player.save();
+      return player;
+  }**/
+
+  public static Player addPlayer(String nickname, String skill, String position, long rating, long votes,
+      String height, String weight, String bio, String lookingFor, String picUrl) {
+      Player player = new Player(nickname, skill, position, rating, votes, height, weight, bio, lookingFor, picUrl);
+      player.save();
+      return player;
   }
-  
+
   /**
    * Updates a player's info
    */
   public static void updatePlayer(PlayerFormData formData, long id) {
     
     Player player = getPlayer(id);
-    player.setName(formData.name);
     player.setNickname(formData.nickname);
-    player.setHomeCourt(formData.homeCourt);
+    //player.setHomeCourt(formData.homeCourt);
     player.setSkill(formData.skill);
     player.setPosition(formData.position);
     player.setHeight(formData.height);
@@ -96,7 +95,7 @@ public class Player extends Model {
     player.setBio(formData.bio);
     player.setLookingFor(formData.lookingFor);
     player.setPicUrl(formData.picUrl);
-    player.save();
+    player.update();
   }
   
   /**
@@ -170,35 +169,15 @@ public class Player extends Model {
     return id;
   }
 
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
+    public Court getHomeCourt() {
+        return homeCourt;
+    }
 
-  /**
-   * @param name the name to set
-   */
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setHomeCourt(Court homeCourt) {
+        this.homeCourt = homeCourt;
+    }
 
-  /**
-   * @return the homeCourt
-   */
-  public String getHomeCourt() {
-    return homeCourt;
-  }
-
-  /**
-   * @param homeCourt the homeCourt to set
-   */
-  public void setHomeCourt(String homeCourt) {
-    this.homeCourt = homeCourt;
-  }
-
-  /**
+    /**
    * @return the skill
    */
   public String getSkill() {
@@ -350,4 +329,11 @@ public class Player extends Model {
     this.picUrl = picUrl;
   }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

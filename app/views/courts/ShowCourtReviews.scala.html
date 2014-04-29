@@ -1,0 +1,47 @@
+@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean)
+
+@import courts.CourtMain
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")">
+}
+
+@CourtMain(title, court, nearby, reviews, players, isLoggedIn, scripts) {
+
+                <h3>Reviews</h3>
+        @if(reviews.isEmpty) {
+            <p>No reviews</p>
+        }else {
+            <hr/>
+            @for(review <- reviews) {
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <div class="media">
+                        <a class="pull-left" href="">
+                            <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="60px">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                @review.getAuthor.getName
+                            </h4>
+                        </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-md-9">
+                        @review.getTimestamp.getMonthOfYear/@review.getTimestamp.getDayOfWeek/@review.getTimestamp.getYear
+                        <p>
+                        @review.getReview
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+            }
+        }
+}

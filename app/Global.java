@@ -1,4 +1,5 @@
 import controllers.Users;
+import models.Address;
 import models.Court;
 import models.Player;
 import models.User;
@@ -26,18 +27,6 @@ public class Global extends GlobalSettings {
    */
   public void onStart(Application app) {
 
-    if (Court.getCourts().size() == 0) {
-      Court.addCourt("Aina Haina", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("B", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("C", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("D", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("E", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("F", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("G", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("H", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-      Court.addCourt("I", "Private", "123 Somewhere", (float) 1234, (float) 12345.0, "It's Awsome");
-    }
-
     if (TeamDB.getTeams().size() == 0) {
       TeamDB.addTeam(new Team("teamName", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
       TeamDB.addTeam(new Team("teamName2", "String location", "String teamType", "String skillLevel", "String roster", "String description"));
@@ -48,12 +37,17 @@ public class Global extends GlobalSettings {
 
     User user = User.getUser(adminEmail);
 
-    if (user == null) {
-      User newUser = User.addUser("user", adminEmail, adminPassword);
+    if (user == null && Player.getPlayers().size() == 0) {
+
+      Player player = Player.addPlayer("Ali G", "Intermediate", "Center", 10, 5, "5'5\"",
+        "200", "Basketball, I love Basketball.", "Pickup Games", "");
+
+      User newUser = User.addUser("Admin", adminEmail, adminPassword);
       newUser.setActivation_key(null);
+      newUser.setPlayer(player);
       newUser.update();
 
-      User SteveF = User.addUser("Steve", "Steve@gmail.com", "password");
+      /**User SteveF = User.addUser("Steve", "Steve@gmail.com", "password");
       SteveF.setActivation_key(null);
       SteveF.update();
 
@@ -68,12 +62,28 @@ public class Global extends GlobalSettings {
       User Hector = User.addUser("Hector", "Hector@gmail.com", "password");
       Hector.setActivation_key(null);
       Hector.update();
+
+
+      Player.addPlayer(new PlayerFormData("Steve F.", "SF", "Kapolei Park", "Beginner", "Power Forward", 15, 5,
+          "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
+      Player.addPlayer(new PlayerFormData("Loa P.", "LP", "Aulani Park", "Competitive", "Point Gaurd", 5, 5, "5'5\"",
+          "200", "Basketball, I love Basketball.", "Pickup Games", ""));
+      Player.addPlayer(new PlayerFormData("Keith A.", "Albino", "Kapiolani Park", "College", "Small Forward", 20, 5,
+          "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
+      Player.addPlayer(new PlayerFormData("Hector M.", "Malaz", "Hawaii Kai Park", "Intermediate", "Shooting Gaurd",
+          25, 5, "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));**/
     }
 
     if (Court.getCourts().isEmpty()) {
-      Court.addCourt("Aina Haina", "Private", "123 Somewhere", (float) 21.2970, (float) -157.8170, "It's Awsome");
-      Court.addCourt("B", "Private", "123 Somewhere", (float) 23.2970, (float) -157.8170, "It's Awsome");
-      /*
+        Address address = Address.addAddress("2500 Campus Rd", "Honolulu", "HI", "96822", "United States", (float) 21.2970, (float) -157.8170);
+        Court court1 = Court.addCourt("University of Hawaii", null, "private", "indoor", (long)8, "full court", "wood", "good", true, address, "it's awsome!");
+
+        Address address2 = Address.addAddress("2501 Campus Rd", "Honolulu", "HI", "96823", "United States", (float) 21.2980, (float) -157.8180);
+        Court court2 = Court.addCourt("Chaminade", null, "private", "indoor", (long)8, "full court", "wood", "good", true, address2, "it's awsome!");
+
+       /**
+       * Court.addCourt("Aina Haina", "Private", (float) 21.2970, (float) -157.8170, "It's Awsome");
+       * Court.addCourt("B", "Private", (float) 23.2970, (float) -157.8170, "It's Awsome");
        * Court.addCourt("B", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
        * Court.addCourt("C", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
        * Court.addCourt("D", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
@@ -106,18 +116,7 @@ public class Global extends GlobalSettings {
           "Beginner", "Loa P., Alex G.", "admin"));
     }
 
-    if (Player.getPlayers().size() == 0) {
-      Player.addPlayer(new PlayerFormData("Alex G.", "Ali G", "Paki Park", "Intermediate", "Center", 10, 5, "5'5\"",
-          "200", "Basketball, I love Basketball.", "Pickup Games", ""));
-      Player.addPlayer(new PlayerFormData("Steve F.", "SF", "Kapolei Park", "Beginner", "Power Forward", 15, 5,
-          "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
-      Player.addPlayer(new PlayerFormData("Loa P.", "LP", "Aulani Park", "Competitive", "Point Gaurd", 5, 5, "5'5\"",
-          "200", "Basketball, I love Basketball.", "Pickup Games", ""));
-      Player.addPlayer(new PlayerFormData("Keith A.", "Albino", "Kapiolani Park", "College", "Small Forward", 20, 5,
-          "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
-      Player.addPlayer(new PlayerFormData("Hector M.", "Malaz", "Hawaii Kai Park", "Intermediate", "Shooting Gaurd",
-          25, 5, "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", ""));
-    }
+
 
   }
 }

@@ -59,7 +59,7 @@
             </ul>
         </div>
         @if(isLoggedIn){
-            @if(user.getHasProfile()) {
+            @if(user != null) {
                 <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
             } else {
                 <a href="@routes.Players.playerManage()" class="btn btn-primary pull-right" role="button">Create Profile</a>
@@ -127,7 +127,7 @@
         <tbody data-link="row" class="rowlink">
         @for(player <- currentPage.getList()){
             <tr>
-                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></td>
+                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getUser.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
                 <td>@player.getSkill()</td>
                 <td>@player.getPosition()</td>

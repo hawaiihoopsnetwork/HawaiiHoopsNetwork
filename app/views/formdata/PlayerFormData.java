@@ -62,12 +62,12 @@ public class PlayerFormData {
   /**
    * creates a new PlayerFormData object.
    * 
-   * @param surfer player instance
+   * @param player player instance
    */
   public PlayerFormData(Player player) {
-    this.name = player.getName();
+    this.name = player.getUser().getName();
     this.nickname = player.getNickname();
-    this.homeCourt = player.getHomeCourt();
+    //this.homeCourt = player.getHomeCourt();
     this.skill = player.getSkill();
     this.position = player.getPosition();
     this.rating = player.getRating();

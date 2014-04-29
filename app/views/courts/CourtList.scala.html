@@ -50,7 +50,7 @@
 
         var courts = [
             @for(court <- courts) {
-                ['@court.getName', @court.getLat, @court.getLng, '@court.getDescription', @court.getId],
+                ['@court.getName', @court.getAddress.getLat, @court.getAddress.getLng, '@court.getDescription', @court.getId],
             }
         ]
 

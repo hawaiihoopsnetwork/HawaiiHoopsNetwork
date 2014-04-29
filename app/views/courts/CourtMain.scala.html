@@ -1,0 +1,209 @@
+@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
+
+@import helper._
+
+@scripts2 = {
+    <script type="text/javascript">
+
+        jQuery.noConflict();
+
+        jQuery(function() {
+
+            jQuery( "#summary" ).click( function ( e ) {
+                e.preventDefault();
+
+                jsRoutes.controllers.Courts.getCourt(@court.getId).ajax( {
+                    beforeSend: function() {
+                        var spinner='@routes.Assets.at("images/ajax-loader.gif")';
+                        jQuery("#loading" ).html("<img src=" + spinner + "/>");
+                    },
+                    success: function(data) {
+                        data=jQuery(data ).find("#courtInfo" ).html();
+                        jQuery('#courtInfo').html(data);
+                        jQuery("#loading" ).html("");
+
+                        jQuery(document.getElementById("summary").parentNode).addClass('active').siblings().removeClass('active');
+                    }
+                });
+            });
+
+            jQuery( "#playerTab" ).click( function ( e ) {
+                e.preventDefault();
+
+                jsRoutes.controllers.Courts.getPlayers(@court.getId).ajax( {
+                    beforeSend: function() {
+                        var spinner='@routes.Assets.at("images/ajax-loader.gif")';
+                        jQuery("#loading" ).html("<img src=" + spinner + "/>");
+                    },
+                    success: function(data) {
+                        data=jQuery(data ).find("#courtInfo" ).html();
+                        jQuery('#courtInfo').html(data);
+                        jQuery("#loading" ).html("");
+
+                        jQuery(document.getElementById("playerTab").parentNode).addClass('active').siblings().removeClass('active');
+                    }
+                });
+            });
+
+            jQuery( "#reviews" ).click( function ( e ) {
+                e.preventDefault();
+                jsRoutes.controllers.Courts.getReviews(@court.getId).ajax( {
+                    beforeSend: function() {
+                        var spinner='@routes.Assets.at("images/ajax-loader.gif")';
+                        jQuery("#loading" ).html("<img src=" + spinner + "/>");
+                    },
+                    success: function(data) {
+                        data=jQuery(data ).find("#courtInfo" ).html();
+                        jQuery('#courtInfo').html(data);
+                        jQuery("#loading" ).html("");
+
+                        jQuery(document.getElementById("reviews").parentNode).addClass('active').siblings().removeClass('active');
+                       // var reviewTab = document.getElementById("reviews").parentNode;
+                       // jQuery(reviewTab).attr("class","active");
+
+                    }
+                });
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript" src="@routes.Courts.javascriptRoutes()"></script>
+
+    @scripts
+
+    }
+
+ @Main(title, isLoggedIn, scripts2) {
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <h1 style="margin-bottom:0px">@court.getName <span id="loading"></span></h1>
+            </div>
+            <div class="col-md-6">
+                <a href="@routes.Courts.review(court.getId)" class="btn btn-primary pull-right" style="margin-top: 20px"><span class="glyphicon glyphicon-pencil"></span> Write Review</a>
+            </div>
+
+        </div>
+        <hr/>
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="well">
+
+                <img width="100%" src="@routes.Assets.at("images/basketball.jpg")" alt="...">
+
+                                    @if(isLoggedIn) {
+@**                    <div class="courtInfo">
+                        <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-home"></span> Add Homecourt</button>
+                    </div> **@
+
+                    @form(routes.Courts.postFavorite(court.getId)) {
+
+                        <div class="courtInfo">
+                            <button class="btn btn-primary" type="submit" style="width : 100%;"><span class="glyphicon glyphicon-star"></span>
+                                Add Favorite
+                            </button>
+                        </div>
+                    }
+
+                    @form(routes.Courts.postFavorite(court.getId)) {
+                        <div class="courtInfo">
+                            <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-envelope"></span> Tell a Friend</button>
+                        </div>
+                    }
+                }
+                <div class="courtInfo">
+                    @court.getAddress.getStreet
+                    <br/>
+                    @court.getAddress.getCity, @court.getAddress.getState @court.getAddress.getZip
+                </div>
+
+                <div class="courtInfo">
+                    <strong>Phone:</strong>
+                    @if(court.getPhone) {
+                    @court.getPhone
+                    } else {
+                        ----
+                    }
+                </div>
+
+                <div>
+                    <strong>Email:</strong>
+                    @if(court.getEmail) {
+                        @court.getEmail
+                    } else {
+                        ----
+                    }
+                </div>
+
+                <div>
+                        <strong>Fax:</strong>
+                    @if(court.getFax) {
+                        @court.getFax
+                    } else {
+                        ----
+                    }
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-6">
+            <div id="courtInfo" class="well">
+                @content
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="well">
+
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active">
+                        <a id="summary" href="@routes.Courts.getCourt(court.getId)">Summary
+                           <!-- <span class="pull-right" id="loading"></span> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Calendar</a>
+                    </li>
+                    <li>
+                        <a id="playerTab" href="@routes.Courts.getPlayers(court.getId)">Players
+                            <span class="badge pull-right">@players.size()</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="reviews" href="@routes.Courts.getReviews(court.getId)">Reviews
+                            <span class="badge pull-right">@reviews.size()</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+                <div class="well">
+                    <b>Nearby Courts</b>
+
+                    @for(court <- nearby) {
+                    <div class="media">
+                        <a class="pull-left" href="@routes.Courts.getCourt(court.getId)">
+                            <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="64px">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading">@court.getName</h4>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+
+        </div>
+    </div>
+    </div>
+}

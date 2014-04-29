@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import models.teams.Team;
 import play.db.ebean.Model;
 import views.formdata.CommentForm;

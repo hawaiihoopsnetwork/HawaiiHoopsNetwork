@@ -1,57 +1,67 @@
-@(title: String, court: Court, isLoggedIn: Boolean)
 
+@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean)
 
-@Main(title, isLoggedIn) {
-    <div class="container">
-    <div class="visible-xs">
-        <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
-        <hr>
-    </div>
+@import courts.CourtMain
 
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")">
+}
 
-    <div class="row">
-        <div class="col-md-9">
-            <div class="well">
-                <h1>@court.getName()</h1>
-                <p>@court.getDescription()</p>
-                <h3>General Information</h3>
-                <ul>
-                    <li>@court.getAddress()</li>
-                    <li>@court.getType()</li>
-                    <li>Outdoor Only</li>
-                </ul>
-                <h3>Open Hours</h3>
-                <ul>
-                    <li>Monday: 7:00am</li>
-                    <li>Tuesday: 7:00am</li>
-                    <li>Wednesday: 7:00am</li>
-                    <li>Thursday: 7:00am</li>
-                    <li>Friday: 7:00am</li>
+@CourtMain(title, court, nearby, reviews, players, isLoggedIn, scripts) {
 
-                </ul>
-            </div>
-        </div>
+                <img src="http://maps.googleapis.com/maps/api/staticmap?center=@court.getAddress.getLat,@court.getAddress.getLng&markers=size:mid%7Ccolor:red%7C@court.getAddress.getLat,@court.getAddress.getLng&zoom=12&size=400x100&scale=2&sensor=false" width="100%"/>
+                <a href="#">view map</a>
 
-        <div class="col-md-3">
-            <div class="well">
+                <h3>Court Information</h3>
 
-                <div class="hidden-xs">
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Join</button>
-                    <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <strong>Lighted: </strong>
+                             @court.isLighted
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Public/Private:</strong>
+                             @court.getType
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Indoor/Outdoor: </strong>
+                             @court.getIndoor
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Number of Courts: </strong>
+                            @court.getNum_courts
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div>
+                            <strong>Quality: </strong>
+                            @court.getCourt_quality
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Size: </strong>
+                            @court.getCourt_size
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Surface: </strong>
+                            @court.getCourt_surface
+                        </div>
+
+                    </div>
                 </div>
 
-                <h3>Players Attending:</h3>
-                <br/>
-                <ul>
-                    <li><a href="#">Jimmie Tuft</a></li>
-                    <li><a href="#">Kerry Fry</a></li>
-                    <li><a href="#">Prudence Alberts</a></li>
-                    <li><a href="#">Claude Ware</a></li>
-                    <li><a href="#">Blair Wesley</a></li>
-                    <li><a href="#">Pat Maynard</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    </div>
+                <h3>Open Hours</h3>
+
+
+                <h3>Description</h3>
+                <p>@court.getDescription</p>
+
 }
