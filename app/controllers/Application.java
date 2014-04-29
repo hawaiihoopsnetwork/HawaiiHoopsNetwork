@@ -1,12 +1,15 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
 import models.games.Game;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
 import play.mvc.Security;
 import com.typesafe.plugin.*;
+import views.formdata.PlayerFields;
+import views.formdata.PlayerFormData;
 import views.html.Index;
 import views.html.Home;
 import views.html.footer.TermsOfUse;
@@ -30,7 +33,15 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
+    PlayerFormData data2 = new PlayerFormData();
+    Form<PlayerFormData> dataForm = Form.form(PlayerFormData.class).fill(data2);
+    
+    //Map of players skill levels and positions. 
+    //When user selects either their skill or position that skill or position is set as true. 
+    Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
+    Map<String, Boolean> playerPosition = PlayerFields.getPosition();
+    
+    return ok(Index.render("Hawaii Hoops Network", registrationForm, dataForm, Secured.isLoggedIn(ctx()) ));
   }
   
   /*public static Result home() {

@@ -1,0 +1,42 @@
+@*************************
+ Simple Registration template.
+ 
+ Takes a reverse route, the name field, the email field, and the password field from a form. 
+ If form validation fails, then the fields will have Twitter Bootstrap error highlighting.
+ Clients should set the "error" key in flash scope to provide feedback on errors. 
+**************************@
+
+@(reverseRoute: play.api.mvc.Call, homeCourt: Field, skill: Field, position: Field)
+
+<!--<div class="row">
+  <div class="col-sm-4 col-sm-offset-4">
+-->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Register</h3>
+  </div>
+  <div class="panel-body">
+    @helper.form(reverseRoute, 'role -> "form") {
+      <fieldset>
+
+        <div class="form-group @if(homeCourt.hasErrors) {has-error}" >
+          <input id="@homeCourt.id" name="@homeCourt.name" value="@homeCourt.value.getOrElse("")" class="form-control" placeholder="Home Court" type="text">
+          <span class="help-block"></span>
+        </div>
+        <div class="form-group @if(skill.hasErrors) {has-error}" >
+          <input id="@skill.id" name="@skill.name" value="@skill.value.getOrElse("")" class="form-control" placeholder="Skill" type="text">
+          <span class="help-block"></span>
+        </div>
+        <div class="form-group @if(position.hasErrors) {has-error}" >
+          <input id="@position.id" name="@position.name" value="@position.value.getOrElse("")" class="form-control" placeholder="position" type="text">
+          <span class="help-block"></span>
+        </div>
+        <input id="submitProfile" class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
+        <p class="help-block">By clicking "Register", you agree to our <a href="@routes.Application.terms()">terms of service</a></p>
+      </fieldset>
+    }
+
+  </div>
+</div>
+<!--</div>
+</div> -->

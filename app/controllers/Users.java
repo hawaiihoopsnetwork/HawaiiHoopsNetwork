@@ -10,10 +10,10 @@ import play.mvc.Result;
 import play.mvc.Security;
 import models.User;
 import forms.*;
+import views.formdata.PlayerFormData;
 import views.html.Index;
 import views.html.user.Login;
 import views.html.user.Validate;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +48,9 @@ public class Users extends Controller
     public static Result postRegister()
     {
         Form<RegistrationForm> filledRegistrationForm = registrationForm.bindFromRequest();
+        
+        PlayerFormData data2 = new PlayerFormData();
+        Form<PlayerFormData> dataForm = Form.form(PlayerFormData.class).fill(data2);
 
         if (filledRegistrationForm.hasErrors())
         {
@@ -56,7 +59,7 @@ public class Users extends Controller
                 games = Game.getGames();
             }
 
-            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
+            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, dataForm, Secured.isLoggedIn(ctx())));
         }
         else
         {
