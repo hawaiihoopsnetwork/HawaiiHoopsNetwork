@@ -77,7 +77,6 @@ public class Users extends Controller
             user.setTimestamp(new DateTime());
             user.update();
 
-
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
             //mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
