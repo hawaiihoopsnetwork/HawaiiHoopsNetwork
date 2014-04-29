@@ -10,12 +10,14 @@ import play.mvc.Result;
 import play.mvc.Security;
 import models.User;
 import forms.*;
+import views.formdata.PlayerFields;
+import views.formdata.PlayerFormData;
 import views.html.Index;
 import views.html.user.Login;
 import views.html.user.Validate;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 // import views.html.Registration;
 
@@ -79,9 +81,10 @@ public class Users extends Controller
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
             //mail.setRecipient("HiHoops <hawaiihoopsnetwork@gmail.com>", "hawaiihoopsnetwork@gmail.com");
+            String url = routes.Users.validate(validation_key).absoluteURL(request());
             mail.setRecipient(user.getEmail());
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
-            mail.sendHtml("<html><a href='http://hihoopsnetwork.scotthonda.cloudbees.net/validate/" + validation_key + "'>link</a></html>");
+            mail.sendHtml("<html><a href='" + url + "'>link</a></html>");
 
 
             //session().clear();
@@ -103,7 +106,16 @@ public class Users extends Controller
            session().clear();
            session("email", user.getEmail());
         }
-        return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
+        
+        PlayerFormData data2 = new PlayerFormData();
+        Form<PlayerFormData> dataForm = Form.form(PlayerFormData.class).fill(data2);
+        
+        //Map of players skill levels and positions. 
+        //When user selects either their skill or position that skill or position is set as true. 
+        Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
+        Map<String, Boolean> playerPosition = PlayerFields.getPosition();
+        
+        return ok(Validate.render("validation", dataForm, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
 
     }
 
