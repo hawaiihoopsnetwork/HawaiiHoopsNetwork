@@ -37,7 +37,8 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                         @if(isLoggedIn) {
-                            <li><a href="@routes.Players.playerProfile(Secured.getUserInfo(ctx()).getId())">@Secured.getUserInfo(ctx()).getName()</a></li>
+                            <li><a id="userProfile" href="@routes.Players.playerProfile(Secured.getUserInfo(ctx()).getId())" >
+                            <span class="glyphicon glyphicon-user"></span> @Secured.getUserInfo(ctx()).getName()</a></li>
                             <li><a data-toggle="modal" href="@routes.Users.logout()">Logout</a></li>
                         } else {
                             <li><a data-toggle="modal" href="@routes.Users.login()">Login</a></li>
