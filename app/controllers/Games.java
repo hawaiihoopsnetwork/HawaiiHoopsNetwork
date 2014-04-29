@@ -120,7 +120,7 @@ public class Games extends Controller {
     Form<SearchFormData> sfd2 = Form.form(SearchFormData.class).bindFromRequest();
     SearchFormData search = sfd2.get();
 
-    Page<Game> results = Game.find(search.term, "date asc", page);
+    Page<Game> results = Game.find(search.term, "gameTime asc", page);
     return ok(AllGames.render("Results", results, stuff, Secured.isLoggedIn(ctx()), "date asc"));
   }
 
