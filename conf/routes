@@ -14,7 +14,10 @@ GET         /logout                          controllers.Users.logout()
 GET         /delete                          controllers.Users.deleteUser()
 GET         /validate/:key                   controllers.Users.validate(key)
 
-GET         /leagues                         controllers.Leagues.leagues()
+GET			/leagues					controllers.Leagues.leagues(id: Long)
+GET         /leagues/LeagueSchedule     controllers.Leagues.editSchedule()
+POST        /leagues                    controllers.Leagues.addLeague()
+GET         /leagues/view/:id           controllers.Leagues.showLeague(id: Long)
 
 # Courts
 GET         /courts                          controllers.Courts.index()
@@ -40,21 +43,27 @@ POST        /Send                            controllers.Application.sendMessage
 GET         /AboutUs                         controllers.Application.about()
 
 # Games
-GET         /games/list                      controllers.Games.allGames(page: Integer, sort: String)
-GET         /games/view/:name                controllers.Games.getGame(name)
-GET         /games/create                    controllers.Games.createGame()
-GET         /games/edit/:name                controllers.Games.editGame(name)
-POST        /games/new                       controllers.Games.addGame()
-POST        /games/list/search               controllers.Games.searchResults(page: Integer)
+GET     /games/list                  controllers.Games.allGames(page: Integer, sort: String)
+GET     /games/view/:name            controllers.Games.getGame(name)
+GET     /games/create                controllers.Games.createGame()
+GET     /games/edit/:name            controllers.Games.editGame(name)
+POST    /games/new                   controllers.Games.addGame()
+POST    /games/list/search           controllers.Games.searchResults(page: Integer)
+GET     /games/view/:name/join       controllers.Games.joinPublic(name)
+GET     /games/view/:name/joinPrivate controllers.Games.joinPrivate(name)
+GET     /games/view/:name/allow     controllers.Games.allowPrivate(name, user: String)
+GET     /games/view/:name/unjoin     controllers.Games.unjoin(name)
 
 
 # Teams
-GET         /teams/all                       controllers.Teams.allTeams(sort: String, page: Integer)
-POST        /teams/all/search                controllers.Teams.searchTeams(page: Integer)
-GET         /teams/create                    controllers.Teams.createTeam()
-POST        /teams/post                      controllers.Teams.addTeam()
-GET         /teams/view/:name                controllers.Teams.showTeam(name)
-POST        /teams/view/:name/comment        controllers.Teams.postComment(name)
+GET     /teams/all                  controllers.Teams.allTeams(sort: String, page: Integer)
+POST     /teams/all/search           controllers.Teams.searchTeams(page: Integer)
+GET     /teams/create               controllers.Teams.createTeam()
+POST    /teams/post                 controllers.Teams.addTeam()
+GET     /teams/view/:id           controllers.Teams.showTeam(id: Long)
+POST    /teams/view/:id/comment   controllers.Teams.postComment(id: Long)
+GET     /teams/view/:id/edit        controllers.Teams.editStats(id: Long)
+POST    /teams/view/:id/stats/post controllers.Teams.postStats(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 

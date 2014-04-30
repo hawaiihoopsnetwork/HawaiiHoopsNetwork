@@ -3,6 +3,8 @@ package controllers;
 import java.util.Collections;
 import java.util.List;
 import com.avaje.ebean.Page;
+import com.typesafe.plugin.MailerAPI;
+import com.typesafe.plugin.MailerPlugin;
 import models.User;
 import models.games.Game;
 import play.mvc.Controller;
@@ -14,6 +16,7 @@ import views.formdata.games.GameForm;
 import views.html.games.SingleGame;
 import views.html.games.CreateGame;
 import views.html.games.AllGames;
+import views.html.games.RequestSent;
 
 /**
  * Implements the controllers for this application.
@@ -31,7 +34,7 @@ public class Games extends Controller {
     SearchFormData sfd = new SearchFormData();
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
 
-    Page<Game> games = Game.find("date asc", page);
+    Page<Game> games = Game.find("gameTime asc", page);
     return ok(AllGames.render("All Games", games, stuff, Secured.isLoggedIn(ctx()), sort));
   }
 
@@ -83,9 +86,8 @@ public class Games extends Controller {
       GameForm game = gameForm.get();
 
       User user = Secured.getUserInfo(ctx());
-      String realName = user.getName();
-
-      Game.addGame(game, realName);
+      
+      Game.addGame(game, user);
 
       return redirect("/games/view/" + game.name);
     }
@@ -118,9 +120,95 @@ public class Games extends Controller {
     Form<SearchFormData> sfd2 = Form.form(SearchFormData.class).bindFromRequest();
     SearchFormData search = sfd2.get();
 
-    Page<Game> results = Game.find(search.term, "date asc", page);
+    Page<Game> results = Game.find(search.term, "gameTime asc", page);
     return ok(AllGames.render("Results", results, stuff, Secured.isLoggedIn(ctx()), "date asc"));
-
   }
 
+  /**
+   * Adds the logged in user to a public game if user joins.
+   * 
+   * @param gameName the name of the game
+   * @return the game's page
+   */
+  @Security.Authenticated(Secured.class)
+  public static Result joinPublic(String gameName) {
+
+    Game game = Game.getGame(gameName);
+    String name = Secured.getUserInfo(ctx()).getName();
+
+    String players = game.getPlayers();
+    StringBuilder sb = new StringBuilder(players);
+    sb.append(", " + name);
+    game.setPlayers(sb.toString());
+    game.save();
+
+    return redirect(routes.Games.getGame(gameName));
+  }
+
+  @Security.Authenticated(Secured.class)
+  public static Result joinPrivate(String gameName) {
+
+    Game game = Game.getGame(gameName);
+    String user = Secured.getUserInfo(ctx()).getName();
+    MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+
+    // Null pointer when getting user creator
+    User creator = game.getCreator();
+    String email = creator.getEmail();
+
+    String url = routes.Games.allowPrivate(gameName, user).absoluteURL(request());
+
+    mail.setSubject(user + " would like to join: " + gameName);
+    // Set recipient to game creator after null pointer is sorted out.
+    // Used for testing purposes
+    mail.setRecipient(email);
+    mail.setFrom("hawaiihoopsnetwork@gmail.com");
+    mail.sendHtml("<html> <h1>A player wants to join your game!</h1>" + "<hr><br>" + user
+        + " would like to join your game " + gameName + "<br><br><a href='" + url
+        + "'>Confirm</a> <br><br>If you don't want this player to join this game, ignore this email.</html>");
+    return ok(RequestSent.render("Request Sent", Secured.isLoggedIn(ctx()), gameName));
+  }
+
+  /**
+   * Allows the game creator to add a player to the list if a player requests.
+   * 
+   * @param gameName the game name
+   * @param user user wanting to join game
+   * @return the game's page
+   */
+  public static Result allowPrivate(String gameName, String user) {
+
+    Game game = Game.getGame(gameName);
+
+    String players = game.getPlayers();
+
+    if (players.contains(user)) {
+      return redirect(routes.Games.getGame(gameName));
+    }
+
+    StringBuilder sb = new StringBuilder(players);
+    sb.append(", " + user);
+    game.setPlayers(sb.toString());
+    game.save();
+
+    return redirect(routes.Games.getGame(gameName));
+  }
+
+  @Security.Authenticated(Secured.class)
+  public static Result unjoin(String gameName) {
+
+    Game game = Game.getGame(gameName);
+    String userName = Secured.getUserInfo(ctx()).getName();
+    userName = ", " + userName;
+
+    String players = game.getPlayers();
+    StringBuilder sb = new StringBuilder(players);
+    int start = players.indexOf(userName);
+    int length = userName.length();
+    int end = length + start;
+    sb.delete(start, end);
+    game.setPlayers(sb.toString());
+    game.save();
+    return redirect(routes.Games.getGame(gameName));
+  }
 }

@@ -20,7 +20,7 @@ create table comment (
   author                    varchar(255),
   comment                   varchar(255),
   date                      varchar(255),
-  team_team_name            varchar(255),
+  team_id                   bigint,
   constraint pk_comment primary key (id))
 ;
 
@@ -46,8 +46,13 @@ create table courts (
 
 create table game (
   name                      varchar(255) not null,
-  time                      varchar(255),
-  date                      varchar(255),
+  game_time                 timestamp,
+  month                     varchar(255),
+  day                       varchar(255),
+  year                      varchar(255),
+  hour                      varchar(255),
+  minute                    varchar(255),
+  am_pm_time                varchar(255),
   location                  varchar(255),
   type                      varchar(255),
   frequency                 varchar(255),
@@ -56,13 +61,19 @@ create table game (
   date_created              varchar(255),
   date_edit                 varchar(255),
   update_count              integer,
-  user_creator              varchar(255),
+  creator_id                bigint,
   constraint pk_game primary key (name))
 ;
 
 create table league (
   id                        bigint not null,
-  name                      varchar(255),
+  league_name               varchar(255),
+  num_teams                 integer,
+  start_date                varchar(255),
+  end_date                  varchar(255),
+  description               varchar(255),
+  pub_or_private            varchar(255),
+  location                  varchar(255),
   constraint pk_league primary key (id))
 ;
 
@@ -93,14 +104,22 @@ create table court_review (
 ;
 
 create table teams (
-  team_name                 varchar(255) not null,
+  id                        bigint not null,
+  team_name                 varchar(255),
   location                  varchar(255),
   team_type                 varchar(255),
   skill_level               varchar(255),
   roster                    varchar(255),
   description               varchar(255),
   image_url                 varchar(255),
-  constraint pk_teams primary key (team_name))
+  record                    varchar(255),
+  three_pt                  double,
+  two_pt                    double,
+  one_pt                    double,
+  rebounds                  integer,
+  steals                    integer,
+  blocks                    integer,
+  constraint pk_teams primary key (id))
 ;
 
 create table users (
@@ -123,6 +142,12 @@ create table courts_players (
   players_id                     bigint not null,
   constraint pk_courts_players primary key (courts_id, players_id))
 ;
+
+create table teams_league (
+  teams_id                       bigint not null,
+  league_id                      bigint not null,
+  constraint pk_teams_league primary key (teams_id, league_id))
+;
 create sequence address_seq;
 
 create sequence comment_seq;
@@ -141,24 +166,30 @@ create sequence teams_seq;
 
 create sequence users_seq;
 
-alter table comment add constraint fk_comment_team_1 foreign key (team_team_name) references teams (team_name) on delete restrict on update restrict;
-create index ix_comment_team_1 on comment (team_team_name);
+alter table comment add constraint fk_comment_team_1 foreign key (team_id) references teams (id) on delete restrict on update restrict;
+create index ix_comment_team_1 on comment (team_id);
 alter table courts add constraint fk_courts_address_2 foreign key (address_id) references address (id) on delete restrict on update restrict;
 create index ix_courts_address_2 on courts (address_id);
-alter table players add constraint fk_players_homeCourt_3 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
-create index ix_players_homeCourt_3 on players (home_court_id);
-alter table court_review add constraint fk_court_review_author_4 foreign key (author_id) references users (id) on delete restrict on update restrict;
-create index ix_court_review_author_4 on court_review (author_id);
-alter table court_review add constraint fk_court_review_court_5 foreign key (court_id) references courts (id) on delete restrict on update restrict;
-create index ix_court_review_court_5 on court_review (court_id);
-alter table users add constraint fk_users_player_6 foreign key (player_id) references players (id) on delete restrict on update restrict;
-create index ix_users_player_6 on users (player_id);
+alter table game add constraint fk_game_creator_3 foreign key (creator_id) references users (id) on delete restrict on update restrict;
+create index ix_game_creator_3 on game (creator_id);
+alter table players add constraint fk_players_homeCourt_4 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
+create index ix_players_homeCourt_4 on players (home_court_id);
+alter table court_review add constraint fk_court_review_author_5 foreign key (author_id) references users (id) on delete restrict on update restrict;
+create index ix_court_review_author_5 on court_review (author_id);
+alter table court_review add constraint fk_court_review_court_6 foreign key (court_id) references courts (id) on delete restrict on update restrict;
+create index ix_court_review_court_6 on court_review (court_id);
+alter table users add constraint fk_users_player_7 foreign key (player_id) references players (id) on delete restrict on update restrict;
+create index ix_users_player_7 on users (player_id);
 
 
 
 alter table courts_players add constraint fk_courts_players_courts_01 foreign key (courts_id) references courts (id) on delete restrict on update restrict;
 
 alter table courts_players add constraint fk_courts_players_players_02 foreign key (players_id) references players (id) on delete restrict on update restrict;
+
+alter table teams_league add constraint fk_teams_league_teams_01 foreign key (teams_id) references teams (id) on delete restrict on update restrict;
+
+alter table teams_league add constraint fk_teams_league_league_02 foreign key (league_id) references league (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -175,6 +206,8 @@ drop table if exists courts_players;
 drop table if exists game;
 
 drop table if exists league;
+
+drop table if exists teams_league;
 
 drop table if exists players;
 

@@ -6,6 +6,7 @@
 
 @Main(title, isLoggedIn) {
 
+<div class="container">
 <h2>Create A Game</h2>
 <hr>
 </br>
@@ -33,32 +34,26 @@
                 help = "")
         }
         
-        @bootstrap3.selectDate(gameForm("month"),
+        @bootstrap3.textDate(
+            gameForm("month"),
             label = "Date",
-            optionMap = models.games.Game.getMonths(),
-            isMultiple = false,
-            help = "",
+            placeholder = Integer.toString(models.games.Game.getCurrMonth()),
+            help = "MM",
             gameForm("day"),
-            label2 = "",
-            optionMap2 = models.games.Game.getDays(),
-            isMultiple2 = false,
-            help2 = "")
-            
-              
-        @bootstrap3.selectTime(gameForm("hour"),
+            placeholder2 = Integer.toString(models.games.Game.getCurrDay()),
+            help2 = "dd",
+            gameForm("year"),
+            placeholder3 = Integer.toString(models.games.Game.getCurrYear()),
+            help3 = "YYYY")
+        
+        @bootstrap3.textTime(
+            gameForm("hour"),
             label = "Time",
-            optionMap = models.games.Game.getHours(),
-            isMultiple = false,
-            help = "",
+            placeholder = Integer.toString(models.games.Game.getCurrHour()),
+            help = "HH",
             gameForm("minute"),
-            label2 = "",
-            optionMap2 = models.games.Game.getMinutes(),
-            isMultiple2 = false,
-            help2 = "",
-            gameForm("amPm"), 
-            label3 = "",
-            buttonNameList3 = models.games.Game.getAmPm(),
-            help3 = "")
+            placeholder2 = Integer.toString(models.games.Game.getCurrMinute()),
+            help2 = "mm")
               
         @bootstrap3.text(gameForm("location"),
               label = "Location",
@@ -99,4 +94,5 @@
             </div>
         </div>
     }
+    </div>
 }

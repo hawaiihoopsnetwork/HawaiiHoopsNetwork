@@ -58,13 +58,7 @@
                 <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
         </div>
-        @if(isLoggedIn){
-            @if(user != null) {
-                <a href="@routes.Players.playerProfile(user.getId())" class="btn btn-primary pull-right" role="button">My Profile</a>
-            } else {
-                <a href="@routes.Players.playerManage()" class="btn btn-primary pull-right" role="button">Create Profile</a>
-            }
-        }
+        
         
     </div>
 
@@ -127,10 +121,13 @@
         <tbody data-link="row" class="rowlink">
         @for(player <- currentPage.getList()){
             <tr>
+                <!--  This makes it so that a logged in user won't see their own profile in the list. -->
+                @if(player.getUser.getName() != Secured.getUserInfo(ctx()).getName) {
                 <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getUser.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
                 <td>@player.getSkill()</td>
                 <td>@player.getPosition()</td>
+                }
             </tr>
         }
         </tbody>

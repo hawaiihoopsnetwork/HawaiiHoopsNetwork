@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
     <head>
         <title>@title - Hawaii Hoops Network</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,10 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/basketball.jpg")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         @scripts
+        <meta charset="utf-8">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     </head>
 
     <body>
@@ -30,15 +34,16 @@
                         <ul class="nav navbar-nav">
                         @if(isLoggedIn) {
                             <li><a id="courts" href="@routes.Courts.index()">Courts</a></li>
-                            <li><a id="games" href="@routes.Games.allGames(0, "date asc")">Games</a></li>
-                            <li><a href="@routes.Leagues.leagues()">Leagues</a></li>                
+                            <li><a id="games" href="@routes.Games.allGames(0, "gameTime asc")">Games</a></li>
+                            <li><a href="@routes.Leagues.leagues(1)">Leagues</a></li>                
                              <li><a id="players" href="@routes.Players.players("name asc", 0)">Players</a></li>
                              <li><a href="@routes.Teams.allTeams("teamName asc", 0)">Teams</a></li>
                         }
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                         @if(isLoggedIn) {
-                            <li><p class="navbar-text">@Secured.getUserInfo(ctx()).getName</p></li>
+                            <li><a id="userProfile" class="navbar-text" href="@routes.Players.playerProfile(Secured.getUserInfo(ctx()).getId())">
+                            <span class="glyphicon glyphicon-user"></span> @Secured.getUserInfo(ctx()).getName</a></li>
                             <li><a data-toggle="modal" href="@routes.Users.logout()">Logout</a></li>
                         } else {
                             <li><a data-toggle="modal" href="@routes.Users.login()">Login</a></li>

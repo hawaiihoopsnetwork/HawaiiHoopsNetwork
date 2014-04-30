@@ -30,6 +30,8 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
+    //Deletes games that passed a certain period.
+    Game.deletePastGames();
     return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
   }
   

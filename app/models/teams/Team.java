@@ -2,8 +2,10 @@ package models.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.avaje.ebean.Ebean;
@@ -11,6 +13,8 @@ import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
 import models.Comment;
+import models.Player;
+import models.leagues.League;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
 
@@ -30,6 +34,7 @@ public class Team extends Model {
   private static final long serialVersionUID = 1L;
 
   @Id
+  private long id;
   private String teamName;
   private String location;
   private String teamType;
@@ -37,9 +42,22 @@ public class Team extends Model {
   private String roster;
   private String description;
   private String imageUrl;
+  
+  private String record = "0-0";
+  private double threePt = 0.0;
+  private double twoPt = 0.0;
+  private double onePt = 0.0;
+  private int rebounds = 0;
+  private int steals = 0;
+  private int blocks = 0;
+
 
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
+  
+  @ManyToMany(cascade=CascadeType.ALL)
+  private List<League> leagues = new ArrayList<>();
+  
 
   /**
    * Default constructor.
@@ -57,14 +75,15 @@ public class Team extends Model {
    * @param roster roster
    * @param description description
    */
-  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description) {
+  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
+      String imageUrl) {
     this.setTeamName(teamName);
     this.setLocation(location);
     this.setTeamType(teamType);
     this.setSkillLevel(skillLevel);
     this.setRoster(roster);
     this.setDescription(description);
-
+    this.setImageUrl(imageUrl);
   }
 
   /**
@@ -72,8 +91,8 @@ public class Team extends Model {
    * 
    * @return finder
    */
-  public static Finder<String, Team> find() {
-    return new Finder<String, Team>(String.class, Team.class);
+  public static Finder<Long, Team> find() {
+    return new Finder<Long, Team>(Long.class, Team.class);
   }
 
   /**
@@ -84,20 +103,21 @@ public class Team extends Model {
   public static void addTeam(TeamForm tf) {
     Team team;
 
-    String name = tf.teamName;
+    long id = tf.id;
 
-    if (!isTeam(name)) {
-      team = new Team(name, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description);
+    if (!isTeam(id)) {
+      team = new Team(tf.teamName, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
       team.save();
     }
     else {
-      team = getTeam(name);
-      team.setTeamName(name);
+      team = getTeam(id);
+      team.setTeamName(tf.teamName);
       team.setLocation(tf.location);
       team.setTeamType(tf.teamType);
       team.setSkillLevel(tf.skillLevel);
       team.setRoster(tf.roster);
       team.setDescription(tf.description);
+      team.setImageUrl(tf.imageUrl);
       team.save();
     }
   }
@@ -126,8 +146,8 @@ public class Team extends Model {
    * @param teamName team name to be looked for
    * @return the Team if it exists
    */
-  public static Team getTeam(String teamName) {
-    return find().where().eq("teamName", teamName).findUnique();
+  public static Team getTeam(long id) {
+    return find().where().eq("id", id).findUnique();
   }
 
   /**
@@ -164,8 +184,8 @@ public class Team extends Model {
    * @param teamName team name
    * @return true if team exists, false otherwise
    */
-  public static boolean isTeam(String teamName) {
-    Team team = getTeam(teamName);
+  public static boolean isTeam(long id) {
+    Team team = getTeam(id);
     return !(team == null);
   }
 
@@ -268,6 +288,38 @@ public class Team extends Model {
     List<String> rosterList = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
     return rosterList;
   }
+  
+  private List<String> noProfile = new ArrayList<>();
+
+  /**
+   * @return the players as a java List
+   */
+  public List<Player> getPlayerProfiles() {
+    // TODO check if player name is related to a player profile
+    List<String> gamePlayers = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
+
+    List<Player> withProfile = new ArrayList<>();
+    for (int x = 0; x < gamePlayers.size(); x++) {
+      Player player = Player.getPlayer(gamePlayers.get(x));
+
+      if (player != null) {
+        withProfile.add(player);
+      }
+      else {
+        noProfile.add(gamePlayers.get(x));
+      }
+    }
+    return withProfile;
+  }
+
+  /**
+   * Returns a list of the player names that don't have a profile within the site.
+   * 
+   * @return noProfile
+   */
+  public List<String> getNoProfile() {
+    return noProfile;
+  }
 
   /**
    * @param roster the roster to set
@@ -281,6 +333,14 @@ public class Team extends Model {
    */
   public String getDescription() {
     return description;
+  }
+  
+  public long getId(){
+    return id;
+  }
+  
+  public void setId(long id) {
+    this.id = id;
   }
 
   /**
@@ -306,6 +366,104 @@ public class Team extends Model {
    */
   public List<Comment> getComments() {
     return this.comments;
+  }
+
+  /**
+   * @return the record
+   */
+  public String getRecord() {
+    return record;
+  }
+
+  /**
+   * @param record the record to set
+   */
+  public void setRecord(String record) {
+    this.record = record;
+  }
+
+  /**
+   * @return the threePt
+   */
+  public double getThreePt() {
+    return threePt;
+  }
+
+  /**
+   * @param threePt the threePt to set
+   */
+  public void setThreePt(double threePt) {
+    this.threePt = threePt;
+  }
+
+  /**
+   * @return the twoPt
+   */
+  public double getTwoPt() {
+    return twoPt;
+  }
+
+  /**
+   * @param twoPt the twoPt to set
+   */
+  public void setTwoPt(double twoPt) {
+    this.twoPt = twoPt;
+  }
+
+  /**
+   * @return the onePt
+   */
+  public double getOnePt() {
+    return onePt;
+  }
+
+  /**
+   * @param onePt the onePt to set
+   */
+  public void setOnePt(double onePt) {
+    this.onePt = onePt;
+  }
+
+  /**
+   * @return the rebounds
+   */
+  public int getRebounds() {
+    return rebounds;
+  }
+
+  /**
+   * @param rebounds the rebounds to set
+   */
+  public void setRebounds(int rebounds) {
+    this.rebounds = rebounds;
+  }
+
+  /**
+   * @return the steals
+   */
+  public int getSteals() {
+    return steals;
+  }
+
+  /**
+   * @param steals the steals to set
+   */
+  public void setSteals(int steals) {
+    this.steals = steals;
+  }
+
+  /**
+   * @return the blocks
+   */
+  public int getBlocks() {
+    return blocks;
+  }
+
+  /**
+   * @param blocks the blocks to set
+   */
+  public void setBlocks(int blocks) {
+    this.blocks = blocks;
   }
 
 }
