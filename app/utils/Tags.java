@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
+ * Utility class for template tags
  * Created by taylorak on 4/29/14.
  */
 public class Tags{

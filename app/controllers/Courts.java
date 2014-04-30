@@ -47,8 +47,8 @@ public class Courts extends Controller {
         }
 
         return ok(ShowCourt.render(
-                Court.getCourt(id).getName(),
-                Court.getCourt(id),
+                court.getName(),
+                court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.getReviews(id),
                 Court.getPlayers(id),
@@ -56,6 +56,12 @@ public class Courts extends Controller {
     }
 
     public static Result getPlayers(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
         return ok(ShowCourtPlayers.render(
                 Court.getCourt(id).getName(),
                 Court.getCourt(id),
@@ -66,6 +72,12 @@ public class Courts extends Controller {
     }
 
     public static Result getReviews(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
        return ok(ShowCourtReviews.render(
                 Court.getCourt(id).getName(),
                 Court.getCourt(id),
@@ -77,6 +89,13 @@ public class Courts extends Controller {
     }
 
     public static Result review(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
+
         CourtReviewForm review = new CourtReviewForm();
         Form<CourtReviewForm> formData = Form.form(CourtReviewForm.class).fill(review);
 
@@ -90,7 +109,14 @@ public class Courts extends Controller {
 
 
     @Security.Authenticated(Secured.class)
-    public static Result postReview(Long id) {
+    public static Result postReview(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
+
         Form<CourtReviewForm> formData = Form.form(CourtReviewForm.class).bindFromRequest();
 
         if (formData.hasErrors()) {
@@ -121,7 +147,14 @@ public class Courts extends Controller {
 
 
     @Security.Authenticated(Secured.class)
-    public static Result postFavorite(Long id) {
+    public static Result postFavorite(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
+
         Player player = User.getUser(Secured.getUser(ctx())).getPlayer();
         Court.addPlayer(id, player);
         return ok(ShowCourt.render(

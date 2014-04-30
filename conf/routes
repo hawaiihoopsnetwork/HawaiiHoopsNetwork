@@ -20,13 +20,13 @@ POST        /leagues                    controllers.Leagues.addLeague()
 GET         /leagues/view/:id           controllers.Leagues.showLeague(id: Long)
 
 # Courts
-GET         /courts                          controllers.Courts.index()
+GET         /courts                                controllers.Courts.index()
 GET         /courts/:id/:slug                      controllers.Courts.getCourt(id: Long, slug: String)
 GET         /courts/:id/:slug/players              controllers.Courts.getPlayers(id: Long, slug: String)
 GET         /courts/:id/:slug/reviews              controllers.Courts.getReviews(id:Long, slug: String)
 GET         /courts/:id/:slug/review               controllers.Courts.review(id:Long, slug: String)
-POST        /courts/:id/review               controllers.Courts.postReview(id:Long)
-POST        /courts/:id/favorite             controllers.Courts.postFavorite(id: Long)
+POST        /courts/:id/:slug/review               controllers.Courts.postReview(id:Long, slug: String)
+POST        /courts/:id/:slug/favorite             controllers.Courts.postFavorite(id: Long, slug: String)
 
 GET         /players                         controllers.Players.players(sortOrder: String, page: Integer)
 GET         /playerSearch                    controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)
