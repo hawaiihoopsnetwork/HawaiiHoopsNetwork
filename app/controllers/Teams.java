@@ -136,6 +136,7 @@ public class Teams extends Controller {
     return ok(EditTeamStats.render("Edit Stats: " + teamName, team, stats, Secured.isLoggedIn(ctx())));
   }
 
+
   public static Result postStats(String teamName) {
     Team team = Team.getTeam(teamName);
 
@@ -153,6 +154,7 @@ public class Teams extends Controller {
       team.setRebounds(stat.rebounds);
       team.setSteals(stat.steals);
       team.setBlocks(stat.blocks);
+      team.setRoster(stat.roster);
       team.save();
 
       return redirect("/teams/view/" + teamName);

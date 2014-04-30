@@ -39,7 +39,7 @@ public class Team extends Model {
   private String description;
   private String imageUrl;
 
-  private String record = "0 - 0";
+  private String record = "0-0";
   private double threePt = 0.0;
   private double twoPt = 0.0;
   private double onePt = 0.0;

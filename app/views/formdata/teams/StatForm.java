@@ -14,6 +14,7 @@ public class StatForm {
   public int rebounds;
   public int steals;
   public int blocks;
+  public String roster;
 
   public StatForm() {
   }
@@ -26,6 +27,7 @@ public class StatForm {
     this.rebounds = team.getRebounds();
     this.steals = team.getSteals();
     this.blocks = team.getBlocks();
+    this.roster = team.getRoster();
   }
 
   public List<ValidationError> validate() {
