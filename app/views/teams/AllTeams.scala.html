@@ -6,11 +6,12 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
 
 @Main(title, loggedIn) {
     <div class="container">
+    <div class="well">
     <div class="row-search hidden-xs">
     <div class="col-md-4">
     
         @form(routes.Teams.searchTeams(0), 'class -> "form-inline") {
-        
+        <div class="input-group">
             @bootstrap3.simpleText(searchForm("term"),
                 placeholder = "Search by Team name, location, or skill level",
                 label = "",
@@ -24,7 +25,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
             </div>       
          
         }
-  
+    </div>
     <div class="btn-group">
       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Sort By<span class="caret"></span>
@@ -92,6 +93,6 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
             }
           </ul>
         </div>
-    
+    </div>
     </div>
 }

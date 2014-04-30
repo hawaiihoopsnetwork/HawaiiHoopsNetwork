@@ -47,7 +47,7 @@ public class Global extends GlobalSettings {
       Player player = Player.addPlayer("Ali G", "Intermediate", "Center", 10, 5, "5'5\"",
         "200", "Basketball, I love Basketball.", "Pickup Games", "");
 
-      User newUser = User.addUser("Admin", adminEmail, adminPassword);
+      User newUser = User.addUser("Alex G.", adminEmail, adminPassword);
       newUser.setActivation_key(null);
       newUser.setPlayer(player);
       newUser.update();
