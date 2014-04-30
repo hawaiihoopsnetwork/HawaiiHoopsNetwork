@@ -1,4 +1,5 @@
 @(title: String, courts: List[Court], isLoggedIn: Boolean)
+@import utils.Tags._
 
 @scripts = {
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")">
@@ -158,13 +159,13 @@
                     }
 
                         <div class="col-sm-4">
-                            <div class="thumbnail" href="">
+                            <div class="thumbnail">
                                 <img src="http://www.to-hawaii.com/oahu/beaches/images/kuliououbeach/basketball_court.jpg" alt="...">
                                 <div class="caption">
                                     <h3>@court.getName</h3>
                                     <p>@court.getDescription</p>
                                     <p>
-                                        <a href="@routes.Courts.getCourt(court.getId)" class="btn btn-primary" role="button">View</a>
+                                        <a href="@routes.Courts.getCourt(court.getId, slugify(court.getName))" class="btn btn-primary" role="button">View</a>
                                         <a href="#" class="btn btn-default" role="button">Like</a>
                                     </p>
                                 </div>
@@ -191,7 +192,7 @@
                         <tbody data-link="row" class="rowlink">
                             @for(court <- courts) {
                                 <tr>
-                                    <td><a href="@routes.Courts.getCourt(court.getId)">@court.getName</a></td>
+                                    <td><a href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">@court.getName</a></td>
                                     <td>@court.getType</td>
                                 </tr>
                             }

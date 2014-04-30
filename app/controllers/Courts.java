@@ -16,7 +16,8 @@ import views.html.courts.ShowCourtPlayers;
 import views.html.courts.ShowCourtReviews;
 import views.html.courts.CreateReview;
 
-import java.util.List;
+import utils.Tags;
+
 
 /**
  * Implements the controller for basketball courts.
@@ -37,7 +38,14 @@ public class Courts extends Controller {
      * @param id court name.
      * @return court information page.
      */
-    public static Result getCourt(Long id) {
+    public static Result getCourt(Long id, String slug) {
+        Court court = Court.getCourt(id);
+        String storedSlug = Tags.slugify(court.getName());
+
+        if (court == null || !storedSlug.equals(slug)) {
+            return notFound();
+        }
+
         return ok(ShowCourt.render(
                 Court.getCourt(id).getName(),
                 Court.getCourt(id),
@@ -47,7 +55,7 @@ public class Courts extends Controller {
                 Secured.isLoggedIn(ctx())));
     }
 
-    public static Result getPlayers(Long id) {
+    public static Result getPlayers(Long id, String slug) {
         return ok(ShowCourtPlayers.render(
                 Court.getCourt(id).getName(),
                 Court.getCourt(id),
@@ -57,7 +65,7 @@ public class Courts extends Controller {
                 Secured.isLoggedIn(ctx())));
     }
 
-    public static Result getReviews(Long id) {
+    public static Result getReviews(Long id, String slug) {
        return ok(ShowCourtReviews.render(
                 Court.getCourt(id).getName(),
                 Court.getCourt(id),
@@ -68,7 +76,7 @@ public class Courts extends Controller {
 
     }
 
-    public static Result review(Long id) {
+    public static Result review(Long id, String slug) {
         CourtReviewForm review = new CourtReviewForm();
         Form<CourtReviewForm> formData = Form.form(CourtReviewForm.class).fill(review);
 

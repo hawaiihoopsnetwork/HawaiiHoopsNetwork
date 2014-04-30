@@ -1,6 +1,7 @@
 @(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
 
 @import helper._
+@import utils.Tags._
 
 @scripts2 = {
     <script type="text/javascript">
@@ -12,7 +13,7 @@
             jQuery( "#summary" ).click( function ( e ) {
                 e.preventDefault();
 
-                jsRoutes.controllers.Courts.getCourt(@court.getId).ajax( {
+                jsRoutes.controllers.Courts.getCourt(@court.getId, "@slugify(court.getName)").ajax( {
                     beforeSend: function() {
                         var spinner='@routes.Assets.at("images/ajax-loader.gif")';
                         jQuery("#loading" ).html("<img src=" + spinner + "/>");
@@ -30,7 +31,7 @@
             jQuery( "#playerTab" ).click( function ( e ) {
                 e.preventDefault();
 
-                jsRoutes.controllers.Courts.getPlayers(@court.getId).ajax( {
+                jsRoutes.controllers.Courts.getPlayers(@court.getId, "@slugify(court.getName)").ajax( {
                     beforeSend: function() {
                         var spinner='@routes.Assets.at("images/ajax-loader.gif")';
                         jQuery("#loading" ).html("<img src=" + spinner + "/>");
@@ -47,7 +48,7 @@
 
             jQuery( "#reviews" ).click( function ( e ) {
                 e.preventDefault();
-                jsRoutes.controllers.Courts.getReviews(@court.getId).ajax( {
+                jsRoutes.controllers.Courts.getReviews(@court.getId, "@slugify(court.getName)").ajax( {
                     beforeSend: function() {
                         var spinner='@routes.Assets.at("images/ajax-loader.gif")';
                         jQuery("#loading" ).html("<img src=" + spinner + "/>");
@@ -83,7 +84,7 @@
                 <h1 style="margin-bottom:0px">@court.getName <span id="loading"></span></h1>
             </div>
             <div class="col-md-6">
-                <a href="@routes.Courts.review(court.getId)" class="btn btn-primary pull-right" style="margin-top: 20px"><span class="glyphicon glyphicon-pencil"></span> Write Review</a>
+                <a href="@routes.Courts.review(court.getId, slugify(court.getName))" class="btn btn-primary pull-right" style="margin-top: 20px"><span class="glyphicon glyphicon-pencil"></span> Write Review</a>
             </div>
 
         </div>
@@ -167,7 +168,7 @@
 
                 <ul class="nav nav-pills nav-stacked">
                     <li class="active">
-                        <a id="summary" href="@routes.Courts.getCourt(court.getId)">Summary
+                        <a id="summary" href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">Summary
                            <!-- <span class="pull-right" id="loading"></span> -->
                         </a>
                     </li>
@@ -175,12 +176,12 @@
                         <a href="#">Calendar</a>
                     </li>
                     <li>
-                        <a id="playerTab" href="@routes.Courts.getPlayers(court.getId)">Players
+                        <a id="playerTab" href="@routes.Courts.getPlayers(court.getId, slugify(court.getName))">Players
                             <span class="badge pull-right">@players.size()</span>
                         </a>
                     </li>
                     <li>
-                        <a id="reviews" href="@routes.Courts.getReviews(court.getId)">Reviews
+                        <a id="reviews" href="@routes.Courts.getReviews(court.getId, slugify(court.getName))">Reviews
                             <span class="badge pull-right">@reviews.size()</span>
                         </a>
                     </li>
@@ -191,7 +192,7 @@
 
                     @for(court <- nearby) {
                     <div class="media">
-                        <a class="pull-left" href="@routes.Courts.getCourt(court.getId)">
+                        <a class="pull-left" href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">
                             <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="64px">
                         </a>
 

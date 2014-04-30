@@ -1,6 +1,5 @@
 package models;
 
-import models.games.Game;
 import play.db.ebean.Model;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +162,9 @@ public class Court extends Model
                 .findList();
     }
 
+    public String getSlug() {
+       return "" ;
+    }
     /**
      * Check if court exists.
      * @param name court name.

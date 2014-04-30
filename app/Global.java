@@ -1,4 +1,3 @@
-import controllers.Users;
 import models.Address;
 import models.Court;
 import models.Player;
@@ -8,11 +7,13 @@ import models.teams.Team;
 import models.teams.TeamDB;
 import play.Application;
 import play.GlobalSettings;
-import views.formdata.PlayerFormData;
-import views.formdata.games.GameForm;
+import play.libs.F;
 import play.Play;
-import play.mvc.Http.Context;
+import play.mvc.Http.*;
 
+import play.mvc.*;
+
+import static play.mvc.Results.*;
 /**
  * Initialization for the application. will have three player's bios.
  * 
@@ -21,7 +22,13 @@ import play.mvc.Http.Context;
  */
 public class Global extends GlobalSettings {
 
-  /**
+    /**
+    @Override
+    public F.Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
+
+    }**/
+
+    /**
    * Initialize the app with surfers.
    * 
    * @param app

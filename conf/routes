@@ -18,10 +18,10 @@ GET         /leagues                         controllers.Leagues.leagues()
 
 # Courts
 GET         /courts                          controllers.Courts.index()
-GET         /courts/:id                      controllers.Courts.getCourt(id: Long)
-GET         /courts/:id/players              controllers.Courts.getPlayers(id: Long)
-GET         /courts/:id/reviews              controllers.Courts.getReviews(id:Long)
-GET         /courts/:id/review               controllers.Courts.review(id:Long)
+GET         /courts/:id/:slug                      controllers.Courts.getCourt(id: Long, slug: String)
+GET         /courts/:id/:slug/players              controllers.Courts.getPlayers(id: Long, slug: String)
+GET         /courts/:id/:slug/reviews              controllers.Courts.getReviews(id:Long, slug: String)
+GET         /courts/:id/:slug/review               controllers.Courts.review(id:Long, slug: String)
 POST        /courts/:id/review               controllers.Courts.postReview(id:Long)
 POST        /courts/:id/favorite             controllers.Courts.postFavorite(id: Long)
 

@@ -1,7 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import com.avaje.ebean.Page;
@@ -151,7 +149,7 @@ public class Players extends Controller{
       return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
     }
     else {
-      PlayerFormData formData = data.get();;
+      PlayerFormData formData = data.get();
       if (Player.getPlayer(user.getId()) == null) {
         //Player.addPlayer(formData);
       } else {
