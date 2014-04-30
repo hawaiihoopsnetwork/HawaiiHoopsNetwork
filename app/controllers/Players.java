@@ -8,6 +8,7 @@ import com.avaje.ebean.Page;
 import models.Player;
 import models.User;
 import models.games.Game;
+import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -40,7 +41,8 @@ public class Players extends Controller{
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
     List<Game> games = Game.findPlayerGames(player.getUser().getName());
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games ));
+    List<Team> teams = Team.getTeams();
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**
@@ -57,7 +59,8 @@ public class Players extends Controller{
     player.setRating(player.getRating() + rate);
     player.save();
     List<Game> games = Game.findPlayerGames(player.getUser().getName());
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games));
+    List<Team> teams = Team.getTeams();
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**************************

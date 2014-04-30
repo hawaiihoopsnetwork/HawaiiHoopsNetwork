@@ -47,6 +47,7 @@ public class Team extends Model {
   
   @ManyToMany(cascade=CascadeType.ALL)
   private List<League> leagues = new ArrayList<>();
+  
 
   /**
    * Default constructor.
