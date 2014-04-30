@@ -124,8 +124,8 @@
               @if(playerGames != null) {
                 @for(game <- playerGames) {
                 <tr>
-                  <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate().substring(1, game.getDate().length())</a></td>
-                  <td>@*game.getTime()*@</td>
+                  <td>@game.getGameDateString()</td>
+                  <td>@game.getGameTimeString()</td>
                   <td>@game.getLocation()</td>
                   <td>@game.getType()</td>
                   <!--  <td class="hidden-xs">@game.getFrequency()</td> -->

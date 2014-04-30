@@ -85,11 +85,9 @@ public class Users extends Controller
             mail.setSubject("Validation Email");
             mail.setRecipient(user.getEmail());
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
-
+            
             String url = routes.Users.validate(validation_key).absoluteURL(request());
             mail.sendHtml("<html><a href='" + url + "'>link</a></html>");
-            //mail.sendHtml("<html><a href='http://localhost:9000/validate/" + validation_key + "'>link</a></html>");
-
 
             //session().clear();
             //session("email", user.getEmail());

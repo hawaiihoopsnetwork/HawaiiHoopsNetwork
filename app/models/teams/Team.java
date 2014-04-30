@@ -13,6 +13,7 @@ import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
 import models.Comment;
+import models.Player;
 import models.leagues.League;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
@@ -41,6 +42,15 @@ public class Team extends Model {
   private String roster;
   private String description;
   private String imageUrl;
+  
+  private String record = "0-0";
+  private double threePt = 0.0;
+  private double twoPt = 0.0;
+  private double onePt = 0.0;
+  private int rebounds = 0;
+  private int steals = 0;
+  private int blocks = 0;
+
 
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
@@ -278,6 +288,38 @@ public class Team extends Model {
     List<String> rosterList = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
     return rosterList;
   }
+  
+  private List<String> noProfile = new ArrayList<>();
+
+  /**
+   * @return the players as a java List
+   */
+  public List<Player> getPlayerProfiles() {
+    // TODO check if player name is related to a player profile
+    List<String> gamePlayers = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
+
+    List<Player> withProfile = new ArrayList<>();
+    for (int x = 0; x < gamePlayers.size(); x++) {
+      Player player = Player.getPlayer(gamePlayers.get(x));
+
+      if (player != null) {
+        withProfile.add(player);
+      }
+      else {
+        noProfile.add(gamePlayers.get(x));
+      }
+    }
+    return withProfile;
+  }
+
+  /**
+   * Returns a list of the player names that don't have a profile within the site.
+   * 
+   * @return noProfile
+   */
+  public List<String> getNoProfile() {
+    return noProfile;
+  }
 
   /**
    * @param roster the roster to set
@@ -324,6 +366,104 @@ public class Team extends Model {
    */
   public List<Comment> getComments() {
     return this.comments;
+  }
+
+  /**
+   * @return the record
+   */
+  public String getRecord() {
+    return record;
+  }
+
+  /**
+   * @param record the record to set
+   */
+  public void setRecord(String record) {
+    this.record = record;
+  }
+
+  /**
+   * @return the threePt
+   */
+  public double getThreePt() {
+    return threePt;
+  }
+
+  /**
+   * @param threePt the threePt to set
+   */
+  public void setThreePt(double threePt) {
+    this.threePt = threePt;
+  }
+
+  /**
+   * @return the twoPt
+   */
+  public double getTwoPt() {
+    return twoPt;
+  }
+
+  /**
+   * @param twoPt the twoPt to set
+   */
+  public void setTwoPt(double twoPt) {
+    this.twoPt = twoPt;
+  }
+
+  /**
+   * @return the onePt
+   */
+  public double getOnePt() {
+    return onePt;
+  }
+
+  /**
+   * @param onePt the onePt to set
+   */
+  public void setOnePt(double onePt) {
+    this.onePt = onePt;
+  }
+
+  /**
+   * @return the rebounds
+   */
+  public int getRebounds() {
+    return rebounds;
+  }
+
+  /**
+   * @param rebounds the rebounds to set
+   */
+  public void setRebounds(int rebounds) {
+    this.rebounds = rebounds;
+  }
+
+  /**
+   * @return the steals
+   */
+  public int getSteals() {
+    return steals;
+  }
+
+  /**
+   * @param steals the steals to set
+   */
+  public void setSteals(int steals) {
+    this.steals = steals;
+  }
+
+  /**
+   * @return the blocks
+   */
+  public int getBlocks() {
+    return blocks;
+  }
+
+  /**
+   * @param blocks the blocks to set
+   */
+  public void setBlocks(int blocks) {
+    this.blocks = blocks;
   }
 
 }

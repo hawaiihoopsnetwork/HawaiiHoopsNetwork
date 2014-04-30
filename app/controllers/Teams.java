@@ -9,10 +9,13 @@ import play.mvc.Result;
 import play.data.Form;
 import views.formdata.CommentForm;
 import views.formdata.SearchFormData;
+import views.formdata.teams.StatForm;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
 import views.html.teams.ShowTeam;
+import views.html.teams.SearchTeams;
+import views.html.teams.EditTeamStats;
 
 /**
  * Implements the controllers for this application.
@@ -50,7 +53,7 @@ public class Teams extends Controller {
 
     Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
 
-    return ok(AllTeams.render("All Teams", currPage, "teamName asc", stuff, Secured.isLoggedIn(ctx())));
+    return ok(SearchTeams.render(" Teams", currPage, Secured.isLoggedIn(ctx()), st2.term));
   }
 
   /**
@@ -122,6 +125,41 @@ public class Teams extends Controller {
       return redirect("/teams/view/" + id);
     }
 
+  }
+
+  public static Result editStats(Long id) {
+
+    Team team = Team.getTeam(id);
+    
+    StatForm st = new StatForm(team);
+    Form<StatForm> stats = Form.form(StatForm.class).fill(st);
+
+    return ok(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, stats, Secured.isLoggedIn(ctx())));
+  }
+
+
+  public static Result postStats(Long id) {
+    Team team = Team.getTeam(id);
+
+    Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
+
+    if (st.hasErrors()) {
+      return badRequest(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, st, Secured.isLoggedIn(ctx())));
+    }
+    else {
+      StatForm stat = st.get();
+      team.setRecord(stat.record);
+      team.setThreePt(stat.threePt);
+      team.setTwoPt(stat.twoPt);
+      team.setOnePt(stat.onePt);
+      team.setRebounds(stat.rebounds);
+      team.setSteals(stat.steals);
+      team.setBlocks(stat.blocks);
+      team.setRoster(stat.roster);
+      team.save();
+
+      return redirect("/teams/view/" + team.getTeamName());
+    }
   }
 
 }
