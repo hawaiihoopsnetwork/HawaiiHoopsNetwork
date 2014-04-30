@@ -74,7 +74,9 @@ public class Users extends Controller
             user.setActivation_key(validation_key);
             user.setTimestamp(new DateTime());
             /** TODO **/
-            //user.setPlayer();
+            Player player = Player.addPlayer("", "Beginner", "Center", 0, 0, "5'5\"",
+                "140", "", "", "");
+            user.setPlayer(player);
             user.update();
             
 
