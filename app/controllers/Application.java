@@ -21,7 +21,6 @@ import forms.RegistrationForm;
  */
 public class Application extends Controller {
 
-
   private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
 
   /**
@@ -30,15 +29,17 @@ public class Application extends Controller {
    * @return The resulting colorblock page.
    */
   public static Result index() {
-    //Deletes games that passed a certain period.
-    Game.deletePastGames();
+    // Deletes games that passed a certain period.
+    if (Game.getGames().size() > 0) {
+      Game.deletePastGames();
+    }
     return ok(Index.render("Hawaii Hoops Network", registrationForm, Secured.isLoggedIn(ctx())));
   }
-  
-  /*public static Result home() {
-    List<Game> games = Game.getGames();
-    return ok(Home.render("Home", games, Secured.isLoggedIn(ctx())));
-  }*/
+
+  /*
+   * public static Result home() { List<Game> games = Game.getGames(); return ok(Home.render("Home", games,
+   * Secured.isLoggedIn(ctx()))); }
+   */
 
   /**
    * Returns the terms of use page.

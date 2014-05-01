@@ -12,10 +12,9 @@ import play.GlobalSettings;
 import play.libs.F;
 import play.Play;
 import play.mvc.Http.*;
-
 import play.mvc.*;
-
 import static play.mvc.Results.*;
+
 /**
  * Initialization for the application. will have three player's bios.
  * 
@@ -24,13 +23,13 @@ import static play.mvc.Results.*;
  */
 public class Global extends GlobalSettings {
 
-    /**
-    @Override
-    public F.Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
+  /**
+   * @Override public F.Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
+   * 
+   * }
+   **/
 
-    }**/
-
-    /**
+  /**
    * Initialize the app with surfers.
    * 
    * @param app
@@ -110,17 +109,54 @@ public class Global extends GlobalSettings {
           Court.addCourt("Chaminade", null, "private", "indoor", (long) 8, "full court", "wood", "good", true,
               address2, "it's awsome!");
 
-      /**
-       * Court.addCourt("Aina Haina", "Private", (float) 21.2970, (float) -157.8170, "It's Awsome"); Court.addCourt("B",
-       * "Private", (float) 23.2970, (float) -157.8170, "It's Awsome"); Court.addCourt("B", "Private", "123 Somewhere",
-       * (float)1234, (float)12345.0, "It's Awsome"); Court.addCourt("C", "Private", "123 Somewhere", (float)1234,
-       * (float)12345.0, "It's Awsome"); Court.addCourt("D", "Private", "123 Somewhere", (float)1234, (float)12345.0,
-       * "It's Awsome"); Court.addCourt("E", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
-       * Court.addCourt("F", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
-       * Court.addCourt("G", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
-       * Court.addCourt("H", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
-       * Court.addCourt("I", "Private", "123 Somewhere", (float)1234, (float)12345.0, "It's Awsome");
-       */
+      Address address3 =
+          Address.addAddress("1313 Makiki Street", "Honolulu", "HI", "96814", "United States", (float) 21.300859,
+              (float) -157.837527);
+
+      Court court3 =
+          Court.addCourt("Cartwright Neighborhood Park", null, "public", "outdoor", (long) 8, "full court", "wood",
+              "good", true, address3, "it's awesome");
+
+      Address address4 =
+          Address.addAddress("1400 Kalihi Street", "Honolulu", "HI", "96819", "United States", (float) 21.3349115,
+              (float) -157.8710021);
+
+      Court court4 =
+          Court.addCourt("Kamehameha Community Park", null, "public", "outdoor", (long) 8, "full court", "black top",
+              "good", true, address4, "It's awesome.");
+
+      Address address5 =
+          Address.addAddress("2329 Kalihi Street", "Honolulu", "HI", "96819", "United States", (float) 21.344941,
+              (float) -157.862468);
+
+      Court court5 =
+          Court.addCourt("Kalihi Uka Community Park", null, "public", "outdoor", (long) 8, "full court", "black top",
+              "good", true, address5, "it's awesome");
+
+      Address address6 =
+          Address.addAddress("500 University Avenue", "Honolulu", "HI", "96826", "United States", (float) 21.286924,
+              (float) -157.8272629);
+
+      Court court6 =
+          Court.addCourt("Ala Wai Community Park", null, "public", "outdoor", (long) 8, "full court", "black top",
+              "good", true, address6, "It's awesome.");
+
+      Address address7 =
+          Address.addAddress("2331 Kanealii Avenue", "Honolulu", "HI", "96813", "United States", (float) 21.3205757,
+              (float) -157.8435066);
+
+      Court court7 =
+          Court.addCourt("Booth District Park", null, "public", "indoor", (long) 8, "full court", "wood", "good", true,
+              address7, "It's awesome.");
+
+      Address address8 =
+          Address.addAddress("1159 Ala Lilikoi Place", "Honolulu", "HI", "96818", "United States", (float) 21.3522987,
+              (float) -157.9108152);
+
+      Court court8 =
+          Court.addCourt("Salt Lake District Park", null, "public", "outdoor", (long) 8, "full court", "black top",
+              "good", true, address7, "It's awesome");
+
     }
 
     if (Team.getTeams().size() == 0) {
