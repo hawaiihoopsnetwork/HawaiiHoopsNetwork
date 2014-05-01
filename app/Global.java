@@ -37,12 +37,14 @@ public class Global extends GlobalSettings {
   public void onStart(Application app) {
 
     if (TeamDB.getTeams().size() == 0) {
-      TeamDB.addTeam(new Team("Blazers", "String location", "String teamType", "String skillLevel", "String roster",
+      Team team1 = new Team("Blazers", "String location", "String teamType", "String skillLevel", "String roster",
           "String description",
-          "http://upload.wikimedia.org/wikipedia/en/0/06/Portland_Trail_Blazers_alternate_logo.svg"));
-      TeamDB.addTeam(new Team("Rockets", "String location", "String teamType", "String skillLevel", "String roster",
+          "http://upload.wikimedia.org/wikipedia/en/0/06/Portland_Trail_Blazers_alternate_logo.svg");
+      Team team2 = new Team("Rockets", "String location", "String teamType", "String skillLevel", "String roster",
           "String description",
-          "http://cf.juggle-images.com/matte/white/280x280/houston-rockets-script-logo-5-primary.jpg"));
+          "http://cf.juggle-images.com/matte/white/280x280/houston-rockets-script-logo-5-primary.jpg");
+      TeamDB.addTeam(team1);
+      TeamDB.addTeam(team2);
     }
 
     String adminEmail = Play.application().configuration().getString("hihoops.admin.email");
@@ -161,19 +163,28 @@ public class Global extends GlobalSettings {
 
     if (Team.getTeams().size() == 0) {
       Team.addTeam(new Team("Kaimuki Ballas", "Kaimuki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
-          "image"));
+          "http://upload.wikimedia.org/wikipedia/en/0/06/Portland_Trail_Blazers_alternate_logo.svg"));
       Team.addTeam(new Team("Kapolei Boys", "Kapolei Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
-          "image"));
+          "http://cf.juggle-images.com/matte/white/280x280/houston-rockets-script-logo-5-primary.jpg"));
       Team.addTeam(new Team("Aina-t Pros", "Aina Haina Community Park", "Recreational", "Female", "Alex G., Loa P.",
           "", "image"));
       Team.addTeam(new Team("Manoa B-Ballas", "Manoa Community Park", "Recreational", "Co-ed", "Alex G., Loa P.", "",
           "image"));
       Team.addTeam(new Team("Makiki Kings", "Makiki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
           "image"));
+      Team.addTeam(new Team("Cartwright Kings", "Cartwright Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
+          "image"));
     }
 
     if (LeagueDB.getLeagues().size() == 0) {
-      LeagueDB.addLeague(new League("Example League"));
+      League league = new League("Example League");
+      for(int i = 1; i <= Team.getTeams().size(); i++){
+        league.addTeam(Team.getTeam(i));
+      }
+      league.setNumTeams(6);
+      league.setLocation("Manoa Community Park");
+      league.setStartDate("05/01/2015");
+      LeagueDB.addLeague(league);
     }
 
     if (Game.getGames().size() == 0) {
