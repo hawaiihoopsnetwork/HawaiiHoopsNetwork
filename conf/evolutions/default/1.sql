@@ -69,11 +69,13 @@ create table league (
   id                        bigint not null,
   league_name               varchar(255),
   num_teams                 integer,
+  num_teams_in_league       integer,
   start_date                varchar(255),
   end_date                  varchar(255),
   description               varchar(255),
   pub_or_private            varchar(255),
   location                  varchar(255),
+  reg_step                  integer,
   constraint pk_league primary key (id))
 ;
 

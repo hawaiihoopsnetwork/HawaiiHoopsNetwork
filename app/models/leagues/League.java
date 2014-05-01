@@ -1,11 +1,18 @@
 package models.leagues;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
+import com.avaje.ebean.Query;
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 import forms.LeagueForm;
@@ -26,6 +33,8 @@ public class League extends Model{
   private String leagueName;
   
   private int numTeams;
+
+  private int numTeamsInLeague;
   
   private String startDate;
   
@@ -36,20 +45,9 @@ public class League extends Model{
   //True for public, false for private
   private String pubOrPrivate; 
   
-  public String getLocation() {
-    return location;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
-  public String getPubOrPrivate() {
-    return pubOrPrivate;
-  }
-
-
   private String location;
+  
+  private int regStep;
  
   @ManyToMany(mappedBy = "leagues", cascade=CascadeType.ALL)
   private List<Team> teams = new ArrayList<>();
@@ -62,6 +60,8 @@ public class League extends Model{
     this.description = "";
     this.pubOrPrivate = "public";
     this.location = "";
+    this.numTeamsInLeague = 0;
+    this.regStep = 0;
   }
   
   public League(String name, String startDate, String endDate, String pubOrPrivate){
@@ -72,6 +72,21 @@ public class League extends Model{
     this.description = "";
     this.pubOrPrivate = pubOrPrivate;
     this.location = "";
+    this.numTeamsInLeague = 0;
+    this.regStep = 0;
+  }
+  
+  public League(long id, String name, String startDate, String endDate, String pubOrPrivate, int regStep){
+    this.id = id;
+    this.leagueName = name;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.numTeams = 0;
+    this.description = "";
+    this.pubOrPrivate = pubOrPrivate;
+    this.location = "";
+    this.numTeamsInLeague = 0;
+    this.regStep = regStep;
   }
   
   public static List<String> typeOfLeague() {
@@ -79,8 +94,24 @@ public class League extends Model{
     return java.util.Arrays.asList(types);
   }
   
-  public static League getLeague(long id) {
-    return League.find().where().eq("id", id).findUnique();
+  public static Map<Integer, Boolean> num(){
+    Map<Integer, Boolean> nums = new TreeMap<Integer, Boolean>();
+    for(int i = 1; i < 21; i++){
+      nums.put(i, false);
+    }
+    return nums;
+  } 
+  
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public String getPubOrPrivate() {
+    return pubOrPrivate;
   }
 
   public String getLeagueName(){
@@ -101,6 +132,10 @@ public class League extends Model{
 
   public void setNumTeams(int numTeams) {
     this.numTeams = numTeams;
+  }
+  
+  public void addNumTeams(int numTeams) {
+    numTeams++;
   }
 
   public String getStartDate() {
@@ -138,9 +173,21 @@ public class League extends Model{
   public List<Team> getTeams() {
     return teams;
   }
+  
+  public int getNumTeamsInLeague() {
+    return numTeamsInLeague;
+  }
 
   public void setTeams(List<Team> teams) {
     this.teams = teams;
+  }
+  
+  public int getRegStep() {
+    return regStep;
+  }
+
+  public void setRegStep(int regStep) {
+    this.regStep = regStep;
   }
 
   public void setLeagueName(String leagueName) {
@@ -148,6 +195,7 @@ public class League extends Model{
   }
   
   public void addTeam(Team team){
+    numTeamsInLeague++;
     teams.add(team);
   }
 
@@ -194,6 +242,18 @@ public class League extends Model{
   
   public static Finder<Long, League> find() {
     return new Finder<Long, League>(Long.class, League.class);
+  }
+  
+  public static Page<League> find(String sort, int page) {
+    return find().where().orderBy(sort).findPagingList(10).setFetchAhead(false).getPage(page);
+  }
+  
+  public static Page<League> find(String term, String sort, int page) {
+    term = "%" + term + "%";
+    Query<League> q = Ebean.createQuery(League.class);
+    q.where().disjunction().add(Expr.ilike("leagueName", term)).add(Expr.ilike("pubOrPrivate", term))
+        .add(Expr.ilike("id", term));
+    return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
   }
   
 }

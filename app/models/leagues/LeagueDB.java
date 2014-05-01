@@ -1,6 +1,8 @@
 package models.leagues;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import models.teams.Team;
 import views.formdata.leagues.LeagueForm;
 
@@ -12,6 +14,10 @@ public class LeagueDB {
   
   public static List<League> getLeagues(){
     return League.find().all();
+  }
+  
+  public static int size(){
+    return getLeagues().size();
   }
   
   public static League getLeague(long id){
@@ -29,8 +35,7 @@ public class LeagueDB {
     long id = form.id;
 
     if (!LeagueDB.isLeague(id)) {
-      league = new League(form.leagueName, form.startDate, form.endDate, form.pubOrPrivate);
-      System.out.println("here");
+      league = new League(form.id, form.leagueName, form.startDate, form.endDate, form.pubOrPrivate, form.regStep);
       addLeague(league);
       league.save();
     }
@@ -43,11 +48,12 @@ public class LeagueDB {
       league.setStartDate(form.startDate);
       league.setEndDate(form.endDate);
       league.setDescription(form.description);
+      league.setId(form.id);
       league.save();
     }
   }
   
   public static List<Team> getTeamsInLeague(long id){
-    return Team.find().where().eq("", id).findList();
+    return League.find().where().eq("id", id).findUnique().getTeams();
   }
 }

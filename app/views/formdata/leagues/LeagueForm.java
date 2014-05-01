@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import models.leagues.League;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
@@ -26,6 +27,8 @@ public class LeagueForm {
     //@Constraints.Required(message = "Number of teams is required")
     public int numTeams;
     
+    public int numTeamsInLeague;
+    
     /*The start date of the league*/
     @Constraints.Required(message = "Start date is required")
     public String startDate;
@@ -36,6 +39,8 @@ public class LeagueForm {
     public String pubOrPrivate;
     
     public String location;
+    
+    public int regStep;
     
     /**
      * no arguments constructor
@@ -54,16 +59,17 @@ public class LeagueForm {
      * @param endDate the ending date of the league
      */
     
-    public LeagueForm(String leagueName, String description, int numTeams, String startDate, String endDate, 
-        String pubOrPrivate, String location)
+    public LeagueForm(League league)
     {
-        this.leagueName = leagueName;
-        this.description = description;
-        this.numTeams = numTeams;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.pubOrPrivate = pubOrPrivate;
-        this.location = location;
+        this.leagueName = league.getLeagueName();
+        this.description = league.getDescription();
+        this.numTeams = league.getNumTeams();
+        this.startDate = league.getStartDate();
+        this.endDate = league.getEndDate();
+        this.pubOrPrivate = league.getPubOrPrivate();
+        this.location = league.getLocation();
+        this.numTeamsInLeague = league.getNumTeamsInLeague();
+        this.regStep = league.getRegStep();
     }
     
     public List<ValidationError> validate() {
