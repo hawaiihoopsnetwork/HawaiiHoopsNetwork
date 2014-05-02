@@ -32,7 +32,7 @@ create table courts (
   phone                     varchar(255),
   email                     varchar(255),
   fax                       varchar(255),
-  description               blob,
+  description               clob,
   type                      varchar(255),
   indoor                    varchar(255),
   num_courts                bigint,
@@ -98,7 +98,7 @@ create table players (
 create table court_review (
   id                        bigint not null,
   author_id                 bigint,
-  review                    blob,
+  review                    clob,
   rating                    bigint,
   timestamp                 timestamp,
   court_id                  bigint,

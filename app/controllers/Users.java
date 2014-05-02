@@ -11,6 +11,7 @@ import play.mvc.Security;
 import models.Player;
 import models.User;
 import forms.*;
+import views.formdata.PlayerFormData;
 import views.html.Index;
 import views.html.user.Login;
 import views.html.user.Validate;
@@ -74,8 +75,8 @@ public class Users extends Controller
             user.setActivation_key(validation_key);
             user.setTimestamp(new DateTime());
             /** TODO **/
-            Player player = Player.addPlayer("", "Beginner", "Center", 0, 0, "5'5\"",
-                "140", "", "", "");
+            Player player = Player.addPlayer("", "-", "-", 0, 0, "",
+                "", "", "", "");
             user.setPlayer(player);
             user.update();
             
@@ -87,7 +88,8 @@ public class Users extends Controller
             mail.setFrom("hawaiihoopsnetwork@gmail.com");
             
             String url = routes.Users.validate(validation_key).absoluteURL(request());
-            mail.sendHtml("<html><a href='" + url + "'>link</a></html>");
+            mail.sendHtml("Thank you for registering with Hawaii Hoops Network! Connecting Hawaii's b-ballers with teams and leagues. \n"
+                + "<html><a href='" + url + "'>Click here to confirm registration.</a></html>");
 
             //session().clear();
             //session("email", user.getEmail());
@@ -99,6 +101,8 @@ public class Users extends Controller
     public static Result validate(String key)
     {
         User user = User.getValidUser(key);
+        Player player = Player.getPlayer(Secured.getUserInfo(ctx()).getId());
+        User userInfo = Secured.getUserInfo(ctx());
         //DateTime currentDate = new DateTime();
 
         if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
@@ -108,7 +112,7 @@ public class Users extends Controller
            session().clear();
            session("email", user.getEmail());
         }
-        return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
+        return ok(Validate.render("validation", player, userInfo, Secured.isLoggedIn(ctx())));
 
     }
 
