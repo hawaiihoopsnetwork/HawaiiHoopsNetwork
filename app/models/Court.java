@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Page;
 import play.db.ebean.Model;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,12 @@ public class Court extends Model
         return court;
     }
 
+    public static int sizePlayers(Long id) {
+        Court court = find.where().eq("id", id).findUnique();
+        return court.getPlayers().size();
+    }
+
+
     /**
     * Returns the court associated with a name, or null if not found.
     * @param id court id.
@@ -143,12 +150,25 @@ public class Court extends Model
         return court.getPlayers();
     }
 
-    public static void addPlayer(long id, Player player) {
-        Court court = find.where().eq("id",id).findUnique();
+    public void addPlayer(Player player) {
+        /**Court court = find.where().eq("id",id).findUnique();
         if (!court.getPlayers().contains(player)) {
             court.getPlayers().add(player);
             court.update();
+        }**/
+
+        if (!this.getPlayers().contains(player)) {
+           this.players.add(player);
+           this.update();
         }
+    }
+
+
+    public static List<Court> searchCourts(String name) {
+        return find
+                .where()
+                    .icontains("name", name)
+                .findList();
     }
 
     public static List<Court> getNearbyCourts(Address address, double distance) {
@@ -162,9 +182,6 @@ public class Court extends Model
                 .findList();
     }
 
-    public String getSlug() {
-       return "" ;
-    }
     /**
      * Check if court exists.
      * @param name court name.
@@ -172,6 +189,10 @@ public class Court extends Model
      * */
     public static boolean contains(String name) {
         return (getCourt(name) != null);
+    }
+
+    public boolean containsPlayer(String email) {
+        return (this.players.contains(User.getUser(email).getPlayer()));
     }
 
     /**

@@ -103,6 +103,9 @@ public class Global extends GlobalSettings {
           Court.addCourt("University of Hawaii", null, "private", "indoor", (long) 8, "full court", "wood", "good",
               true, address, "it's awsome!");
 
+        //court1.addPlayer();
+
+
       Address address2 =
           Address.addAddress("2501 Campus Rd", "Honolulu", "HI", "96823", "United States", (float) 21.2980,
               (float) -157.8180);

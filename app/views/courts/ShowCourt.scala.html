@@ -1,5 +1,5 @@
 
-@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean)
+@(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean)
 
 @import courts.CourtMain
 
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")"/>
 }
 
-@CourtMain(title, court, nearby, reviews, players, isLoggedIn, scripts) {
+@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
 
                 <img src="http://maps.googleapis.com/maps/api/staticmap?center=@court.getAddress.getLat,@court.getAddress.getLng&markers=size:mid%7Ccolor:red%7C@court.getAddress.getLat,@court.getAddress.getLng&zoom=12&size=400x100&scale=2&sensor=false" width="100%"/>
                 <a href="#">view map</a>

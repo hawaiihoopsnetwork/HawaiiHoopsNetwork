@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Page;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 import play.db.ebean.Model;
@@ -50,6 +51,19 @@ public class Review extends Model {
         Review review = new Review(author, reviews, rating, court);
         review.save();
         return review;
+    }
+
+    public static Page<Review> page(int size, int page, long id) {
+        return find
+                .where()
+                    .eq("court.id", id)
+                    .orderBy("timestamp desc")
+                .findPagingList(size)
+                .getPage(page);
+    }
+
+    public static int size() {
+        return find.findRowCount();
     }
 
     public static List<Review> getReviews(long id) {

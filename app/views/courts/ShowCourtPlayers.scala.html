@@ -1,38 +1,91 @@
-@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean)
+@(title: String, court: Court, nearby: List[Court],  players: com.avaje.ebean.Page[Player], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean)
 
 @import courts.CourtMain
 
 @scripts = {
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")">
+    <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(function() {
+             jQuery( ".load" ).click( function ( e ) {
+                e.preventDefault();
+
+                 var pathArray = window.location.pathname.split( '/' );
+                 var page = jQuery(this ).attr("id");
+
+
+                //make ajax request for json info about matching courts
+                jsRoutes.controllers.Courts.getPlayersPage(pathArray[2], pathArray[3], page).ajax({
+                    type: 'GET',
+                    //contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(data) {
+
+                        var result = "";
+                        for(var i = 0; i < data.courts.length; i++) {
+                            if (i % 2 == 0) {
+                                result +='<div class="row">'
+                            }
+                            result += '<div class="col-md-6"><div class="media"><a href="';
+                            result += '/playerProfile?id=' + data.courts[i].id;
+                            result += '"><img class="media-object img-thumbnail" src="' + data.courts[i].picture + '" alt="..." width="64px"></a>';
+                            result += '<div class="media-body"><h4 class="media-heading">' + data.courts[i ].name + '</h4>';
+                            result += '</div></div>';
+
+                            if (i % 2 == 1 || i == data.size) {
+                                result += '</div>';
+                            }
+                        }
+
+
+
+                        jQuery('#players').append(result);
+                        if(!data.morPages) {
+                            jQuery(".load" ).remove();
+                        } else {
+                            jQuery ( ".load" ).attr ( 'id', data.pageNumber ) ;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")" />
 }
 
-@CourtMain(title, court, nearby, reviews, players, isLoggedIn, scripts) {
+@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
 
                 <h3>Players</h3>
+        <div id="players">
+                @for((player, index) <- players.getList.zipWithIndex){
 
-                @for((player, index) <- players.zipWithIndex){
-
-                    @if(index % 3 == 0) {
+                    @if(index % 2 == 0) {
                         <div class="row">
                     }
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
 
                             <div class="media">
                                 <a class="pull-left" href="@routes.Players.playerProfile(player.getId)">
                                     <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="64px">
                                 </a>
 
-                            <div class="media-body">
-                                <h4 class="media-heading">@player.getUser.getName</h4>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@player.getUser.getName</h4>
+                                </div>
                             </div>
                         </div>
 
-
-                        </div>
-
-                    @if(index % 3 == 2 || index == players.size()){
+                    @if(index % 2 == 1 || index == players.getList.size()-1){
                         </div>
                     }
                 }
+            </div>
+
+        @if(players.hasNext) {
+            <button id="0" class="load btn btn-primary col-md-12" type="submit">
+                Load More
+            </button>
+        }
 }

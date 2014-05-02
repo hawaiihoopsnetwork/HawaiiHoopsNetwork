@@ -1,10 +1,40 @@
-@(title: String, court: Court, nearby: List[Court], reviews: List[Review], players: List[Player], isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
+@(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
 
 @import helper._
 @import utils.Tags._
 
 @scripts2 = {
     <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(function() {
+             jQuery( "#favorite" ).click( function ( e ) {
+                e.preventDefault();
+
+                 var pathArray = window.location.pathname.split( '/' );
+
+                jsRoutes.controllers.Courts.postFavorite().ajax({
+                    type: 'POST',
+                    contentType:'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        id: pathArray[2],
+                        slug: pathArray[3]
+                    }),
+                    success: function(data) {
+                        //alert(data.num_players);
+                        jQuery ( "reviewCount" ).html(data.num_players);
+                        jQuery ( "#favorite-button" ).attr("class", "disabled btn btn-primary");
+                       // data=jQuery(data).find("#courtInfo" ).html();
+                       // jQuery('#courtInfo').html(data);
+
+                       // jQuery(document.getElementById("summary").parentNode).addClass('active').siblings().removeClass('active');
+                    }
+                });
+            });
+        });
+    </script>
+    @**<script type="text/javascript">
 
         jQuery.noConflict();
 
@@ -67,7 +97,7 @@
             });
 
         });
-    </script>
+    </script> **@
 
     <script type="text/javascript" src="@routes.Courts.javascriptRoutes()"></script>
 
@@ -96,25 +126,27 @@
 
                 <img width="100%" src="@routes.Assets.at("images/basketball.jpg")" alt="...">
 
-                                    @if(isLoggedIn) {
+                @if(isLoggedIn) {
 @**                    <div class="courtInfo">
                         <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-home"></span> Add Homecourt</button>
                     </div> **@
 
-                    @form(routes.Courts.postFavorite(court.getId, slugify(court.getName))) {
 
-                        <div class="courtInfo">
-                            <button class="btn btn-primary" type="submit" style="width : 100%;"><span class="glyphicon glyphicon-star"></span>
+                        <div id="favorite" class="courtInfo">
+                        @if(court.containsPlayer(Secured.getUser(ctx()))) {
+                            <button id="favorite-button" class="disabled btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-star"></span>
                                 Add Favorite
                             </button>
+                        } else {
+                             <button id="favorite-button" class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-star"></span>
+                                Add Favorite
+                            </button>
+                        }
                         </div>
-                    }
 
-                    @form(routes.Courts.postFavorite(court.getId, slugify(court.getName))) {
                         <div class="courtInfo">
                             <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-envelope"></span> Tell a Friend</button>
                         </div>
-                    }
                 }
                 <div class="courtInfo">
                     @court.getAddress.getStreet
@@ -167,22 +199,37 @@
             <div class="well">
 
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active">
+                    @if(title == court.getName) {
+                        <li class="active">
+                    } else {
+                        <li>
+                    }
                         <a id="summary" href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">Summary
                            <!-- <span class="pull-right" id="loading"></span> -->
                         </a>
                     </li>
+
                     <li>
                         <a href="#">Calendar</a>
                     </li>
-                    <li>
+
+                    @if(title == "Players") {
+                        <li class="active">
+                    } else {
+                        <li>
+                    }
                         <a id="playerTab" href="@routes.Courts.getPlayers(court.getId, slugify(court.getName))">Players
-                            <span class="badge pull-right">@players.size()</span>
+                                <span id="playerCount" class="badge pull-right">@playerCount</span>
                         </a>
                     </li>
-                    <li>
-                        <a id="reviews" href="@routes.Courts.getReviews(court.getId, slugify(court.getName))">Reviews
-                            <span class="badge pull-right">@reviews.size()</span>
+
+                    @if(title == "Reviews") {
+                        <li class="active">
+                    } else {
+                        <li>
+                    }
+                        <a id="reviews-button" href="@routes.Courts.getReviews(court.getId, slugify(court.getName))">Reviews
+                            <span id="reviewCount" class="badge pull-right">@reviewCount</span>
                         </a>
                     </li>
                 </ul>

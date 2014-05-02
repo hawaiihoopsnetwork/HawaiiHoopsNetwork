@@ -135,6 +135,16 @@ public class Player extends Model {
     return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
   }
 
+
+  public static Page<Player> page(int size, int page, long id) {
+        return find()
+                .where()
+                    .in("courts", Court.getCourt(id))
+                .findPagingList(size)
+                .getPage(page);
+  }
+
+
   /**
    * Temporary for now, used in Global.java Stops multiple addition in database.
    * 
