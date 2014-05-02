@@ -101,8 +101,8 @@ public class Users extends Controller
     public static Result validate(String key)
     {
         User user = User.getValidUser(key);
-        Player player = Player.getPlayer(Secured.getUserInfo(ctx()).getId());
-        User userInfo = Secured.getUserInfo(ctx());
+        //Player player = Player.getPlayer(Secured.getUserInfo(ctx()).getId());
+        //User userInfo = Secured.getUserInfo(ctx());
         //DateTime currentDate = new DateTime();
 
         if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
@@ -112,7 +112,7 @@ public class Users extends Controller
            session().clear();
            session("email", user.getEmail());
         }
-        return ok(Validate.render("validation", player, userInfo, Secured.isLoggedIn(ctx())));
+        return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
 
     }
 
