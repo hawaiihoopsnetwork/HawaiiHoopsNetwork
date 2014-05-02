@@ -17,156 +17,148 @@ import views.html.user.Validate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 // import views.html.Registration;
 
 /**
  * Implements the login controller for this application.
  */
-public class Users extends Controller
-{
+public class Users extends Controller {
 
-    private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
-    private static final Form<LoginForm> loginForm = Form.form(LoginForm.class);
+  private static final Form<RegistrationForm> registrationForm = Form.form(RegistrationForm.class);
+  private static final Form<LoginForm> loginForm = Form.form(LoginForm.class);
 
-    /**
-     * Provides the Registration page (only to unauthenticated users).
-     * @return The Registration page.
-     */
-    public static Result register()
-    {
-        return ok();
+  /**
+   * Provides the Registration page (only to unauthenticated users).
+   * 
+   * @return The Registration page.
+   */
+  public static Result register() {
+    return ok();
+  }
+
+  /**
+   * Processes a registration form submission from an unauthenticated user. First we bind the HTTP POST data to an
+   * instance of RegistrationForm. The binding process will invoke the Registration.validate() method. If errors are
+   * found, re-render the page, displaying the error data. If errors not found, render the page with the good data.
+   * 
+   * @return The index page with the results of validation.
+   */
+  public static Result postRegister() {
+    Form<RegistrationForm> filledRegistrationForm = registrationForm.bindFromRequest();
+
+    if (filledRegistrationForm.hasErrors()) {
+      List<Game> games = null;
+      if (Secured.isLoggedIn(ctx())) {
+        games = Game.getGames();
+      }
+
+      return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
     }
+    else {
+      RegistrationForm data = filledRegistrationForm.get();
+      User user = User.addUser(data);
 
-    /**
-     * Processes a registration form submission from an unauthenticated user.
-     * First we bind the HTTP POST data to an instance of RegistrationForm.
-     * The binding process will invoke the Registration.validate() method.
-     * If errors are found, re-render the page, displaying the error data.
-     * If errors not found, render the page with the good data.
-     * @return The index page with the results of validation.
-     */
-    public static Result postRegister()
-    {
-        Form<RegistrationForm> filledRegistrationForm = registrationForm.bindFromRequest();
+      String validation_key;
 
-        if (filledRegistrationForm.hasErrors())
-        {
-            List<Game> games = null;
-            if (Secured.isLoggedIn(ctx())) {
-                games = Game.getGames();
-            }
+      do {
+        validation_key = UUID.randomUUID().toString();
+        // check for already existing user with same validation key
+      }
+      while ((User.getValidUser(validation_key) != null));
 
-            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
-        }
-        else
-        {
-            RegistrationForm data = filledRegistrationForm.get();
-            User user = User.addUser(data);
+      user.setActivation_key(validation_key);
+      user.setTimestamp(new DateTime());
+      /** TODO **/
+      Player player = Player.addPlayer("", "Beginner", "Center", 0, 0, "5'5\"", "140", "", "", "");
+      user.setPlayer(player);
+      user.update();
 
-            String validation_key;
+      MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+      mail.setSubject("Welcome to HawaiiHoopsNetwork");
+      mail.setRecipient(user.getEmail());
+      mail.setFrom("hawaiihoopsnetwork@gmail.com");
 
-            do
-            {
-                validation_key = UUID.randomUUID().toString();
-            // check for already existing user with same validation key
-            } while((User.getValidUser(validation_key) != null));
+      String url = routes.Users.validate(validation_key).absoluteURL(request());
+      mail.sendHtml("<html><h1>HawaiiHoopsNetwork</h1><hr>Dear "
+          + user.getName()
+          + ",<br/><br/>Thank you for registering with HawaiiHoopsNetwork.<br/><br/>One more thing needs to be done so you can access all of the features of HawaiiHoopsNetwork. <br/><br/>To complete the registration process, please go to the following <a href='"
+          + url
+          + "'>link</a>.<br/><br/>If you did not intend to register for HawaiiHoopsNetwork, please ignore this email.  <br/><br/>Thanks,<br/>HawaiiHoopsNetwork<hr></html>");
 
-            user.setActivation_key(validation_key);
-            user.setTimestamp(new DateTime());
-            /** TODO **/
-            Player player = Player.addPlayer("", "Beginner", "Center", 0, 0, "5'5\"",
-                "140", "", "", "");
-            user.setPlayer(player);
-            user.update();
-            
-
-
-            MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
-            mail.setSubject("Validation Email");
-            mail.setRecipient(user.getEmail());
-            mail.setFrom("hawaiihoopsnetwork@gmail.com");
-            
-            String url = routes.Users.validate(validation_key).absoluteURL(request());
-            mail.sendHtml("<html><a href='" + url + "'>link</a></html>");
-
-            //session().clear();
-            //session("email", user.getEmail());
-            flash("registered", "Thank you for signing up with Hawaii Hoops Network! Check your email for a verification link before logging in.");
-            return redirect(routes.Application.index());
-        }
+      // session().clear();
+      // session("email", user.getEmail());
+      flash("registered",
+          "Thank you for signing up with Hawaii Hoops Network! Check your email for a verification link before logging in.");
+      return redirect(routes.Application.index());
     }
+  }
 
-    public static Result validate(String key)
+  public static Result validate(String key) {
+    User user = User.getValidUser(key);
+    // DateTime currentDate = new DateTime();
+
+    if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
     {
-        User user = User.getValidUser(key);
-        //DateTime currentDate = new DateTime();
-
-        if (user != null)// && currentDate.getTime() - user.getTimestamp().getTime() > 86400000)
-        {
-           user.setActivation_key(null);
-           user.update();
-           session().clear();
-           session("email", user.getEmail());
-        }
-        return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
-
+      user.setActivation_key(null);
+      user.update();
+      session().clear();
+      session("email", user.getEmail());
     }
+    return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
 
-    /**
-     * Provides the Login page (only to unauthenticated users).
-     * @return The Login page.
-     */
-    public static Result login()
-    {
-      return ok(Login.render("login", loginForm, Secured.isLoggedIn(ctx())));
+  }
+
+  /**
+   * Provides the Login page (only to unauthenticated users).
+   * 
+   * @return The Login page.
+   */
+  public static Result login() {
+    return ok(Login.render("login", loginForm, Secured.isLoggedIn(ctx())));
+  }
+
+  /**
+   * Processes a login form submission from an unauthenticated user. First we bind the HTTP POST data to an instance of
+   * LoginFormData. The binding process will invoke the LoginFormData.validate() method. If errors are found, re-render
+   * the page, displaying the error data. If errors not found, render the page with the good data.
+   * 
+   * @return The index page with the results of validation.
+   */
+  public static Result postLogin() {
+
+    // Get the submitted form data from the request object, and run validation.
+    Form<LoginForm> filledLoginForm = loginForm.bindFromRequest();
+
+    if (filledLoginForm.hasErrors()) {
+      flash("error", "Login credentials not valid.");
+      return badRequest(Login.render("login", filledLoginForm, Secured.isLoggedIn(ctx())));
     }
-
-    /**
-     * Processes a login form submission from an unauthenticated user.
-     * First we bind the HTTP POST data to an instance of LoginFormData.
-     * The binding process will invoke the LoginFormData.validate() method.
-     * If errors are found, re-render the page, displaying the error data.
-     * If errors not found, render the page with the good data.
-     * @return The index page with the results of validation.
-     */
-    public static Result postLogin()
-    {
-
-        // Get the submitted form data from the request object, and run validation.
-        Form<LoginForm> filledLoginForm = loginForm.bindFromRequest();
-
-        if (filledLoginForm.hasErrors())
-        {
-            flash("error", "Login credentials not valid.");
-            return badRequest(Login.render("login", filledLoginForm, Secured.isLoggedIn(ctx())));
-        }
-        else
-        {
-            // email/password OK, so now we set the session variable and only go to authenticated pages.
-            session().clear();
-            session("email", filledLoginForm.get().email);
-            return redirect(routes.Application.index());
-        }
+    else {
+      // email/password OK, so now we set the session variable and only go to authenticated pages.
+      session().clear();
+      session("email", filledLoginForm.get().email);
+      return redirect(routes.Application.index());
     }
+  }
 
-    /**
-     * Logs out (only for authenticated users) and returns them to the Index page.
-     * @return A redirect to the Index page.
-     */
-    @Security.Authenticated(Secured.class)
-    public static Result logout()
-    {
-        session().clear();
-        return redirect(routes.Application.index());
-    }
+  /**
+   * Logs out (only for authenticated users) and returns them to the Index page.
+   * 
+   * @return A redirect to the Index page.
+   */
+  @Security.Authenticated(Secured.class)
+  public static Result logout() {
+    session().clear();
+    return redirect(routes.Application.index());
+  }
 
-    @Security.Authenticated(Secured.class)
-    public static Result deleteUser()
-    {
-        User user = Secured.getUserInfo(ctx());
-        user.delete();
-        session().clear();
-        return redirect(routes.Application.index());
-    }
+  @Security.Authenticated(Secured.class)
+  public static Result deleteUser() {
+    User user = Secured.getUserInfo(ctx());
+    user.delete();
+    session().clear();
+    return redirect(routes.Application.index());
+  }
 
 }
