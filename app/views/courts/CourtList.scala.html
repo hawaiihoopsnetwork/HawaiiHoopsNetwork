@@ -64,12 +64,19 @@
                 var marker = new google.maps.Marker ({
                     position : myLatLng,
                     map : map,
-                    title : court[0]
+                    title : court[0] 
                 });
-                var description = "<b>" + court[0] + "</b></br>" + court[3] + "</br><a href='" + "#" + "'>more info</a>";
+                var name = slugifyName(court[0]);
+                var description = "<b>" + court[0] + "</b></br>" + court[3] + "</br><a href='" + "courts/" + court[4] + "/" + name + "'>more info</a>";
 
                 bindInfoWindow(marker, map, infowindow, description);
             }
+        }
+        
+        function slugifyName(name) {
+        	return name.toLowerCase()
+        	   .replace(/ /g, '-')
+        	   .replace(/[^\w-]+/g, '');
         }
 
         function bindInfoWindow(marker, map, infowindow, strDescription) {
