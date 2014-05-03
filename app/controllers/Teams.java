@@ -158,7 +158,7 @@ public class Teams extends Controller {
       team.setRoster(stat.roster);
       team.save();
 
-      return redirect("/teams/view/" + team.getTeamName());
+      return redirect(routes.Teams.showTeam(team.getId()));
     }
   }
 

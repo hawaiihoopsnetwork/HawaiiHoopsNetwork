@@ -32,14 +32,14 @@
                <img src="@routes.Assets.at("images/no-available-image.png")" height="40%" width="40%"> <br>
                <h4>Stats: </h4>
                
-               <ul>
-                  <li><i>Record: </i>@team.getRecord()</br></li>
-                     <li>@team.getThreePt() % 3pts  <br></li>
-                     <li>@team.getTwoPt() % 2pts  <br></li>
-                     <li>@team.getOnePt() % 1pt  <br></li>
-                     <li>@team.getRebounds() rebounds  <br></li>
-                     <li>@team.getSteals() steals  <br></li>
-                     <li>@team.getBlocks() blocks  <br></li>
+               <ul style="list-style: none">
+                  <li><i><label class="control-label">Record: &nbsp &nbsp</label></i>@team.getRecord()</li>
+                     <li><label class="control-label">3 point %: &nbsp &nbsp</label>@team.getThreePt() %  <br></li>
+                     <li><label class="control-label">2 point %: &nbsp &nbsp</label>@team.getTwoPt() %  <br></li>
+                     <li><label class="control-label">Free Throw %: &nbsp &nbsp</label>@team.getOnePt() %  <br></li>
+                     <li><label class="control-label">Rebounds: &nbsp &nbsp</label>@team.getRebounds()   <br></li>
+                     <li><label class="control-label">Steals: &nbsp &nbsp</label>@team.getSteals()  <br></li>
+                     <li><label class="control-label">Blocks: &nbsp &nbsp</label>@team.getBlocks()  <br></li>
                 </ul>     
                 <a href="@routes.Teams.editStats(team.getId)" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
     
