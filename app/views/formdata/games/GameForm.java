@@ -153,7 +153,6 @@ public class GameForm {
 
       int days = Days.daysBetween(curr, date).getDays();
 
-      System.out.println("DAYS: " + days);
       if (days > DAYS_FORWARD) {
         errors.add(new ValidationError("month",
             "Game is scheduled too far in advanced.  Please only schedule games within " + DAYS_FORWARD + " days."));
