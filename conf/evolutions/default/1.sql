@@ -65,6 +65,14 @@ create table game (
   constraint pk_game primary key (name))
 ;
 
+create table court_hours (
+  id                        bigint not null,
+  start_day                 integer,
+  start_time                timestamp,
+  end_time                  timestamp,
+  constraint pk_court_hours primary key (id))
+;
+
 create table league (
   id                        bigint not null,
   league_name               varchar(255),
@@ -143,6 +151,12 @@ create table courts_players (
   constraint pk_courts_players primary key (courts_id, players_id))
 ;
 
+create table court_hours_courts (
+  court_hours_id                 bigint not null,
+  courts_id                      bigint not null,
+  constraint pk_court_hours_courts primary key (court_hours_id, courts_id))
+;
+
 create table teams_league (
   teams_id                       bigint not null,
   league_id                      bigint not null,
@@ -155,6 +169,8 @@ create sequence comment_seq;
 create sequence courts_seq;
 
 create sequence game_seq;
+
+create sequence court_hours_seq;
 
 create sequence league_seq;
 
@@ -187,6 +203,10 @@ alter table courts_players add constraint fk_courts_players_courts_01 foreign ke
 
 alter table courts_players add constraint fk_courts_players_players_02 foreign key (players_id) references players (id) on delete restrict on update restrict;
 
+alter table court_hours_courts add constraint fk_court_hours_courts_court_h_01 foreign key (court_hours_id) references court_hours (id) on delete restrict on update restrict;
+
+alter table court_hours_courts add constraint fk_court_hours_courts_courts_02 foreign key (courts_id) references courts (id) on delete restrict on update restrict;
+
 alter table teams_league add constraint fk_teams_league_teams_01 foreign key (teams_id) references teams (id) on delete restrict on update restrict;
 
 alter table teams_league add constraint fk_teams_league_league_02 foreign key (league_id) references league (id) on delete restrict on update restrict;
@@ -203,7 +223,11 @@ drop table if exists courts;
 
 drop table if exists courts_players;
 
+drop table if exists court_hours_courts;
+
 drop table if exists game;
+
+drop table if exists court_hours;
 
 drop table if exists league;
 
@@ -226,6 +250,8 @@ drop sequence if exists comment_seq;
 drop sequence if exists courts_seq;
 
 drop sequence if exists game_seq;
+
+drop sequence if exists court_hours_seq;
 
 drop sequence if exists league_seq;
 

@@ -56,36 +56,40 @@
 
 @CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
 
-                <h3>Players</h3>
-        <div id="players">
-                @for((player, index) <- players.getList.zipWithIndex){
-
-                    @if(index % 2 == 0) {
-                        <div class="row">
-                    }
-
-                        <div class="col-sm-6">
-
-                            <div class="media">
-                                <a class="pull-left" href="@routes.Players.playerProfile(player.getId)">
-                                    <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="64px">
-                                </a>
-
-                                <div class="media-body">
-                                    <h4 class="media-heading">@player.getUser.getName</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                    @if(index % 2 == 1 || index == players.getList.size()-1){
-                        </div>
-                    }
+    <h3>Others Following this Court</h3>
+    <div id="players">
+    @if(players.getList.isEmpty) {
+        <p>No Players</p>
+    } else {
+        @for((player, index) <- players.getList.zipWithIndex){
+            @if(index % 2 == 0) {
+                <div class="row">
                 }
+
+            <div class="col-sm-6">
+
+                <div class="media">
+                    <a class="pull-left" href="@routes.Players.playerProfile(player.getId)">
+                        <img class="media-object img-thumbnail" src="@player.getPicUrl" alt="Image not Available" height="64px" width="64px">
+                    </a>
+
+                    <div class="media-body">
+                        <h4 class="media-heading">@player.getUser.getName</h4>
+                    </div>
+                </div>
             </div>
 
-        @if(players.hasNext) {
-            <button id="0" class="load btn btn-primary col-md-12" type="submit">
-                Load More
-            </button>
+            @if(index % 2 == 1 || index == players.getList.size()-1){
+            </div>
+            }
         }
+
+    }
+    </div>
+
+    @if(players.hasNext) {
+        <button id="0" class="load btn btn-primary col-md-12" type="submit">
+            Load More
+        </button>
+    }
 }

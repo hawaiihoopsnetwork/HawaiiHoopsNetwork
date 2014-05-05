@@ -30,6 +30,7 @@ GET         /courts/:id/:slug/reviews/           controllers.Courts.getReviewsPa
 GET         /courts/:id/:slug/review             controllers.Courts.review(id:Long, slug: String)
 POST        /courts/:id/:slug/review             controllers.Courts.postReview(id:Long, slug: String)
 POST        /courts/favorite                     controllers.Courts.postFavorite()
+POST        /courts/unfavorite                   controllers.Courts.postUnfavorite()
 
 GET         /players                             controllers.Players.players(sortOrder: String, page: Integer)
 GET         /playerSearch                        controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)

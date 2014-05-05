@@ -1,9 +1,10 @@
-@(title: String, registrationForm: Form[forms.RegistrationForm], isLoggedIn: Boolean)
+@(title: String, registrationForm: Form[forms.RegistrationForm], courts: List[Court], isLoggedIn: Boolean)
 
 @import bootstrap3._
+@import utils.Tags._
 
 @scripts = {
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/index.css")">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/index.css")" />
 }
 
 @Main(title, isLoggedIn, scripts) {
@@ -20,9 +21,9 @@
                             <thead>
                             </thead>
                             <tbody data-link="row" class="rowlink">
-                            @for(game <- models.games.Game.gamesForIndex().getList()) {
+                            @for(game <- models.games.Game.gamesForIndex().getList) {
                                 <tr>
-                                    <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getName()</a></td>
+                                    <td><a id="noColor" href="@routes.Games.getGame(game.getName)">@game.getName</a></td>
                                 </tr>
                             }
                             </tbody>
@@ -70,14 +71,17 @@
                 </div>
                 <div class="col-md-3">
                     <div class="well">
-                        <h4>Events</h4>
-                        <ul class="list">
-                            <li><a href="#">Sports Authority Shootout</a></li>
-                            <li><a href="#">UH Manoa Pick up Game</a></li>
-                            <li><a href="#">Nike Tournament</a></li>
-                            <li><a href="#">FedEx vs UPS Shootout</a></li>
-                            <li><a href="#">98.5 Shootout</a></li>
-                        </ul>
+                        <h4>Your Courts</h4>
+                        @if(courts.isEmpty) {
+                            <p>You aren't following any courts</p>
+                            <p>Find courts <a href="@routes.Courts.index()">here</a></p>
+                        } else {
+                            @for(court <- courts) {
+                                <ul class="list">
+                                    <li><a href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">@court.getName</a></li>
+                                </ul>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -97,6 +101,13 @@
                     @flash.get("registered")
                 </div>
             }
+
+            @if(flash.containsKey("login")) {
+                <div class="alert alert-success" style="text-align:center;">
+                    @flash.get("login")
+                </div>
+            }
+
 
             <div class="container">
                     <!-- Header -->

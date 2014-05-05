@@ -1,21 +1,20 @@
-import models.Address;
-import models.Court;
-import models.Player;
-import models.User;
+import models.*;
 import models.games.Game;
 import models.leagues.League;
 import models.leagues.LeagueDB;
 import models.teams.Team;
 import models.teams.TeamDB;
-import play.Application;
-import play.GlobalSettings;
-import play.libs.F;
-import play.Play;
-import play.mvc.Http.*;
-
+import play.*;
 import play.mvc.*;
+//import play.Application;
+//import play.GlobalSettings;
+//import play.Play;
 
+import play.libs.F.*;
+import play.mvc.Http.*;
+import views.html.errors.PageNotFound;
 import static play.mvc.Results.*;
+
 /**
  * Initialization for the application. will have three player's bios.
  * 
@@ -24,11 +23,16 @@ import static play.mvc.Results.*;
  */
 public class Global extends GlobalSettings {
 
-    /**
-    @Override
-    public F.Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
 
-    }**/
+    public Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
+        return Promise.<SimpleResult>pure(notFound(
+                PageNotFound.render()
+        ));
+    }
+
+    public Promise<SimpleResult> onBadRequest(RequestHeader request, String error) {
+        return Promise.<SimpleResult>pure(badRequest("Don't try to hack the URI!"));
+    }
 
     /**
    * Initialize the app with surfers.
@@ -96,6 +100,7 @@ public class Global extends GlobalSettings {
     }
 
     if (Court.getCourts().isEmpty()) {
+
       Address address =
           Address.addAddress("2500 Campus Rd", "Honolulu", "HI", "96822", "United States", (float) 21.2970,
               (float) -157.8170);
@@ -103,6 +108,8 @@ public class Global extends GlobalSettings {
           Court.addCourt("University of Hawaii", null, "private", "indoor", (long) 8, "full court", "wood", "good",
               true, address, "it's awsome!");
 
+        Hours hours = Hours.addDuration(1, 11, 30, 1, 4, 0);
+        hours.addCourt(court1);
         //court1.addPlayer();
 
 
@@ -113,6 +120,7 @@ public class Global extends GlobalSettings {
           Court.addCourt("Chaminade", null, "private", "indoor", (long) 8, "full court", "wood", "good", true,
               address2, "it's awsome!");
 
+        hours.addCourt(court2);
       /**
        * Court.addCourt("Aina Haina", "Private", (float) 21.2970, (float) -157.8170, "It's Awsome"); Court.addCourt("B",
        * "Private", (float) 23.2970, (float) -157.8170, "It's Awsome"); Court.addCourt("B", "Private", "123 Somewhere",

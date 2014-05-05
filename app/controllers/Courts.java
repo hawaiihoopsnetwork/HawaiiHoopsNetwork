@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import forms.CourtReviewForm;
-import models.Court;
-import models.Player;
-import models.Review;
-import models.User;
+import models.*;
 import play.Routes;
 import play.libs.Json;
 import play.mvc.Security;
@@ -20,6 +17,7 @@ import views.html.courts.ShowCourt;
 import views.html.courts.ShowCourtPlayers;
 import views.html.courts.ShowCourtReviews;
 import views.html.courts.CreateReview;
+import views.html.errors.PageNotFound;
 
 import utils.Tags;
 
@@ -73,54 +71,78 @@ public class Courts extends Controller {
 
     /**
      * Get a court page.
-     * @param id court name.
+     * @param id of court.
+     * @param slug slug of court name.
      * @return court information page.
      */
     public static Result getCourt(Long id, String slug) {
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
+        User user = Secured.getUserInfo(ctx());
 
         return ok(ShowCourt.render(
                 court.getName(),
                 court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
-                Review.size(),
-                Court.sizePlayers(id), // number of players
+                Review.size(id),
+                Court.sizePlayers(id, user.getPlayer()), // number of players
+                Hours.getSchedule(id, 1), // Mon-Sun
+                Hours.getSchedule(id, 2),
+                Hours.getSchedule(id, 3),
+                Hours.getSchedule(id, 4),
+                Hours.getSchedule(id, 5),
+                Hours.getSchedule(id, 6),
+                Hours.getSchedule(id, 7),
                 Secured.isLoggedIn(ctx())));
     }
 
     public static Result getPlayers(Long id, String slug) {
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
+       User user = Secured.getUserInfo(ctx());
+
         return ok(ShowCourtPlayers.render(
                 "Players",
-                Court.getCourt(id),
+                court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
-                Player.page(10,0,id),
-                Review.size(),
-                Court.sizePlayers(id),
+                Player.page(10,0,id, user.getPlayer().getId()),
+                Review.size(id),
+                Court.sizePlayers(id, user.getPlayer()),
                 Secured.isLoggedIn(ctx())));
     }
 
     public static Result getPlayersPage(Long id, String slug, Integer page) {
 
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
 
-        Page<Player> players = Player.page(10, page, id);
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
+        User user = Secured.getUserInfo(ctx());
+        Page<Player> players = Player.page(10, page, id, user.getPlayer().getId());
         List<Player> listPlayers = players.getList();
+
 
         ObjectNode result = Json.newObject();
 
@@ -144,19 +166,24 @@ public class Courts extends Controller {
 
     public static Result getReviews(Long id, String slug) {
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
 
-       return ok(ShowCourtReviews.render(
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
+
+        User user = Secured.getUserInfo(ctx());
+        return ok(ShowCourtReviews.render(
                 "Reviews",
-                Court.getCourt(id),
+                court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.page(10, 0, id),
-                Review.size(),
-                Court.sizePlayers(id),
+                Review.size(id),
+                Court.sizePlayers(id, user.getPlayer()),
                 Secured.isLoggedIn(ctx())));
 
     }
@@ -164,10 +191,13 @@ public class Courts extends Controller {
     public static Result getReviewsPage(Long id, String slug, Integer page) {
 
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
+        }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
         }
 
         Page<Review> reviews = Review.page(10, page, id);
@@ -196,10 +226,13 @@ public class Courts extends Controller {
 
     public static Result review(Long id, String slug) {
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
+        }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
         }
 
         CourtReviewForm review = new CourtReviewForm();
@@ -207,7 +240,7 @@ public class Courts extends Controller {
 
         return ok(CreateReview.render(
                     "Review", 
-                    Court.getCourt(id), 
+                    court,
                     Review.getRecentReviews(id), 
                     formData, 
                     Secured.isLoggedIn(ctx())));
@@ -217,11 +250,15 @@ public class Courts extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result postReview(Long id, String slug) {
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
 
         Form<CourtReviewForm> formData = Form.form(CourtReviewForm.class).bindFromRequest();
 
@@ -241,14 +278,16 @@ public class Courts extends Controller {
                     message.rating, 
                     Court.getCourt(id));
 
-            return ok(ShowCourtReviews.render(
+            User user = Secured.getUserInfo(ctx());
+            return redirect(controllers.routes.Courts.getReviews(id, slug));
+            /*return ok(ShowCourtReviews.render(
                 "Reviews",
-                Court.getCourt(id),
+                court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.page(10, 0, id),
-                Review.size(),
-                Court.sizePlayers(id),
-                Secured.isLoggedIn(ctx())));
+                Review.size(id),
+                Court.sizePlayers(id, user.getPlayer()),
+                Secured.isLoggedIn(ctx())));*/
         }
     }
 
@@ -264,14 +303,47 @@ public class Courts extends Controller {
         String slug = json.findPath("slug").asText();
 
         Court court = Court.getCourt(id);
-        String storedSlug = Tags.slugify(court.getName());
 
-        if (court == null || !storedSlug.equals(slug)) {
-            return notFound();
+        if (court == null) {
+            return notFound(PageNotFound.render());
         }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
 
         Player player = User.getUser(Secured.getUser(ctx())).getPlayer();
         court.addPlayer(player);
+        ObjectNode result = Json.newObject();
+        result.put("num_players", court.getPlayers().size());
+        return ok(result);
+    }
+
+    @Security.Authenticated(Secured.class)
+    public static Result postUnfavorite() {
+        JsonNode json = request().body().asJson();
+
+        if(json == null) {
+            return badRequest();
+        }
+
+        long id = json.findPath("id").asLong();
+        String slug = json.findPath("slug").asText();
+
+        Court court = Court.getCourt(id);
+
+        if (court == null) {
+            return notFound(PageNotFound.render());
+        }
+
+        if (!Tags.slugify(court.getName()).equals(slug)) {
+            return notFound(PageNotFound.render());
+        }
+
+
+        Player player = User.getUser(Secured.getUser(ctx())).getPlayer();
+        court.removePlayer(player);
         ObjectNode result = Json.newObject();
         result.put("num_players", court.getPlayers().size());
         return ok(result);
@@ -286,6 +358,7 @@ public class Courts extends Controller {
                         routes.javascript.Courts.getPlayersPage(),
                         routes.javascript.Courts.getReviewsPage(),
                         routes.javascript.Courts.searchCourts(),
+                        routes.javascript.Courts.postUnfavorite(),
                         routes.javascript.Courts.postFavorite()));
     }
 

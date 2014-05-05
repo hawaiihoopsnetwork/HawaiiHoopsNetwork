@@ -31,7 +31,7 @@
 
         <div class="col-md-4">
         @if(reviews.isEmpty) {
-            <p>No reviews</p>
+            <p>No Reviews</p>
         }else {
             <h3>Recent Reviews</h3>
             <hr/>
@@ -41,7 +41,7 @@
 
                         <div class="media">
                             <a class="pull-left" href="">
-                                <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="40px">
+                                <img class="media-object img-thumbnail" src="@review.getAuthor.getPlayer().getPicUrl" alt="Image not Available" width="64px">
                             </a>
 
                             <div class="media-body">
@@ -57,7 +57,6 @@
 
                     <div class="col-md-12">
                         @review.getTimestamp.getMonthOfYear/@review.getTimestamp.getDayOfWeek/@review.getTimestamp.getYear
-                        @review.getTimestamp.
                     </div>
 
                     <div class="col-md-12">

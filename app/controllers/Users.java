@@ -2,6 +2,7 @@ package controllers;
 
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+import models.Court;
 import models.games.Game;
 import org.joda.time.DateTime;
 import play.data.Form;
@@ -14,7 +15,6 @@ import forms.*;
 import views.html.Index;
 import views.html.user.Login;
 import views.html.user.Validate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 // import views.html.Registration;
@@ -56,7 +56,15 @@ public class Users extends Controller
                 games = Game.getGames();
             }
 
-            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, Secured.isLoggedIn(ctx())));
+            List<Court> courts;
+            if(Secured.isLoggedIn(ctx())) {
+              User user = Secured.getUserInfo(ctx());
+            courts = user.getPlayer().getCourts();
+            } else {
+                courts = null;
+            }
+
+            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, courts, Secured.isLoggedIn(ctx())));
         }
         else
         {

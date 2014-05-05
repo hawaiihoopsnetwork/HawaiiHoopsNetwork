@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 import com.avaje.ebean.Page;
+import controllers.Secured;
 import play.db.ebean.Model;
 import views.formdata.PlayerFormData;
 import java.util.ArrayList;
@@ -136,10 +137,11 @@ public class Player extends Model {
   }
 
 
-  public static Page<Player> page(int size, int page, long id) {
+  public static Page<Player> page(int size, int page, long court_id, long player_id) {
         return find()
                 .where()
-                    .in("courts", Court.getCourt(id))
+                    .in("courts", Court.getCourt(court_id))
+                    .ne("id", player_id)
                 .findPagingList(size)
                 .getPage(page);
   }
@@ -357,5 +359,13 @@ public class Player extends Model {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Court> getCourts() {
+        return courts;
+    }
+
+    public void setCourts(List<Court> courts) {
+        this.courts = courts;
     }
 }

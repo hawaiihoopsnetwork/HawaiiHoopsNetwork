@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.Page;
 import play.db.ebean.Model;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class Court extends Model
     /** general info **/
     private String name;
 
-    private String image;
+    private String image = "http://www.mnit.ac.in/new/PortalProfile/images/faculty/noimage.jpg";
 
     private List<String> pictures;
 
@@ -69,12 +68,17 @@ public class Court extends Model
     @OneToMany(mappedBy="court")
     private List<Review> reviews = new ArrayList<>();
 
+    @ManyToMany(mappedBy="courts")
+    private List<Hours> open_hours = new ArrayList<>();
+
 
     public Court(String name, String image, String type, String indoor, Long num_courts, String court_size,
                  String court_surface, String court_quality, boolean lighted, Address address, String description)
     {
         this.name = name;
-        this.image = image;
+        if(image != null) {
+            this.image = image;
+        }
         this.type = type;
         this.indoor = indoor;
         this.num_courts = num_courts;
@@ -108,9 +112,14 @@ public class Court extends Model
         return court;
     }
 
-    public static int sizePlayers(Long id) {
-        Court court = find.where().eq("id", id).findUnique();
-        return court.getPlayers().size();
+    public static int sizePlayers(Long id, Player user) {
+        Court court = find
+                .where()
+                    .eq("id", id)
+                .findUnique();
+        List<Player> players = court.getPlayers();
+        players.remove(user);
+        return players.size();
     }
 
 
@@ -141,6 +150,7 @@ public class Court extends Model
         return find.all();
     }
 
+
     public static List<Player> getPlayers(Long id) {
         Court court = find
                 .where()
@@ -160,6 +170,13 @@ public class Court extends Model
         if (!this.getPlayers().contains(player)) {
            this.players.add(player);
            this.update();
+        }
+    }
+
+    public void removePlayer(Player player) {
+        if (this.getPlayers().contains(player)) {
+            this.players.remove(player);
+            this.update();
         }
     }
 

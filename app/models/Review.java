@@ -2,7 +2,6 @@ package models;
 
 import com.avaje.ebean.Page;
 import org.joda.time.DateTime;
-import play.data.format.Formats;
 import play.db.ebean.Model;
 import javax.persistence.*;
 import java.util.List;
@@ -23,7 +22,6 @@ public class Review extends Model {
 
     private Long rating;
 
-    @Formats.DateTime(pattern="dd/MM/yyyy")
     private DateTime timestamp;
 
     @ManyToOne
@@ -62,8 +60,11 @@ public class Review extends Model {
                 .getPage(page);
     }
 
-    public static int size() {
-        return find.findRowCount();
+    public static int size(long id) {
+        return find
+            .where()
+                .eq("court", Court.getCourt(id))
+            .findRowCount();
     }
 
     public static List<Review> getReviews(long id) {

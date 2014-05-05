@@ -8,7 +8,7 @@
         jQuery.noConflict();
 
         jQuery(function() {
-             jQuery( "#favorite" ).click( function ( e ) {
+            jQuery( "#favoriteForm").on('click', '#favorite-button', function ( e ) {
                 e.preventDefault();
 
                  var pathArray = window.location.pathname.split( '/' );
@@ -23,12 +23,36 @@
                     }),
                     success: function(data) {
                         //alert(data.num_players);
-                        jQuery ( "reviewCount" ).html(data.num_players);
-                        jQuery ( "#favorite-button" ).attr("class", "disabled btn btn-primary");
-                       // data=jQuery(data).find("#courtInfo" ).html();
-                       // jQuery('#courtInfo').html(data);
+                        var button = jQuery("#favorite-button");
+                        //jQuery ( "#playerCount" ).html(data.num_players);
+                        button.html('<span class="glyphicon glyphicon-ok"></span> Following');
+                        button.attr("id", "unfavorite-button");
 
-                       // jQuery(document.getElementById("summary").parentNode).addClass('active').siblings().removeClass('active');
+                    }
+                });
+            });
+
+
+
+            jQuery( "#favoriteForm").on('click', '#unfavorite-button', function ( e ) {
+                e.preventDefault();
+
+                 var pathArray = window.location.pathname.split( '/' );
+
+                jsRoutes.controllers.Courts.postUnfavorite().ajax({
+                    type: 'POST',
+                    contentType:'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        id: pathArray[2],
+                        slug: pathArray[3]
+                    }),
+                    success: function(data) {
+                        //alert(data.num_players);
+                        //jQuery ( "#playerCount" ).html(data.num_players);
+                        jQuery ( "#unfavorite-button" ).html('<span class="glyphicon glyphicon-star"></span> Follow');
+                        jQuery ( "#unfavorite-button" ).attr("id", "favorite-button");
+
                     }
                 });
             });
@@ -111,7 +135,7 @@
         <div class="row">
 
             <div class="col-md-6">
-                <h1 style="margin-bottom:0px">@court.getName <span id="loading"></span></h1>
+                <h1 style="margin-bottom:0;">@court.getName <span id="loading"></span></h1>
             </div>
             <div class="col-md-6">
                 <a href="@routes.Courts.review(court.getId, slugify(court.getName))" class="btn btn-primary pull-right" style="margin-top: 20px"><span class="glyphicon glyphicon-pencil"></span> Write Review</a>
@@ -124,28 +148,29 @@
             <div class="col-md-3">
                 <div class="well">
 
-                <img width="100%" src="@routes.Assets.at("images/basketball.jpg")" alt="...">
+                <img id="court_pic" width="100%" height="200px" src="@court.getImage" alt="..." />
 
                 @if(isLoggedIn) {
 @**                    <div class="courtInfo">
                         <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-home"></span> Add Homecourt</button>
                     </div> **@
 
-
-                        <div id="favorite" class="courtInfo">
+                        <div id="favoriteForm">
                         @if(court.containsPlayer(Secured.getUser(ctx()))) {
-                            <button id="favorite-button" class="disabled btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-star"></span>
-                                Add Favorite
+                            <button id="unfavorite-button" class="btn btn-primary courtInfo" type="submit" style="width : 100% ;">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                 Following
                             </button>
                         } else {
-                             <button id="favorite-button" class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-star"></span>
-                                Add Favorite
+                             <button id="favorite-button" class="btn btn-primary courtInfo" type="submit" style="width : 100% ;">
+                                 <span class="glyphicon glyphicon-star"></span>
+                                Follow
                             </button>
                         }
-                        </div>
+                            </div>
 
                         <div class="courtInfo">
-                            <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-envelope"></span> Tell a Friend</button>
+                            <button class="disabled btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-envelope"></span> Tell a Friend</button>
                         </div>
                 }
                 <div class="courtInfo">
@@ -209,9 +234,11 @@
                         </a>
                     </li>
 
+                    @**
                     <li>
                         <a href="#">Calendar</a>
                     </li>
+                    **@
 
                     @if(title == "Players") {
                         <li class="active">
@@ -240,7 +267,7 @@
                     @for(court <- nearby) {
                     <div class="media">
                         <a class="pull-left" href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">
-                            <img class="media-object img-thumbnail" src="@routes.Assets.at("images/basketball.jpg")" alt="..." width="64px">
+                            <img class="media-object img-thumbnail" src="@court.getImage" alt="..." width="64px">
                         </a>
 
                         <div class="media-body">
