@@ -118,6 +118,12 @@
                 markers.push(marker); // put into array
             }
         }
+        
+        function slugifyName(name) {
+        	return name.toLowerCase()
+        	   .replace(/ /g, '-')
+        	   .replace(/[^\w-]+/g, '');
+        }
 
         function bindInfoWindow(marker, map, infowindow, strDescription) {
             google.maps.event.addListener(marker, 'click', function() {

@@ -611,7 +611,6 @@ public class Game extends Model {
     for (Game game : allGames) {
       int days = Days.daysBetween(today, game.getGameTime()).getDays();
       if (days < DAYS_PAST) {
-        System.out.println("YESS");
         Game.deleteGame(game.getName());
       }
     }

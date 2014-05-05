@@ -14,10 +14,12 @@ GET         /logout                              controllers.Users.logout()
 GET         /delete                              controllers.Users.deleteUser()
 GET         /validate/:key                       controllers.Users.validate(key)
 
-GET         /leagues                             controllers.Leagues.leagues(id: Long)
-GET         /leagues/LeagueSchedule              controllers.Leagues.editSchedule()
-POST        /leagues                             controllers.Leagues.addLeague()
-GET         /leagues/view/:id                    controllers.Leagues.showLeague(id: Long)
+GET			/leagues					controllers.Leagues.leagues(id: Long)
+GET         /leagues/LeagueSchedule     controllers.Leagues.editSchedule()
+POST        /leagues/add                controllers.Leagues.addLeague()
+GET         /leagues/view/:id           controllers.Leagues.leagues(id: Long)
+GET         /leagues/all                controllers.Leagues.allLeagues(sort: String, page: Integer)
+POST        /leagues/all/search         controllers.Leagues.searchLeagues(page: Integer)
 
 # Courts
 GET         /courts                              controllers.Courts.index()
