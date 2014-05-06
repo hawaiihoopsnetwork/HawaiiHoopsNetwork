@@ -112,9 +112,11 @@
                <h4>Comments about This Team: </h4>
                   @for(comment <- comments) {
                     <div class="well">
-                        <li>@comment.getAuthor()</li>
+                        <li><a href="@routes.Players.playerProfile(comment.getAuthor.getPlayer.getId)">@comment.getAuthor().getName()</a></li>
+                       <br/>
                        <p>@comment.getComment()</p>
                        <div class="pull-right">@comment.getDate()</div>
+                       <br/>
                     </div>
                  }
                   

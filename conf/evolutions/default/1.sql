@@ -17,7 +17,7 @@ create table address (
 
 create table comment (
   id                        bigint not null,
-  author                    varchar(255),
+  author_id                 bigint,
   comment                   varchar(255),
   date                      varchar(255),
   team_id                   bigint,
@@ -184,20 +184,22 @@ create sequence teams_seq;
 
 create sequence users_seq;
 
-alter table comment add constraint fk_comment_team_1 foreign key (team_id) references teams (id) on delete restrict on update restrict;
-create index ix_comment_team_1 on comment (team_id);
-alter table courts add constraint fk_courts_address_2 foreign key (address_id) references address (id) on delete restrict on update restrict;
-create index ix_courts_address_2 on courts (address_id);
-alter table game add constraint fk_game_creator_3 foreign key (creator_id) references users (id) on delete restrict on update restrict;
-create index ix_game_creator_3 on game (creator_id);
-alter table players add constraint fk_players_homeCourt_4 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
-create index ix_players_homeCourt_4 on players (home_court_id);
-alter table court_review add constraint fk_court_review_author_5 foreign key (author_id) references users (id) on delete restrict on update restrict;
-create index ix_court_review_author_5 on court_review (author_id);
-alter table court_review add constraint fk_court_review_court_6 foreign key (court_id) references courts (id) on delete restrict on update restrict;
-create index ix_court_review_court_6 on court_review (court_id);
-alter table users add constraint fk_users_player_7 foreign key (player_id) references players (id) on delete restrict on update restrict;
-create index ix_users_player_7 on users (player_id);
+alter table comment add constraint fk_comment_author_1 foreign key (author_id) references users (id) on delete restrict on update restrict;
+create index ix_comment_author_1 on comment (author_id);
+alter table comment add constraint fk_comment_team_2 foreign key (team_id) references teams (id) on delete restrict on update restrict;
+create index ix_comment_team_2 on comment (team_id);
+alter table courts add constraint fk_courts_address_3 foreign key (address_id) references address (id) on delete restrict on update restrict;
+create index ix_courts_address_3 on courts (address_id);
+alter table game add constraint fk_game_creator_4 foreign key (creator_id) references users (id) on delete restrict on update restrict;
+create index ix_game_creator_4 on game (creator_id);
+alter table players add constraint fk_players_homeCourt_5 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
+create index ix_players_homeCourt_5 on players (home_court_id);
+alter table court_review add constraint fk_court_review_author_6 foreign key (author_id) references users (id) on delete restrict on update restrict;
+create index ix_court_review_author_6 on court_review (author_id);
+alter table court_review add constraint fk_court_review_court_7 foreign key (court_id) references courts (id) on delete restrict on update restrict;
+create index ix_court_review_court_7 on court_review (court_id);
+alter table users add constraint fk_users_player_8 foreign key (player_id) references players (id) on delete restrict on update restrict;
+create index ix_users_player_8 on users (player_id);
 
 
 

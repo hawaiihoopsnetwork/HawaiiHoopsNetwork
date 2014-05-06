@@ -119,8 +119,7 @@ public class Teams extends Controller {
       CommentForm com = cf.get();
 
       Team team2 = Team.getTeam(id);
-      // Replace /""/ with logged in user
-      Comment.addComment(team2, "", com);
+      Comment.addComment(team2, Secured.getUserInfo(ctx()), com);
 
       return redirect("/teams/view/" + id);
     }
