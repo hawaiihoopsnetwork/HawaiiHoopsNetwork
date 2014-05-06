@@ -6,6 +6,11 @@ import play.db.ebean.Model;
 import javax.persistence.*;
 import java.util.List;
 
+
+/**
+ * Review comments for a basketball court.
+ * @author taylorak
+ */
 @Entity
 @Table(name = "court_review")
 public class Review extends Model {

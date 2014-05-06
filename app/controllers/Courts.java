@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import forms.CourtReviewForm;
-import models.*;
+import models.User;
+import models.Court;
+import models.Review;
+import models.Player;
+import models.Hours;
 import play.Routes;
 import play.libs.Json;
 import play.mvc.Security;
@@ -18,9 +22,7 @@ import views.html.courts.ShowCourtPlayers;
 import views.html.courts.ShowCourtReviews;
 import views.html.courts.CreateReview;
 import views.html.errors.PageNotFound;
-
 import utils.Tags;
-
 import java.util.List;
 
 
@@ -31,14 +33,17 @@ import java.util.List;
 public class Courts extends Controller {
 
     /**
-     * Gets all courts.
+     * Returns a list of all courts in the Courts database.
      * @return a list of all courts.
      */
     public static Result index() {
         return ok(CourtList.render("Courts", Court.getCourts(), Secured.isLoggedIn(ctx())));
     }
 
-
+    /**
+     * Searches for courts which contain a string input by the user in Json format.
+     * @return Json array containing matching court information.
+     */
     public static Result searchCourts() {
 
         JsonNode json = request().body().asJson();
@@ -47,6 +52,7 @@ public class Courts extends Controller {
             return badRequest();
         }
 
+        // read in name from Json request
         String name = json.findPath("name").asText();
 
         List<Court> courts = (name == null) ? Court.getCourts() : Court.searchCourts(name);
@@ -70,9 +76,9 @@ public class Courts extends Controller {
     }
 
     /**
-     * Get a court page.
-     * @param id of court.
-     * @param slug slug of court name.
+     * Returns a page with description and open hours of a court with the specified id.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
      * @return court information page.
      */
     public static Result getCourt(Long id, String slug) {
@@ -93,7 +99,7 @@ public class Courts extends Controller {
                 court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.size(id),
-                Court.sizePlayers(id, user.getPlayer()), // number of players
+                Court.sizePlayers(id, user), // number of players
                 Hours.getSchedule(id, 1), // Mon-Sun
                 Hours.getSchedule(id, 2),
                 Hours.getSchedule(id, 3),
@@ -104,6 +110,12 @@ public class Courts extends Controller {
                 Secured.isLoggedIn(ctx())));
     }
 
+    /**
+     * Returns a paginated list of Players who are following the specified court.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @return A paginated list of players.
+     */
     public static Result getPlayers(Long id, String slug) {
         Court court = Court.getCourt(id);
 
@@ -115,18 +127,25 @@ public class Courts extends Controller {
             return notFound(PageNotFound.render());
         }
 
-       User user = Secured.getUserInfo(ctx());
+        User user = Secured.getUserInfo(ctx());
 
         return ok(ShowCourtPlayers.render(
                 "Players",
                 court,
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
-                Player.page(10,0,id, user.getPlayer().getId()),
+                Player.page(10,0,id, user),
                 Review.size(id),
-                Court.sizePlayers(id, user.getPlayer()),
+                Court.sizePlayers(id, user),
                 Secured.isLoggedIn(ctx())));
     }
 
+    /**
+     * Returns a paginated list of Players who are following the specified court in Json format.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @param page page of players to return.
+     * @return A paginated Json array of of Players.
+     */
     public static Result getPlayersPage(Long id, String slug, Integer page) {
 
         Court court = Court.getCourt(id);
@@ -140,7 +159,7 @@ public class Courts extends Controller {
         }
 
         User user = Secured.getUserInfo(ctx());
-        Page<Player> players = Player.page(10, page, id, user.getPlayer().getId());
+        Page<Player> players = Player.page(10, page, id, user);
         List<Player> listPlayers = players.getList();
 
 
@@ -163,7 +182,12 @@ public class Courts extends Controller {
         return ok(result);
 
     }
-
+    /**
+     * Returns a paginated list of Reviews made for the specified court.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @return A paginated list of reviews.
+     */
     public static Result getReviews(Long id, String slug) {
         Court court = Court.getCourt(id);
 
@@ -183,11 +207,19 @@ public class Courts extends Controller {
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.page(10, 0, id),
                 Review.size(id),
-                Court.sizePlayers(id, user.getPlayer()),
+                Court.sizePlayers(id, user),
                 Secured.isLoggedIn(ctx())));
 
     }
 
+
+    /**
+     * Returns a paginated list of Reviews made for the specified court in Json format.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @param page page of reviews to be returned.
+     * @return A paginated Json array of reviews.
+     */
     public static Result getReviewsPage(Long id, String slug, Integer page) {
 
         Court court = Court.getCourt(id);
@@ -224,6 +256,13 @@ public class Courts extends Controller {
         return ok(result);
     }
 
+    /**
+     * Review form for the specified court.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @return a review form.
+     */
+    @Security.Authenticated(Secured.class)
     public static Result review(Long id, String slug) {
         Court court = Court.getCourt(id);
 
@@ -239,14 +278,19 @@ public class Courts extends Controller {
         Form<CourtReviewForm> formData = Form.form(CourtReviewForm.class).fill(review);
 
         return ok(CreateReview.render(
-                    "Review", 
-                    court,
-                    Review.getRecentReviews(id), 
-                    formData, 
-                    Secured.isLoggedIn(ctx())));
+                "Review",
+                court,
+                Review.getRecentReviews(id),
+                formData,
+                Secured.isLoggedIn(ctx())));
     }
 
-
+    /**
+     * Saves data from submitted review form.
+     * @param id id of the court in the database.
+     * @param slug a slugified version of the court name.
+     * @return A list of reviews on succes or review page on failure.
+     */
     @Security.Authenticated(Secured.class)
     public static Result postReview(Long id, String slug) {
         Court court = Court.getCourt(id);
@@ -264,18 +308,18 @@ public class Courts extends Controller {
 
         if (formData.hasErrors()) {
             return badRequest(CreateReview.render(
-                        "Review", 
-                        Court.getCourt(id), 
-                        Review.getRecentReviews(id), 
-                        formData, 
-                        Secured.isLoggedIn(ctx())));
+                    "Review",
+                    Court.getCourt(id),
+                    Review.getRecentReviews(id),
+                    formData,
+                    Secured.isLoggedIn(ctx())));
         }
         else {
             CourtReviewForm message = formData.get();
             Review.addReview(
-                    User.getUser(Secured.getUser(ctx())), 
-                    message.review, 
-                    message.rating, 
+                    User.getUser(Secured.getUser(ctx())),
+                    message.review,
+                    message.rating,
                     Court.getCourt(id));
 
             User user = Secured.getUserInfo(ctx());
@@ -291,6 +335,10 @@ public class Courts extends Controller {
         }
     }
 
+    /**
+     * Follows a court.
+     * @return number of players following the court in Json format.
+     */
     @Security.Authenticated(Secured.class)
     public static Result postFavorite() {
         JsonNode json = request().body().asJson();
@@ -320,6 +368,10 @@ public class Courts extends Controller {
         return ok(result);
     }
 
+    /**
+     * Un-follows a court.
+     * @return number of players following the court in Json format.
+     */
     @Security.Authenticated(Secured.class)
     public static Result postUnfavorite() {
         JsonNode json = request().body().asJson();
@@ -353,8 +405,6 @@ public class Courts extends Controller {
         response().setContentType("text/javascript");
         return ok(
                 Routes.javascriptRouter("jsRoutes", // appRoutes will be the JS object available in our view
-                        //routes.javascript.Courts.getPlayers(),
-                        //routes.javascript.Courts.getReviews(),
                         routes.javascript.Courts.getPlayersPage(),
                         routes.javascript.Courts.getReviewsPage(),
                         routes.javascript.Courts.searchCourts(),

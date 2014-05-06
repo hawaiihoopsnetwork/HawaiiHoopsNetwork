@@ -3,7 +3,7 @@
 
 # --- !Ups
 
-create table address (
+create table court_address (
   id                        bigint not null,
   street                    varchar(255),
   city                      varchar(255),
@@ -12,7 +12,7 @@ create table address (
   country                   varchar(255),
   lat                       float,
   lng                       float,
-  constraint pk_address primary key (id))
+  constraint pk_court_address primary key (id))
 ;
 
 create table comment (
@@ -164,7 +164,7 @@ create table teams_league (
   league_id                      bigint not null,
   constraint pk_teams_league primary key (teams_id, league_id))
 ;
-create sequence address_seq;
+create sequence court_address_seq;
 
 create sequence comment_seq;
 
@@ -186,7 +186,7 @@ create sequence users_seq;
 
 alter table comment add constraint fk_comment_team_1 foreign key (team_id) references teams (id) on delete restrict on update restrict;
 create index ix_comment_team_1 on comment (team_id);
-alter table courts add constraint fk_courts_address_2 foreign key (address_id) references address (id) on delete restrict on update restrict;
+alter table courts add constraint fk_courts_address_2 foreign key (address_id) references court_address (id) on delete restrict on update restrict;
 create index ix_courts_address_2 on courts (address_id);
 alter table game add constraint fk_game_creator_3 foreign key (creator_id) references users (id) on delete restrict on update restrict;
 create index ix_game_creator_3 on game (creator_id);
@@ -217,7 +217,7 @@ alter table teams_league add constraint fk_teams_league_league_02 foreign key (l
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table if exists address;
+drop table if exists court_address;
 
 drop table if exists comment;
 
@@ -245,7 +245,7 @@ drop table if exists users;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
-drop sequence if exists address_seq;
+drop sequence if exists court_address_seq;
 
 drop sequence if exists comment_seq;
 

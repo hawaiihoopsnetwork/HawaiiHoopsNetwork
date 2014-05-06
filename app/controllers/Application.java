@@ -12,7 +12,6 @@ import views.html.footer.TermsOfUse;
 import views.html.footer.AboutUs;
 import views.html.footer.ContactUs;
 import views.html.footer.MessageSent;
-import views.html.errors.PageNotFound;
 import forms.ContactUsForm;
 import forms.RegistrationForm;
 

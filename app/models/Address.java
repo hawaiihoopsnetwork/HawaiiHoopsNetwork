@@ -4,10 +4,11 @@ import play.db.ebean.Model;
 import javax.persistence.*;
 
 /**
- * Created by taylorak on 4/24/14.
+ * Address information for basketball courts.
+ * @author taylorak
  */
 @Entity
-@Table(name="address")
+@Table(name="court_address")
 public class Address extends Model {
     @Id
     @GeneratedValue
@@ -25,6 +26,16 @@ public class Address extends Model {
     @OneToOne(mappedBy="address")
     private Court court;
 
+    /**
+     * Address constructor
+     * @param street the street address.
+     * @param city  the city address.
+     * @param state the state address.
+     * @param zip the zip code part of the address.
+     * @param country the country address.
+     * @param lat the latitude corresponding to the address.
+     * @param lng the longitude corresponding to the address.
+     */
     public Address(String street, String city, String state, String zip, String country, Float lat, Float lng) {
         this.street = street;
         this.city = city;
@@ -35,6 +46,17 @@ public class Address extends Model {
         this.lng = lng;
     }
 
+    /**
+     * Adds an address to the database
+     * @param street the street address.
+     * @param city  the city address.
+     * @param state the state address.
+     * @param zip the zip code part of the address.
+     * @param country the country address.
+     * @param lat the latitude corresponding to the address.
+     * @param lng the longitude corresponding to the address.
+     * @return the address that was added to the database.
+     */
     public static Address addAddress(String street, String city, String state, String zip, String country, Float lat,
                                      Float lng) {
        Address address = new Address(street, city, state, zip, country, lat, lng);

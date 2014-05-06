@@ -8,7 +8,7 @@ GET         /                                    controllers.Application.index()
 
 GET         /login                               controllers.Users.login()
 POST        /login                               controllers.Users.postLogin()
-GET         /register                            controllers.Users.register()
+#GET         /register                            controllers.Users.register()
 POST        /register                            controllers.Users.postRegister()
 GET         /logout                              controllers.Users.logout()
 GET         /delete                              controllers.Users.deleteUser()
