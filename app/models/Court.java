@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+
 /**
  * A simple representation of a basketball court.
  * @author taylorak
@@ -40,7 +41,7 @@ public class Court extends Model
 
     private String type; // public or private
 
-    private String indoor;
+    private String indoor; // indoor or outdoor
 
     private Long num_courts;
 
@@ -93,15 +94,25 @@ public class Court extends Model
     /**
     * The EBean ORM finder method for database queries on Court.
     **/
-    public static Finder<Long, Court> find = new Finder<Long, Court>(
+    public static Finder<Long, Court> find = new Finder<>(
            Long.class, Court.class
     );
 
     /**
-    * Adds the specified user to the database.
-    * @param name court name.
-    * @param description short description of court.
-    */
+     * Adds the specified user to the database.
+     * @param name the name of the user.
+     * @param image the url of a photo for the court.
+     * @param type public or private.
+     * @param indoor indoor or outdoor.
+     * @param num_courts the number of actual courts that are available.
+     * @param court_size the size of the court. ie. half court or full court.
+     * @param court_surface the court surface. ie. wood black or black top.
+     * @param court_quality the quality of the court. ie. good, ok, or bad.
+     * @param lighted whether the court has lighting.
+     * @param address address information for the court.
+     * @param description a short description of the court.
+     * @return the court that has been added to the database.
+     */
     public static Court addCourt(String name, String image, String type, String indoor, Long num_courts,
                                 String court_size, String court_surface, String court_quality, boolean lighted,
                                 Address address, String description)
@@ -112,13 +123,22 @@ public class Court extends Model
         return court;
     }
 
-    public static int sizePlayers(Long id, Player user) {
+    /**
+     * The number of players that are following the court excluding The current user.
+     * @param id the id for the court.
+     * @param user the user to be excluded from the count.
+     * @return the number of players following the court.
+     */
+    public static int sizePlayers(Long id, User user) {
+
         Court court = find
                 .where()
                     .eq("id", id)
                 .findUnique();
         List<Player> players = court.getPlayers();
-        players.remove(user);
+        if(user != null) {
+            players.remove(user.getPlayer());
+        }
         return players.size();
     }
 
@@ -151,6 +171,11 @@ public class Court extends Model
     }
 
 
+    /**
+     * Returns a list of players who follow the court.
+     * @param id the id for the court.
+     * @return a list of players.
+     */
     public static List<Player> getPlayers(Long id) {
         Court court = find
                 .where()
@@ -160,6 +185,10 @@ public class Court extends Model
         return court.getPlayers();
     }
 
+    /**
+     * Adds a player to the list of followers.
+     * @param player the player who followed the court.
+     */
     public void addPlayer(Player player) {
         /**Court court = find.where().eq("id",id).findUnique();
         if (!court.getPlayers().contains(player)) {
@@ -173,6 +202,10 @@ public class Court extends Model
         }
     }
 
+    /**
+     * Removes a player from the list of followers.
+     * @param player the player who un-followed the court.
+     */
     public void removePlayer(Player player) {
         if (this.getPlayers().contains(player)) {
             this.players.remove(player);
@@ -181,6 +214,11 @@ public class Court extends Model
     }
 
 
+    /**
+     * Searches for courts that contain a user input string in their name
+     * @param name the string the user input
+     * @return A list of courts.
+     */
     public static List<Court> searchCourts(String name) {
         return find
                 .where()
@@ -188,6 +226,12 @@ public class Court extends Model
                 .findList();
     }
 
+    /**
+     * Searches for nearby courts.
+     * @param address the address of the court.
+     * @param distance the distance from the court that is considered nearby.
+     * @return A list of nearby courts.
+     */
     public static List<Court> getNearbyCourts(Address address, double distance) {
         return find
                 .where()
@@ -208,6 +252,11 @@ public class Court extends Model
         return (getCourt(name) != null);
     }
 
+    /**
+     * Checks if a player is following the court.
+     * @param email the email address of the player.
+     * @return true if the player is following the court and false if not.
+     */
     public boolean containsPlayer(String email) {
         return (this.players.contains(User.getUser(email).getPlayer()));
     }
@@ -220,6 +269,7 @@ public class Court extends Model
         return Arrays.asList("public", "private");
     }
 **/
+
     public String getName() {
         return name;
     }

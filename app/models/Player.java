@@ -137,13 +137,23 @@ public class Player extends Model {
   }
 
 
-  public static Page<Player> page(int size, int page, long court_id, long player_id) {
-        return find()
-                .where()
+  public static Page<Player> page(int size, int page, long court_id, User user) {
+        Page<Player> playerPage;
+        if(user != null) {
+            playerPage = find()
+                    .where()
                     .in("courts", Court.getCourt(court_id))
-                    .ne("id", player_id)
-                .findPagingList(size)
-                .getPage(page);
+                    .ne("id", user.getPlayer().getId())
+                    .findPagingList(size)
+                    .getPage(page);
+        } else {
+           playerPage = find()
+                    .where()
+                    .in("courts", Court.getCourt(court_id))
+                    .findPagingList(size)
+                    .getPage(page);
+        }
+      return playerPage;
   }
 
 
