@@ -76,6 +76,8 @@ create table league (
   pub_or_private            varchar(255),
   location                  varchar(255),
   reg_step                  integer,
+  num_games                 integer,
+  court_id                  bigint,
   constraint pk_league primary key (id))
 ;
 
@@ -174,14 +176,16 @@ alter table courts add constraint fk_courts_address_2 foreign key (address_id) r
 create index ix_courts_address_2 on courts (address_id);
 alter table game add constraint fk_game_creator_3 foreign key (creator_id) references users (id) on delete restrict on update restrict;
 create index ix_game_creator_3 on game (creator_id);
-alter table players add constraint fk_players_homeCourt_4 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
-create index ix_players_homeCourt_4 on players (home_court_id);
-alter table court_review add constraint fk_court_review_author_5 foreign key (author_id) references users (id) on delete restrict on update restrict;
-create index ix_court_review_author_5 on court_review (author_id);
-alter table court_review add constraint fk_court_review_court_6 foreign key (court_id) references courts (id) on delete restrict on update restrict;
-create index ix_court_review_court_6 on court_review (court_id);
-alter table users add constraint fk_users_player_7 foreign key (player_id) references players (id) on delete restrict on update restrict;
-create index ix_users_player_7 on users (player_id);
+alter table league add constraint fk_league_court_4 foreign key (court_id) references courts (id) on delete restrict on update restrict;
+create index ix_league_court_4 on league (court_id);
+alter table players add constraint fk_players_homeCourt_5 foreign key (home_court_id) references courts (id) on delete restrict on update restrict;
+create index ix_players_homeCourt_5 on players (home_court_id);
+alter table court_review add constraint fk_court_review_author_6 foreign key (author_id) references users (id) on delete restrict on update restrict;
+create index ix_court_review_author_6 on court_review (author_id);
+alter table court_review add constraint fk_court_review_court_7 foreign key (court_id) references courts (id) on delete restrict on update restrict;
+create index ix_court_review_court_7 on court_review (court_id);
+alter table users add constraint fk_users_player_8 foreign key (player_id) references players (id) on delete restrict on update restrict;
+create index ix_users_player_8 on users (player_id);
 
 
 

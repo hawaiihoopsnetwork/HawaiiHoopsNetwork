@@ -4,6 +4,7 @@ import play.db.ebean.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import models.leagues.League;
 
 /**
  * A simple representation of a basketball court.
@@ -67,6 +68,9 @@ public class Court extends Model
 
     @OneToMany(mappedBy="court")
     private List<Review> reviews = new ArrayList<>();
+    
+    @OneToMany(mappedBy="court")
+    private List<League> leagues = new ArrayList<>();
 
 
     public Court(String name, String image, String type, String indoor, Long num_courts, String court_size,

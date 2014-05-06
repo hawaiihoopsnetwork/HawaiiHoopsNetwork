@@ -9,6 +9,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import org.joda.time.Days;
+import org.joda.time.DurationFieldType;
+import org.joda.time.LocalDate;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
@@ -17,6 +21,7 @@ import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 import forms.LeagueForm;
 import views.formdata.teams.TeamForm;
+import models.Court;
 import models.teams.Team;
 
 @Entity
@@ -48,9 +53,16 @@ public class League extends Model{
   private String location;
   
   private int regStep;
+  
+  private int numGames;
  
   @ManyToMany(mappedBy = "leagues", cascade=CascadeType.ALL)
   private List<Team> teams = new ArrayList<>();
+  
+  private List<String> dateList = new ArrayList<>();
+  
+  @ManyToOne
+  private Court court;
   
   public League(String name){
     this.leagueName = name;
@@ -62,6 +74,7 @@ public class League extends Model{
     this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = 0;
+    this.numGames = 0;
   }
   
   public League(String name, String startDate, String endDate, String pubOrPrivate){
@@ -74,8 +87,9 @@ public class League extends Model{
     this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = 0;
+    this.numGames = 0;
   }
-  
+
   public League(long id, String name, String startDate, String endDate, String pubOrPrivate, int regStep){
     this.id = id;
     this.leagueName = name;
@@ -87,6 +101,7 @@ public class League extends Model{
     this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = regStep;
+    this.numGames = 0;
   }
   
   public static List<String> typeOfLeague() {
@@ -100,7 +115,56 @@ public class League extends Model{
       nums.put(i, false);
     }
     return nums;
-  } 
+  }
+  
+  public static Map<String, Boolean> getTeamMap(){
+    Map<String, Boolean> teamMap = new TreeMap<String, Boolean>();
+    List<Team> teamList = Team.getTeams();
+    for(int i = 0; i < teamList.size(); i++){
+      teamMap.put(teamList.get(i).getTeamName(), false);
+    }
+    return teamMap;
+  }
+  
+  public static Map<String, Boolean> getCourtMap(){
+    Map<String, Boolean> courtMap = new TreeMap<String, Boolean>();
+    List<Court> courtList = Court.getCourts();
+    for(int i = 0; i < courtList.size(); i++){
+      courtMap.put(courtList.get(i).getName() + " " + courtList.get(i).getAddress(), false);
+    }
+    return courtMap;
+  }
+  
+  public static Map<String, Boolean> getDateMap(String startDate, String endDate){
+    List<LocalDate> dates = new ArrayList<LocalDate>();
+    Map<String, Boolean> dateMap = new TreeMap<String, Boolean>();
+    LocalDate startld = new LocalDate(Integer.parseInt(startDate.substring(6)), Integer.parseInt(startDate.substring(0, 2)),
+        Integer.parseInt(startDate.substring(3, 5)));
+    LocalDate endld = new LocalDate(Integer.parseInt(endDate.substring(6)), Integer.parseInt(endDate.substring(0, 2)),
+        Integer.parseInt(endDate.substring(3, 5)));
+    int days = Days.daysBetween(startld, endld).getDays();
+    for (int i=0; i < days; i++) {
+        LocalDate d = startld.withFieldAdded(DurationFieldType.days(), i);
+        dateMap.put(d.toString("MM/dd/yyyy"), false);
+    }
+    return dateMap;
+  }
+  
+  public Court getCourt() {
+    return court;
+  }
+
+  public void setCourt(Court court) {
+    this.court = court;
+  }
+
+  public List<String> getDateList() {
+    return dateList;
+  }
+
+  public void setDateList(List<String> dateList) {
+    this.dateList = dateList;
+  }
   
   public String getLocation() {
     return location;
@@ -197,6 +261,14 @@ public class League extends Model{
   public void addTeam(Team team){
     numTeamsInLeague++;
     teams.add(team);
+  }
+  
+  public int getNumGames() {
+    return numGames;
+  }
+
+  public void setNumGames(int numGames) {
+    this.numGames = numGames;
   }
 
   

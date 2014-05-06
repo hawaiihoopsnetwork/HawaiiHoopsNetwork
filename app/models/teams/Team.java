@@ -149,6 +149,10 @@ public class Team extends Model {
   public static Team getTeam(long id) {
     return find().where().eq("id", id).findUnique();
   }
+  
+  public static Team getTeam(String name) {
+    return find().where().eq("teamName", name).findUnique();
+  }
 
   /**
    * Used for pagination.

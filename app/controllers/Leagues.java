@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 import com.avaje.ebean.Page;
 import models.Comment;
+import models.Court;
 import models.leagues.League;
 import models.leagues.LeagueDB;
 import models.teams.Team;
@@ -61,6 +62,54 @@ public class Leagues extends Controller{
     return ok(LeagueSchedule.render("Create Schedule", emptyForm, Secured.isLoggedIn(ctx())));
   }
   
+  public static Result editLeague(long id){
+    League league = LeagueDB.getLeague(id);
+    Form<LeagueForm> tempForm = Form.form(LeagueForm.class).bindFromRequest();
+    int regStep = league.getRegStep();
+
+    switch(regStep){
+    case 1:
+      league.setNumTeams(tempForm.get().numTeams);
+      league.setNumGames(tempForm.get().numGames);
+      league.setRegStep(2);
+      break;
+    case 2:
+      List<String> teamList = tempForm.get().teams;
+      for(int i = 0; i < teamList.size(); i++){
+        league.addTeam(Team.getTeam(teamList.get(i)));
+      }
+      league.setRegStep(3);
+      break;
+    case 3:
+      league.setDateList(tempForm.get().dateList);
+      league.setRegStep(4);
+      break;
+    case 4:
+      league.setCourt(Court.getCourt(tempForm.get().court));
+      league.setDescription(tempForm.get().description);
+      league.setRegStep(5);
+      break;
+    case 5:
+      break;
+    }
+    
+    
+    LeagueDB.addLeague(league);
+    LeagueForm leagueForm = new LeagueForm(league);
+    Form<LeagueForm> form = Form.form(LeagueForm.class).fill(leagueForm);
+    return ok(LeagueList.render("League Team", league, form, league.getTeams(), Secured.isLoggedIn(ctx())));
+  }
+  
+  public static Result addTeam(long id){
+    League league = LeagueDB.getLeague(id);
+    Form<LeagueForm> tempForm = Form.form(LeagueForm.class).bindFromRequest();
+    league.addTeam(Team.getTeam(tempForm.get().teams.get(0)));
+    LeagueDB.addLeague(league);
+    LeagueForm leagueForm = new LeagueForm(league);
+    Form<LeagueForm> form = Form.form(LeagueForm.class).fill(leagueForm);
+    return ok(LeagueList.render("League Team", league, form, league.getTeams(), Secured.isLoggedIn(ctx())));
+  }
+  
   public static Result changeSchedule(){
     League league = LeagueDB.getLeague(1);
     
@@ -80,10 +129,10 @@ public class Leagues extends Controller{
   @Security.Authenticated(Secured.class)
   public static Result addLeague(){
     Form<LeagueForm> leagueForm = Form.form(LeagueForm.class).bindFromRequest();
-    List<Team> listTeam;
+    List<Team> listTeam = LeagueDB.getLeague(1).getTeams();
 
     if (leagueForm.hasErrors()) {
-      return badRequest(LeagueList.render("League Team", LeagueDB.getLeague(leagueForm.get().id), leagueForm, null, Secured.isLoggedIn(ctx())));
+      return badRequest(LeagueList.render("League Team", LeagueDB.getLeague(1), leagueForm, listTeam, Secured.isLoggedIn(ctx())));
     }
     else {
       LeagueForm form = leagueForm.get();

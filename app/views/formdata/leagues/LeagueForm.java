@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import models.leagues.League;
+import models.teams.Team;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
@@ -16,21 +17,22 @@ public class LeagueForm {
 	public long id;
 	
 	/*the name of the league*/
-	@Constraints.Required(message = "League name is required")
+	//@Constraints.Required(message = "League name is required")
     public String leagueName;
 
 	/*A short description of the league*/
     //@Constraints.Required(message = "Description is required")
     public String description;
     
-    /*the number of teams in the league*/
+    /*the number of teams allowed in the league*/
     //@Constraints.Required(message = "Number of teams is required")
     public int numTeams;
     
+    /*the number of teams currently in the league*/
     public int numTeamsInLeague;
     
     /*The start date of the league*/
-    @Constraints.Required(message = "Start date is required")
+    //@Constraints.Required(message = "Start date is required")
     public String startDate;
     
     /*The end date of the league*/
@@ -41,6 +43,14 @@ public class LeagueForm {
     public String location;
     
     public int regStep;
+
+    public int numGames;
+    
+    public List<String> teams = new ArrayList<>();
+    
+    public List<String> dateList = new ArrayList<>();
+    
+    public String court;
     
     /**
      * no arguments constructor
@@ -70,6 +80,16 @@ public class LeagueForm {
         this.location = league.getLocation();
         this.numTeamsInLeague = league.getNumTeamsInLeague();
         this.regStep = league.getRegStep();
+        this.numGames = league.getNumGames();
+        if(league.getCourt()!=null){
+          this.court = league.getCourt().getName();
+        }
+        if(league.getTeams() != null){
+          for(int i = 0; i < league.getTeams().size(); i++){
+            this.teams.add(league.getTeams().get(i).getTeamName());
+          }
+        }
+        this.dateList = league.getDateList();
     }
     
     public List<ValidationError> validate() {
