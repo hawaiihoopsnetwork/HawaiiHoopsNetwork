@@ -9,7 +9,6 @@ Connecting basketball players, teams, and leagues on Oahu!
 - Join teams in your area! 
 - Register for leagues online.
 
-
 #Usage
 #Screencasts
 #Wiki Links

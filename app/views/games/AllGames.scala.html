@@ -32,7 +32,7 @@
         <li><a href="@routes.Games.allGames(0, "name asc")">Name</a></li>
         <li><a href="@routes.Games.allGames(0, "location asc")">Location</a></li>
         <hr>
-        <li><a href="@routes.Games.allGames(0, "date asc")">All</a></li>
+        <li><a href="@routes.Games.allGames(0, "gameTime asc")">All</a></li>
       </ul>
     </div>
     
@@ -44,6 +44,7 @@
       <thead>
         <tr>
           <th>Date</th>
+          <th>Day</th>
           <th>Time</th>
           <th>Location</th>
           <th>Type</th>
@@ -55,9 +56,15 @@
       <tbody data-link="row" class="rowlink">
         @for(game <- currentPage.getList()) {
         <tr>
-          <td><a id="noColor" href="@routes.Games.getGame(game.getName())">@game.getDate().substring(1, game.getDate().length())</a></td>
-          <td>@*game.getTime()*@</td>
-          <td>@game.getLocation()</td>
+          <td class="visible-xs"><a href="@routes.Games.getGame(game.getName())">@game.getGameDateString()</a></td>
+          <td class="hidden-xs"><a href="@routes.Games.getGame(game.getName())">@game.getGameTime().monthOfYear().getAsText() @game.getDay(), @game.getYear()</a></td>
+          <td>@game.getGameTime().dayOfWeek().getAsText()</td>
+          <td>@game.getGameTimeString()</td>
+          @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+            <td>@game.getLocation()</td>
+          } else {
+            <td></td>
+          }
           <td>@game.getType()</td>
           <!--  <td class="hidden-xs">@game.getFrequency()</td> -->
           <td class="hidden-xs">@game.getAvgSklLvl()</td>

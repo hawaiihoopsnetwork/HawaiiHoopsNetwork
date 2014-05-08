@@ -59,6 +59,7 @@
             </ul>
         </div>
         
+        
     </div>
 
     <div class="row-search visible-xs">
@@ -120,10 +121,13 @@
         <tbody data-link="row" class="rowlink">
         @for(player <- currentPage.getList()){
             <tr>
-                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getName()</a></td>
+                <!--  This makes it so that a logged in user won't see their own profile in the list. -->
+                @if(player.getUser.getName() != Secured.getUserInfo(ctx()).getName) {
+                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getUser.getName()</a></td>
                 <td>@player.getHomeCourt()</td>
                 <td>@player.getSkill()</td>
                 <td>@player.getPosition()</td>
+                }
             </tr>
         }
         </tbody>

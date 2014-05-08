@@ -12,7 +12,7 @@
       <ul class="nav nav-tabs nav-stacked" data-tabs="tabs">
          <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
          <li><a href="#profiles" data-toggle="tab">Roster</a></li>
-         <li><a href="#media" data-toggle="tab">Media</a></li>
+         <li class="disabled"><a href="#media" data-toggle="tab">Media</a></li>
          <li><a href="#reviews" data-toggle="tab">Comments</a></li>
       </ul>
       </div>
@@ -29,23 +29,33 @@
       <div class="col-md-9">
       <div class="tab-content">
             <div class="tab-pane fade in active" id="stats">
-               <img src="img/no-available-image.png" height="40%" width="40%">
-               <h4>Standings & Stats: </h4>
-                  <i>Record: </i>14-10</br>
-                     40% 3pts  <br>
-                     85% 2pts  <br>
-                     90% 1pt  <br>
-                     98 rebounds  <br>
-                     56 steals  <br>
-                     43 blocks  <br>
+               <img src="@routes.Assets.at("images/no-available-image.png")" height="40%" width="40%"> <br>
+               <h4>Stats: </h4>
+               
+               <ul style="list-style: none">
+                  <li><i><label class="control-label">Record: &nbsp &nbsp</label></i>@team.getRecord()</li>
+                     <li><label class="control-label">3 point %: &nbsp &nbsp</label>@team.getThreePt() %  <br></li>
+                     <li><label class="control-label">2 point %: &nbsp &nbsp</label>@team.getTwoPt() %  <br></li>
+                     <li><label class="control-label">Free Throw %: &nbsp &nbsp</label>@team.getOnePt() %  <br></li>
+                     <li><label class="control-label">Rebounds: &nbsp &nbsp</label>@team.getRebounds()   <br></li>
+                     <li><label class="control-label">Steals: &nbsp &nbsp</label>@team.getSteals()  <br></li>
+                     <li><label class="control-label">Blocks: &nbsp &nbsp</label>@team.getBlocks()  <br></li>
+                </ul>     
+                <a href="@routes.Teams.editStats(team.getId)" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+    
             </div>
             <div class="tab-pane fade" id="profiles">
                <h4>Player Profiles: </h4>
                   <ul>
-                    @for(player <- team.getRosterList()) {
-                        <li><a href="#player">@player</a></li>
+                    @for(player <- team.getPlayerProfiles()) {
+                        <li><a href="@routes.Players.playerProfile(player.getId())">@player.getUser().getName()</a></li>
+                    }
+                    @for(player <- team.getNoProfile()) {
+                        <li>@player</li>                    
                     }
                   </ul>
+                 <a href="@routes.Teams.editStats(team.getId)" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+    
             </div>
             
  <div id="player" class="modal fade">
@@ -65,7 +75,8 @@
                 <span class="glyphicon glyphicon-star"></span>
 
                 <br>
-                 <img src="img/no-available-image.png" height="100%" width="100%">
+                    <img src="@routes.Assets.at("images/no-available-image.png")" height="60%" width="60%"> <br>
+        
                  </div>
                  <div class="col-md-8">
                 <h4>Awards & Stats: </h4>
@@ -101,9 +112,11 @@
                <h4>Comments about This Team: </h4>
                   @for(comment <- comments) {
                     <div class="well">
-                        <li>@comment.getAuthor()</li>
+                        <li><a href="@routes.Players.playerProfile(comment.getAuthor.getPlayer.getId)">@comment.getAuthor().getName()</a></li>
+                       <br/>
                        <p>@comment.getComment()</p>
                        <div class="pull-right">@comment.getDate()</div>
+                       <br/>
                     </div>
                  }
                   
@@ -112,7 +125,7 @@
                   <hr>
                   
               
-              @form(routes.Teams.postComment(team.getTeamName()), 'class -> "form-horizontal") {
+              @form(routes.Teams.postComment(team.getId()), 'class -> "form-horizontal") {
                 
                 @bootstrap3.textarea(commentForm("comment"),
                     rows = "6",

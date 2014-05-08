@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import models.teams.Team;
 import play.db.ebean.Model;
 import views.formdata.CommentForm;
@@ -26,7 +27,8 @@ public class Comment extends Model {
 
   @Id
   private Long id;
-  private String author;
+  @ManyToOne
+  private User author;
   private String comment;
   private String date;
 
@@ -45,7 +47,7 @@ public class Comment extends Model {
    * @param author the author of the comment
    * @param comment the content of the comment
    */
-  public Comment(String author, String comment) {
+  public Comment(User author, String comment) {
     this.setAuthor(author);
     this.setComment(comment);
     this.setDate((new Date()).toString());
@@ -63,14 +65,14 @@ public class Comment extends Model {
   /**
    * @return the author
    */
-  public String getAuthor() {
+  public User getAuthor() {
     return author;
   }
 
   /**
    * @param author the author to set
    */
-  public void setAuthor(String author) {
+  public void setAuthor(User author) {
     this.author = author;
   }
 
@@ -113,7 +115,7 @@ public class Comment extends Model {
    * @param author author of comment
    * @param commentForm comment form
    */
-  public static void addComment(Team team, String author, CommentForm commentForm) {
+  public static void addComment(Team team, User author, CommentForm commentForm) {
 
     Comment comment = new Comment(author, commentForm.comment);
     comment.setTeam(team);

@@ -1,13 +1,12 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import com.avaje.ebean.Page;
 import models.Player;
 import models.User;
 import models.games.Game;
+import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -39,8 +38,9 @@ public class Players extends Controller{
   @Security.Authenticated(Secured.class)
   public static Result playerProfile(long id) {
     Player player = Player.getPlayer(id);
-    List<Game> games = Game.findPlayerGames(player.getName());
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games ));
+    List<Game> games = Game.findPlayerGames(player.getUser().getName());
+    List<Team> teams = Team.getTeams();
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**
@@ -56,8 +56,9 @@ public class Players extends Controller{
     player.setVotes(player.getVotes() + 1);
     player.setRating(player.getRating() + rate);
     player.save();
-    List<Game> games = Game.findPlayerGames(player.getName());
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games));
+    List<Game> games = Game.findPlayerGames(player.getUser().getName());
+    List<Team> teams = Team.getTeams();
+    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**************************
@@ -151,14 +152,13 @@ public class Players extends Controller{
       return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
     }
     else {
-      PlayerFormData formData = data.get();;
+      PlayerFormData formData = data.get();
       if (Player.getPlayer(user.getId()) == null) {
-        Player.addPlayer(formData);
+        //Player.addPlayer(formData);
       } else {
         Player.updatePlayer(formData, user.getId());
       }
       
-      //User.setHasProfile(true);
       return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
     }
   }

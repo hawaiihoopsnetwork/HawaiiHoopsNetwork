@@ -62,12 +62,12 @@ public class PlayerFormData {
   /**
    * creates a new PlayerFormData object.
    * 
-   * @param surfer player instance
+   * @param player player instance
    */
   public PlayerFormData(Player player) {
-    this.name = player.getName();
+    this.name = player.getUser().getName();
     this.nickname = player.getNickname();
-    this.homeCourt = player.getHomeCourt();
+    //this.homeCourt = player.getHomeCourt();
     this.skill = player.getSkill();
     this.position = player.getPosition();
     this.rating = player.getRating();
@@ -95,7 +95,8 @@ public class PlayerFormData {
       errors.add(new ValidationError("bio", "Some bio is needed"));
     }
     
-    if (!position.matches("Point Gaurd") && 
+    if (!position.matches("unknown") && 
+        !position.matches("Point Gaurd") && 
         !position.matches("Shooting Gaurd") &&
         !position.matches("Small Forward") &&
         !position.matches("Power Forward") &&
@@ -103,7 +104,8 @@ public class PlayerFormData {
       errors.add(new ValidationError("position", "Position is invalid"));
     }
     
-    if (!skill.matches("Beginner") && 
+    if (!skill.matches("unknown") && 
+        !skill.matches("Beginner") &&
         !skill.matches("Intermediate") &&
         !skill.matches("Competitive") &&
         !skill.matches("College") && skill == null) {
