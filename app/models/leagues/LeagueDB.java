@@ -1,8 +1,7 @@
 package models.leagues;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import models.Court;
 import models.teams.Team;
 import views.formdata.leagues.LeagueForm;
 
@@ -42,7 +41,7 @@ public class LeagueDB {
     else {
       league = LeagueDB.getLeague(id);
       league.setLeagueName(form.leagueName);
-      league.setLocation(form.location);
+      league.setCourt(Court.getCourt(form.court));
       league.setPubOrPrivate(form.pubOrPrivate);
       league.setNumTeams(form.numTeams);
       league.setStartDate(form.startDate);

@@ -27,7 +27,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
         @form(routes.Leagues.searchLeagues(0), 'class -> "form-inline") {
         <div class="input-group">
             @bootstrap3.simpleText(searchForm("term"),
-                placeholder = "Search by League name, location, or start date",
+                placeholder = "Search by League name or start date",
                 label = "",
                 help = "")
                 
@@ -45,10 +45,8 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
         Sort By<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="@routes.Leagues.allLeagues("location asc", 0)">Location</a></li>
         <li><a href="@routes.Leagues.allLeagues("startDate asc", 0)">Start Date</a></li>
-        <hr>
-        <li><a href="@routes.Leagues.allLeagues("leagueName asc", 0)">All</a>
+        <li><a href="@routes.Leagues.allLeagues("leagueName asc", 0)">Name</a>
       </ul>
     </div>
   
@@ -66,12 +64,17 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
       </thead>
       <tbody data-link="row" class="rowlink">
         @for(league <- currentPage.getList()) {
-         @if(league.getPubOrPrivate().equals("public")){
+         @if(league.getPubOrPrivate().equals("public")  && league.getId() != 1){
          <tr>
             <td><a href="@routes.Leagues.leagues(league.getId)">@league.getLeagueName()</a></td>
             <td>@league.getStartDate()</td>
             <td>@league.getNumTeamsInLeague() of @league.getNumTeams()</td>
-            <td class="hidden-xs">@league.getLocation()</td> 
+            @if(league.getCourt != null){
+            <td class="hidden-xs">@league.getCourt().getName()</td>
+            }
+            @if(league.getCourt == null){
+            <td class="hidden-xs"></td>
+            }
          </tr>
          }
         }
