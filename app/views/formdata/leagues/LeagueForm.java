@@ -40,8 +40,6 @@ public class LeagueForm {
     
     public String pubOrPrivate;
     
-    public String location;
-    
     public int regStep;
 
     public int numGames;
@@ -77,7 +75,6 @@ public class LeagueForm {
         this.startDate = league.getStartDate();
         this.endDate = league.getEndDate();
         this.pubOrPrivate = league.getPubOrPrivate();
-        this.location = league.getLocation();
         this.numTeamsInLeague = league.getNumTeamsInLeague();
         this.regStep = league.getRegStep();
         this.numGames = league.getNumGames();

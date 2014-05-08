@@ -74,10 +74,11 @@ create table league (
   end_date                  varchar(255),
   description               varchar(255),
   pub_or_private            varchar(255),
-  location                  varchar(255),
   reg_step                  integer,
   num_games                 integer,
+  date_list                 varchar(255),
   court_id                  bigint,
+  schedule                  varchar(255),
   constraint pk_league primary key (id))
 ;
 
@@ -117,12 +118,17 @@ create table teams (
   description               varchar(255),
   image_url                 varchar(255),
   record                    varchar(255),
+  wins                      integer,
+  losses                    integer,
+  points_for                integer,
+  points_against            integer,
   three_pt                  double,
   two_pt                    double,
   one_pt                    double,
   rebounds                  integer,
   steals                    integer,
   blocks                    integer,
+  opponents                 varchar(255),
   constraint pk_teams primary key (id))
 ;
 

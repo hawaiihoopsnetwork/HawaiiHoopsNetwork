@@ -1,7 +1,9 @@
 package models.teams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -44,14 +46,19 @@ public class Team extends Model {
   private String imageUrl;
   
   private String record = "0-0";
+  private int wins = 0;
+  private int losses = 0;
+  private int pointsFor = 0;
+  private int pointsAgainst = 0;
   private double threePt = 0.0;
   private double twoPt = 0.0;
   private double onePt = 0.0;
   private int rebounds = 0;
   private int steals = 0;
   private int blocks = 0;
-
-
+  
+  private String opponents = "";
+  
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
   
@@ -84,6 +91,21 @@ public class Team extends Model {
     this.setRoster(roster);
     this.setDescription(description);
     this.setImageUrl(imageUrl);
+  }
+  
+  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
+      String imageUrl, int wins, int losses, int pointsFor, int pointsAgainst) {
+    this.setTeamName(teamName);
+    this.setLocation(location);
+    this.setTeamType(teamType);
+    this.setSkillLevel(skillLevel);
+    this.setRoster(roster);
+    this.setDescription(description);
+    this.setImageUrl(imageUrl);
+    this.setWins(wins);
+    this.setLosses(losses);
+    this.setPointsFor(pointsFor);
+    this.setPointsAgainst(pointsAgainst);
   }
 
   /**
@@ -118,6 +140,10 @@ public class Team extends Model {
       team.setRoster(tf.roster);
       team.setDescription(tf.description);
       team.setImageUrl(tf.imageUrl);
+      team.setWins(tf.wins);
+      team.setLosses(tf.losses);
+      team.setPointsFor(tf.pointsFor);
+      team.setPointsAgainst(tf.pointsAgainst);
       team.save();
     }
   }
@@ -470,4 +496,71 @@ public class Team extends Model {
     this.blocks = blocks;
   }
 
+  public int getWins() {
+    return wins;
+  }
+
+  public void setWins(int wins) {
+    this.wins = wins;
+  }
+
+  public int getLosses() {
+    return losses;
+  }
+
+  public void setLosses(int losses) {
+    this.losses = losses;
+  }
+
+  public int getPointsFor() {
+    return pointsFor;
+  }
+
+  public void setPointsFor(int pointsFor) {
+    this.pointsFor = pointsFor;
+  }
+
+  public int getPointsAgainst() {
+    return pointsAgainst;
+  }
+
+  public void setPointsAgainst(int pointsAgainst) {
+    this.pointsAgainst = pointsAgainst;
+  }
+
+  public String getOpponents() {
+    return opponents;
+  }
+  
+  public String getOpponent() {
+    String[] s = opponents.split("~");
+    opponents = "";
+    String string = s[0];
+    for(int i = 1; i < s.length; i++){
+      opponents += (s[i] + "~");
+    }
+    this.save();
+    return string;
+  }
+  
+  public void removeOpponent(String opponent){
+    String[] s = opponents.split("~");
+    opponents = "";
+    for(int i = 0; i < s.length; i++){
+      if(!s[i].equals(opponent)){
+        opponents += (s[i] + "~");
+      }
+    }
+    this.save();
+  }
+  
+  public void addOpponent(String opponent){
+    opponents += (opponent + "~");
+    this.save();
+  }
+  
+  public void setOpponents(String opp){
+    this.opponents = opp;
+    this.save();
+  }
 }

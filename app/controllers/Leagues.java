@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Iterator;
 import java.util.List;
 import com.avaje.ebean.Page;
 import models.Comment;
@@ -62,6 +63,46 @@ public class Leagues extends Controller{
     return ok(LeagueSchedule.render("Create Schedule", emptyForm, Secured.isLoggedIn(ctx())));
   }
   
+  public static void generateSchedule(League league){
+    
+    Team teamAddOpp;
+    List<Team> opp = league.getTeams();
+    
+    for(int i = 0; i < league.getTeams().size(); i++){
+      teamAddOpp = opp.remove(0);
+      for(int j = 0; j < league.getTeams().size(); j++){
+        String string = opp.get(j).getTeamName();
+        teamAddOpp.addOpponent(string);
+      }
+      opp.add(teamAddOpp);
+    }
+
+    int count = 1;
+    for(String date: league.getDateList()){
+      if(!(count == league.getTeams().size())){
+        count++;
+      for(Team team: league.getTeams()){
+        if(team.getOpponents().length() == 0){
+          opp = league.getTeams();
+          opp.remove(team);
+          for(int j = 0; j < opp.size(); j++){
+            team.addOpponent(opp.get(j).getTeamName());
+          }
+        }
+        String opponentName = team.getOpponent();
+        if((!(league.containsDateTeam(date, team.getTeamName()))) && (!(league.containsDateTeam(date, opponentName)))){
+          league.addOpponent(date, team.getTeamName(), opponentName);
+        }
+      }
+      }
+    }
+    
+    opp = league.getTeams();
+    for(int i = 0; i < league.getTeams().size(); i++){
+      opp.get(i).setOpponents("");
+    }
+  }
+  
   public static Result editLeague(long id){
     League league = LeagueDB.getLeague(id);
     Form<LeagueForm> tempForm = Form.form(LeagueForm.class).bindFromRequest();
@@ -74,14 +115,19 @@ public class Leagues extends Controller{
       league.setRegStep(2);
       break;
     case 2:
-      List<String> teamList = tempForm.get().teams;
-      for(int i = 0; i < teamList.size(); i++){
-        league.addTeam(Team.getTeam(teamList.get(i)));
-      }
+      league.setDateList(tempForm.get().dateList);
       league.setRegStep(3);
       break;
     case 3:
-      league.setDateList(tempForm.get().dateList);
+      List<String> teamList = tempForm.get().teams;
+      
+      for(int i = 0; i < teamList.size(); i++){
+        if(!league.getTeams().contains(Team.getTeam(teamList.get(i)))){
+          league.addTeam(Team.getTeam(teamList.get(i)));
+        }
+      }
+      league.eraseSchedule();
+      generateSchedule(league);
       league.setRegStep(4);
       break;
     case 4:
@@ -104,6 +150,8 @@ public class Leagues extends Controller{
     League league = LeagueDB.getLeague(id);
     Form<LeagueForm> tempForm = Form.form(LeagueForm.class).bindFromRequest();
     league.addTeam(Team.getTeam(tempForm.get().teams.get(0)));
+    league.eraseSchedule();
+    generateSchedule(league);
     LeagueDB.addLeague(league);
     LeagueForm leagueForm = new LeagueForm(league);
     Form<LeagueForm> form = Form.form(LeagueForm.class).fill(leagueForm);

@@ -50,19 +50,19 @@ public class League extends Model{
   //True for public, false for private
   private String pubOrPrivate; 
   
-  private String location;
-  
   private int regStep;
   
   private int numGames;
- 
+  
   @ManyToMany(mappedBy = "leagues", cascade=CascadeType.ALL)
   private List<Team> teams = new ArrayList<>();
   
-  private List<String> dateList = new ArrayList<>();
+  private String dateList = "";
   
   @ManyToOne
   private Court court;
+  
+  private String schedule = "";
   
   public League(String name){
     this.leagueName = name;
@@ -71,7 +71,6 @@ public class League extends Model{
     this.numTeams = 0;
     this.description = "";
     this.pubOrPrivate = "public";
-    this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = 0;
     this.numGames = 0;
@@ -84,7 +83,6 @@ public class League extends Model{
     this.numTeams = 0;
     this.description = "";
     this.pubOrPrivate = pubOrPrivate;
-    this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = 0;
     this.numGames = 0;
@@ -98,7 +96,6 @@ public class League extends Model{
     this.numTeams = 0;
     this.description = "";
     this.pubOrPrivate = pubOrPrivate;
-    this.location = "";
     this.numTeamsInLeague = 0;
     this.regStep = regStep;
     this.numGames = 0;
@@ -130,7 +127,7 @@ public class League extends Model{
     Map<String, Boolean> courtMap = new TreeMap<String, Boolean>();
     List<Court> courtList = Court.getCourts();
     for(int i = 0; i < courtList.size(); i++){
-      courtMap.put(courtList.get(i).getName() + " " + courtList.get(i).getAddress(), false);
+      courtMap.put(courtList.get(i).getName(), false);
     }
     return courtMap;
   }
@@ -159,21 +156,21 @@ public class League extends Model{
   }
 
   public List<String> getDateList() {
-    return dateList;
+    List<String> dlList = new ArrayList<>();
+    String[] s = dateList.split("~");
+    for(int i = 0; i < s.length; i++){
+      dlList.add(s[i]);
+    }
+    return dlList;
   }
 
   public void setDateList(List<String> dateList) {
-    this.dateList = dateList;
+    this.dateList = "";
+    for(int i = 0; i < dateList.size(); i++){
+      this.dateList += dateList.get(i) + "~";
+    }
   }
   
-  public String getLocation() {
-    return location;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
   public String getPubOrPrivate() {
     return pubOrPrivate;
   }
@@ -259,8 +256,10 @@ public class League extends Model{
   }
   
   public void addTeam(Team team){
-    numTeamsInLeague++;
-    teams.add(team);
+    if(!teams.contains(team)){
+      numTeamsInLeague++;
+      teams.add(team);
+    }
   }
   
   public int getNumGames() {
@@ -328,4 +327,40 @@ public class League extends Model{
     return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
   }
   
+  public String getSchedule() {
+    return schedule;
+  }
+  
+  public void addOpponent(String date, String team, String opponent){
+    schedule += date + "~" + team + "~" + opponent + "~";
+  }
+  
+  public boolean containsDateTeam(String date, String team){
+    String[] s = schedule.split("~");
+    for(int i = 0; i < s.length - 1; i++){
+      if(s[i].equals(date)){
+        if(s[i+1].equals(team) || s[i+2].equals(team)){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  public List<String> getScheduleList(){
+    
+    List<String> sched = new ArrayList<String>();
+    System.out.println(schedule);
+    String[] s = schedule.split("~");
+    for(int i = 0; i < s.length; i+=3){
+      if(s.length >= 3){
+      sched.add(s[i] + "-" + s[i+1] + "~" + s[i+2]);
+      }
+    }
+    return sched;
+  }
+  
+  public void eraseSchedule(){
+    schedule = "";
+  }
 }

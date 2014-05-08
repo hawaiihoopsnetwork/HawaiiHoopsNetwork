@@ -126,18 +126,18 @@ public class Global extends GlobalSettings {
     }
 
     if (Team.getTeams().size() == 0) {
-      Team.addTeam(new Team("Kaimuki Ballas", "Kaimuki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
+      Team.addTeam(new Team("Kaimuki", "Kaimuki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
           "http://upload.wikimedia.org/wikipedia/en/0/06/Portland_Trail_Blazers_alternate_logo.svg"));
-      Team.addTeam(new Team("Kapolei Boys", "Kapolei Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
+      Team.addTeam(new Team("Kapolei", "Kapolei Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
           "http://cf.juggle-images.com/matte/white/280x280/houston-rockets-script-logo-5-primary.jpg"));
-      Team.addTeam(new Team("Aina-t Pros", "Aina Haina Community Park", "Recreational", "Female", "Alex G., Loa P.",
-          "", "image"));
-      Team.addTeam(new Team("Manoa B-Ballas", "Manoa Community Park", "Recreational", "Co-ed", "Alex G., Loa P.", "",
-          "image"));
-      Team.addTeam(new Team("Makiki Kings", "Makiki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
-          "image"));
-      Team.addTeam(new Team("Cartwright Kings", "Cartwright Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
-          "image"));
+      Team.addTeam(new Team("Aina-t", "Aina Haina Community Park", "Recreational", "Female", "Alex G., Loa P.",
+          "", "http://www.clker.com/cliparts/e/K/W/w/m/R/yellow-thunder-logo-hi.png"));
+      Team.addTeam(new Team("Manoa", "Manoa Community Park", "Recreational", "Co-ed", "Alex G., Loa P.", "",
+          "http://content.sportslogos.net/logos/14/1900/full/allfeweaahhiio85qp0l3bhpm.gif"));
+      Team.addTeam(new Team("Makiki", "Makiki Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
+          "http://www.digindigin.com/blog/wp-content/uploads/2011/03/WARRIORS_LOGO3.png"));
+      Team.addTeam(new Team("Cartwright", "Cartwright Community Park", "Recreational", "Male", "Alex G., Loa P.", "",
+          "http://www.daegu-un.pac.dodea.edu/Images/General%20photo's/warrior-head%20-%20dark%20green.jpg"));
     }
 
     if (LeagueDB.getLeagues().size() == 0) {
@@ -146,9 +146,28 @@ public class Global extends GlobalSettings {
         league.addTeam(Team.getTeam(i));
       }
       league.setNumTeams(6);
-      league.setLocation("Manoa Community Park");
+      league.setCourt(Court.getCourt("University of Hawaii"));
       league.setStartDate("05/01/2015");
+      league.addOpponent("05/01/2015", "Kaimuki", "Kapolei");
+      league.addOpponent("05/01/2015", "Aina-t", "Manoa");
       LeagueDB.addLeague(league);
+      
+      League league2 = new League("Example League");
+      for(int i = 1; i <= 4; i++){
+        league2.addTeam(Team.getTeam(i));
+      }
+      league2.setNumTeams(6);
+      league2.setCourt(Court.getCourt("University of Hawaii"));
+      league2.setStartDate("05/02/2015");
+      league2.setEndDate("05/04/2015");
+      league2.addOpponent("05/02/2015", "Aina-t", "Manoa");
+      league2.addOpponent("05/02/2015", "Kaimuki", "Kapolei");
+      league2.addOpponent("05/03/2015", "Aina-t", "Kaimuki");
+      league2.addOpponent("05/03/2015", "Manoa", "Kapolei");
+      league2.addOpponent("05/04/2015", "Aina-t", "Kapolei");
+      league2.addOpponent("05/04/2015", "Kaimuki", "Manoa");
+      
+      LeagueDB.addLeague(league2);
     }
 
     if (Game.getGames().size() == 0) {
