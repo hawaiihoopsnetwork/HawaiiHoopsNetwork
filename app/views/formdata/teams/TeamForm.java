@@ -35,6 +35,14 @@ public class TeamForm {
   public String description;
   /** Team logo **/
   public String imageUrl;
+  
+  public int wins;
+  
+  public int losses;
+  
+  public int pointsFor;
+  
+  public int pointsAgainst;
 
   /**
    * Default constructor.

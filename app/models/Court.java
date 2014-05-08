@@ -4,6 +4,7 @@ import play.db.ebean.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import models.leagues.League;
 
 
 /**
@@ -68,6 +69,9 @@ public class Court extends Model
 
     @OneToMany(mappedBy="court")
     private List<Review> reviews = new ArrayList<>();
+    
+    @OneToMany(mappedBy="court")
+    private List<League> leagues = new ArrayList<>();
 
     @ManyToMany(mappedBy="courts")
     private List<Hours> open_hours = new ArrayList<>();
