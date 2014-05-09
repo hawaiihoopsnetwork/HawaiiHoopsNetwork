@@ -53,8 +53,10 @@ view the running application at [localhost:9000](localhost:9000)
 ##Screencasts
 <a href="https://www.youtube.com/watch?v=6WZrLIXGf3o"><img height="60%" width="60%" src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/af13c95313c627a59fe94a2a246bf02587985583/public/images/HiHoopsDev.png"></a><br/>
 [Developer Screencast](https://www.youtube.com/watch?v=6WZrLIXGf3o)
+
 <a href="http://youtu.be/x4H4cRifssg"><img height="60%" width="60%" src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/master/public/images/ScreenShot.png"></a><br/>
 [Users Screencast](http://youtu.be/x4H4cRifssg)
+
 ##Comments? Issues?
 Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/issues?milestone=4&state=open)
 ##Wiki Links
