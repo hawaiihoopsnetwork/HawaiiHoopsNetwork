@@ -55,5 +55,5 @@ Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoops
 [Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings)  
 [User Evaluations]()  
 [Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-3.0)  
-[Installation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Installation) 
+[Developer Guide](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Developer-Guide)  
 
