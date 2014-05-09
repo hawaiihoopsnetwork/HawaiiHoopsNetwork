@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.avaje.ebean.Page;
@@ -65,42 +66,48 @@ public class Leagues extends Controller{
   
   public static void generateSchedule(League league){
     
-    Team teamAddOpp;
     List<Team> opp = league.getTeams();
-    
-    for(int i = 0; i < league.getTeams().size(); i++){
-      teamAddOpp = opp.remove(0);
-      for(int j = 0; j < league.getTeams().size(); j++){
-        String string = opp.get(j).getTeamName();
-        teamAddOpp.addOpponent(string);
-      }
-      opp.add(teamAddOpp);
-    }
+    List<Team> home = new ArrayList<Team>();
+    List<Team> away = new ArrayList<Team>();
 
-    int count = 1;
-    for(String date: league.getDateList()){
-      if(!(count == league.getTeams().size())){
-        count++;
-      for(Team team: league.getTeams()){
-        if(team.getOpponents().length() == 0){
-          opp = league.getTeams();
-          opp.remove(team);
-          for(int j = 0; j < opp.size(); j++){
-            team.addOpponent(opp.get(j).getTeamName());
+    if(opp == null || opp.size() == 1){
+      
+    }
+    else if(opp.size() < 3){
+      for(int i = 0; i < league.getDateList().size(); i++){
+        List<String> dates = league.getDateList();
+        league.addOpponent(dates.get(i), opp.get(0).getTeamName(), opp.get(1).getTeamName());
+      }
+    }
+    else{
+      for(int i = 0, j = opp.size() / 2; i < opp.size() / 2; i++, j++){
+        home.add(opp.get(i));
+        away.add(opp.get(j));
+        if((i+1)*2+1 == opp.size()){
+          home.add(opp.get((i+1)*2));
+          away.add(null);
+        }
+      }
+      
+      
+      List<String> dates = league.getDateList();
+      for(int i = 0; i < league.getDateList().size(); i++){
+        for(int j = 0; j < home.size(); j++){
+          if(away.get(j) != null && home.get(j) != null){
+            league.addOpponent(dates.get(i), home.get(j).getTeamName(), away.get(j).getTeamName());
+          }
+          else if(away.get(j) == null){
+            league.addOpponent(dates.get(i), home.get(j).getTeamName(), "null");
+          }
+          else {
+            league.addOpponent(dates.get(i), away.get(j).getTeamName(), "null");
           }
         }
-        String opponentName = team.getOpponent();
-        if((!(league.containsDateTeam(date, team.getTeamName()))) && (!(league.containsDateTeam(date, opponentName)))){
-          league.addOpponent(date, team.getTeamName(), opponentName);
-        }
-      }
+        away.add(home.remove(home.size() -1));
+        home.add(1, away.remove(0));
       }
     }
     
-    opp = league.getTeams();
-    for(int i = 0; i < league.getTeams().size(); i++){
-      opp.get(i).setOpponents("");
-    }
   }
   
   public static Result editLeague(long id){
