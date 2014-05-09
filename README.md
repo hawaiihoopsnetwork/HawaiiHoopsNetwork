@@ -1,20 +1,62 @@
-#HawaiiHoopsNetwork
-Connecting basketball players, teams, and leagues on Oahu!  
-[Live app here!](http://hawaiihoops.scotthonda.cloudbees.net/)
+This repository contains the source code for [http://hawaiihoops.scotthonda.cloudbees.net/](http://hawaiihoops.scotthonda.cloudbees.net/) built using the [play framework](http://www.playframework.com/).
 
-#Key Points
-- Get information on open gyms
-- Find pick up games
-- Network with players 
-- Join teams in your area! 
-- Register for leagues online.
+## What is Hawaii Hoops?
+Hawaii Hoops is a social network for basketball players on Oahu. The website's mission is to make it easy for players to not only connect to one another but to find local teams, leagues, and basketball courts.
 
-#Usage
+## I don't live in Hawaii...
+Don't live in Hawaii and want the services provided by Hawaii Hoops in your area? No problem, Hawaii Hoops can be easily modified to fit the needs of any location or sport. Simply install Hawaii Hoops on your local machine and input local data for local basketball courts before deployment.
+
+##Dependencies
+- [JDK 6 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- [Play! Framework 2.0](http://www.playframework.com/)
+
+## Installation
+
+
+1. Download the [zip file](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/archive/master.zip), or clone the repository
+```
+$ git clone https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork.git
+Cloning into 'HawaiiHoopsNetwork'...
+remote: Reusing existing pack: 774, done.
+remote: Counting objects: 109, done.
+remote: Compressing objects: 100% (102/102), done.
+remote: Total 883 (delta 42), reused 0 (delta 0)
+Receiving objects: 100% (883/883), 1.60 MiB | 215.00 KiB/s, done.
+Resolving deltas: 100% (429/429), done.
+Checking connectivity... done.
+```
+
+2. In conf/application.conf edit the default database and mailer settings
+```
+# Database configuration
+# ~~~~~
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+#
+ db.default.driver=org.h2.Driver
+ db.default.url="jdbc:h2:mem:play;MODE=MYSQL"
+ db.default.user=user
+ db.default.password=password
+
+# Mailer:
+smtp.host=smtp.gmail.com
+smtp.port=587
+smtp.ssl=yes
+smtp.user=user
+smtp.password=password
+#smtp.user=${HiHoops_Email}
+#smtp.password=${HiHoops_Email_Password}
+```
+
+3. run `$ play run`
+
+4. view the running application at [localhost:9000](localhost:9000)
+
 #Screencasts
 #Wiki Links
 [Team Meetings](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings)  
 [User Evaluations]()  
-[Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-2.0)  
+[Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-3.0)  
 [Installation](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Installation)  
 #Comments? Issues?
 Please Create a github [issue](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/issues?milestone=4&state=open)
