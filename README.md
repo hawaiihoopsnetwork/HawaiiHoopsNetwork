@@ -3,7 +3,6 @@ This repository contains the source code for [http://hawaiihoops.scotthonda.clou
 ## What is Hawaii Hoops?
 Hawaii Hoops is a social network for basketball players on Oahu. The website's mission is to make it easy for players to not only connect to one another but to find local teams, leagues, and basketball courts.
 
-<img src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/master/public/images/home.png" height="70%" width="70%">
 
 ## I don't live in Hawaii...
 Don't live in Hawaii and want the services provided by Hawaii Hoops in your area? No problem, Hawaii Hoops can be easily modified to fit the needs of any location or sport. Simply install Hawaii Hoops on your local machine and input local data for local basketball courts before deployment.
