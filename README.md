@@ -60,5 +60,6 @@ Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoops
 [Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-3.0)  
 [Developer Guide](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Developer-Guide)  
 [User Guide](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Guide)  
-[Home Page](http://hawaiihoopsnetwork.github.io/HawaiiHoopsNetwork/) 
+[Home Page](http://hawaiihoopsnetwork.github.io/HawaiiHoopsNetwork/)
 [User Evaluations](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Evaluations)  
+
