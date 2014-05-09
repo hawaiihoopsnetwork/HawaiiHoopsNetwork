@@ -11,7 +11,7 @@ Don't live in Hawaii and want the services provided by Hawaii Hoops in your area
 - [Play! Framework 2.0](http://www.playframework.com/)
 
 ## Installation
-Download the [zip file](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/archive/master.zip), or clone the repository
+Download the [zip file](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/archive/master.zip), or clone the repository  
 ```
 $ git clone https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork.git
 Cloning into 'HawaiiHoopsNetwork'...
@@ -24,7 +24,7 @@ Resolving deltas: 100% (429/429), done.
 Checking connectivity... done.
 ```  
 
-In conf/application.conf edit the default database and mailer settings
+In conf/application.conf edit the default database and mailer settings  
 ```
 # Database configuration
 # ~~~~~
@@ -45,7 +45,7 @@ smtp.password=password
 #smtp.user=${HiHoops_Email}
 #smtp.password=${HiHoops_Email_Password}
 ```
-run `$ play run`
+run `$ play run`  
 view the running application at [localhost:9000](localhost:9000)
 
 ##Screencasts
