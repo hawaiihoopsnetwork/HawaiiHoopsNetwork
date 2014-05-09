@@ -81,7 +81,8 @@ public class Teams extends Controller {
     else {
       TeamForm tf = teamForm.get();
       Team.addTeam(tf);
-      return redirect("/teams/view/" + tf.teamName);
+      Team newTeam = Team.getTeam(tf.teamName);
+      return redirect("/teams/view/" + newTeam.getId());
     }
   }
 
@@ -97,7 +98,7 @@ public class Teams extends Controller {
 
     Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
-    return ok(ShowTeam.render("View Team", Team.getTeam(id), empty, comments, Secured.isLoggedIn(ctx())));
+    return ok(ShowTeam.render("View Team: ", Team.getTeam(id), empty, comments, Secured.isLoggedIn(ctx())));
   }
 
   /**
