@@ -49,6 +49,7 @@ run `$ play run`
 view the running application at [localhost:9000](localhost:9000)
 
 ##Screencasts
+[Developer Screencast](https://www.youtube.com/watch?v=6WZrLIXGf3o)
 ##Comments? Issues?
 Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/issues?milestone=4&state=open)
 ##Wiki Links
