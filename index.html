@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Hawaiihoopsnetwork by hawaiihoopsnetwork</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Hawaiihoopsnetwork</h1>
+          <p>Connecting basketball players, teams, and leagues on Oahu!</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/hawaiihoopsnetwork">hawaiihoopsnetwork</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>This repository contains the source code for <a href="http://hawaiihoops.scotthonda.cloudbees.net/">http://hawaiihoops.scotthonda.cloudbees.net/</a>.</p>
+
+<h2>
+<a name="what-is-hawaii-hoops" class="anchor" href="#what-is-hawaii-hoops"><span class="octicon octicon-link"></span></a>What is Hawaii Hoops?</h2>
+
+<p>Hawaii Hoops is a social network for basketball players on Oahu. The website's mission is to make it easy for players to not only connect to one another but to find local teams, leagues, and basketball courts.</p>
+
+<h2>
+<a name="i-dont-live-in-hawaii" class="anchor" href="#i-dont-live-in-hawaii"><span class="octicon octicon-link"></span></a>I don't live in Hawaii...</h2>
+
+<p>Don't live in Hawaii and want the services provided by Hawaii Hoops in your area? No problem, Hawaii Hoops can be easily modified to fit the needs of any location or sport. Simply install Hawaii Hoops on your local machine and input local data for local basketball courts before deployment.</p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 6 or later</a></li>
+<li><a href="http://www.playframework.com/">Play! Framework 2.0</a></li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Download the <a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/archive/master.zip">zip file</a>, or clone the repository  </p>
+
+<pre><code>$ git clone https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork.git
+Cloning into 'HawaiiHoopsNetwork'...
+remote: Reusing existing pack: 774, done.
+remote: Counting objects: 109, done.
+remote: Compressing objects: 100% (102/102), done.
+remote: Total 883 (delta 42), reused 0 (delta 0)
+Receiving objects: 100% (883/883), 1.60 MiB | 215.00 KiB/s, done.
+Resolving deltas: 100% (429/429), done.
+Checking connectivity... done.
+</code></pre>
+
+<p>In conf/application.conf edit the default database and mailer settings  </p>
+
+<pre><code># Database configuration
+# ~~~~~
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+#
+ db.default.driver=org.h2.Driver
+ db.default.url="jdbc:h2:mem:play;MODE=MYSQL"
+ db.default.user=user
+ db.default.password=password
+
+# Mailer:
+smtp.host=smtp.gmail.com
+smtp.port=587
+smtp.ssl=yes
+smtp.user=user
+smtp.password=password
+#smtp.user=${HiHoops_Email}
+#smtp.password=${HiHoops_Email_Password}
+</code></pre>
+
+<p>run <code>$ play run</code><br>
+view the running application at <a>localhost:9000</a></p>
+
+<h2>
+<a name="screencasts" class="anchor" href="#screencasts"><span class="octicon octicon-link"></span></a>Screencasts</h2>
+
+<h2>
+<a name="comments-issues" class="anchor" href="#comments-issues"><span class="octicon octicon-link"></span></a>Comments? Issues?</h2>
+
+<p>Please Create a <a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/issues?milestone=4&amp;state=open">github issue</a></p>
+
+<h2>
+<a name="wiki-links" class="anchor" href="#wiki-links"><span class="octicon octicon-link"></span></a>Wiki Links</h2>
+
+<p><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Team-Meetings">Team Meetings</a><br><a href="">User Evaluations</a><br><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-3.0">Use Cases</a><br><a href="https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Developer-Guide">Developer Guide</a>  </p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
