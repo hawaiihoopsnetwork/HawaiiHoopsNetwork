@@ -3,6 +3,8 @@ This repository contains the source code for [http://hawaiihoops.scotthonda.clou
 ## What is Hawaii Hoops?
 Hawaii Hoops is a social network for basketball players on Oahu. The website's mission is to make it easy for players to not only connect to one another but to find local teams, leagues, and basketball courts.
 
+<img src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/master/public/images/home.png" height="70%" width="70%">
+
 ## I don't live in Hawaii...
 Don't live in Hawaii and want the services provided by Hawaii Hoops in your area? No problem, Hawaii Hoops can be easily modified to fit the needs of any location or sport. Simply install Hawaii Hoops on your local machine and input local data for local basketball courts before deployment.
 
@@ -49,7 +51,12 @@ run `$ play run`
 view the running application at [localhost:9000](localhost:9000)
 
 ##Screencasts
+<a href="https://www.youtube.com/watch?v=6WZrLIXGf3o"><img height="60%" width="60%" src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/af13c95313c627a59fe94a2a246bf02587985583/public/images/HiHoopsDev.png"></a><br/>
 [Developer Screencast](https://www.youtube.com/watch?v=6WZrLIXGf3o)
+
+<a href="http://youtu.be/x4H4cRifssg"><img height="60%" width="60%" src="https://raw.githubusercontent.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/master/public/images/ScreenShot.png"></a><br/>
+[Users Screencast](http://youtu.be/x4H4cRifssg)
+
 ##Comments? Issues?
 Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/issues?milestone=4&state=open)
 ##Wiki Links
@@ -57,4 +64,6 @@ Please Create a [github issue](https://github.com/hawaiihoopsnetwork/HawaiiHoops
 [Use Cases](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Use-Cases-3.0)  
 [Developer Guide](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/Developer-Guide)  
 [User Guide](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Guide)  
-[User Evaluations]()  
+[Home Page](http://hawaiihoopsnetwork.github.io/HawaiiHoopsNetwork/)  
+[User Evaluations](https://github.com/hawaiihoopsnetwork/HawaiiHoopsNetwork/wiki/User-Evaluations)  
+
