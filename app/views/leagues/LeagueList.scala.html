@@ -136,11 +136,11 @@
                     isMultiple = false,
                     help = "")
                     
-                  @bootstrap3.selectInt(leagueForm("numGames"),
+                  <!--@bootstrap3.selectInt(leagueForm("numGames"),
                     label = "Number of Games per Team",
                     optionMap = models.leagues.League.num(),
                     isMultiple = false,
-                    help = "")
+                    help = "")-->
                   
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -278,6 +278,7 @@
       
         <div class="well" id="leagueName">
           <h1>@league.getLeagueName()</h1>
+          <p>@league.getDescription()</p>
         </div>
       
       </div>
@@ -295,12 +296,23 @@
           <table>
             @for(teams <- league.getScheduleList()){
               <tr><td><h3>@teams.substring(0, teams.indexOf("-"))</h3></td></tr>
-              @System.out.println(teams.substring(teams.indexOf("-"), teams.indexOf("~")))
-              @System.out.println(teams.substring(teams.indexOf("~")))
-              <tr><td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getTeamName()</p></span></a></td>
-              <td class = "vs"><p> vs &nbsp&nbsp&nbsp&nbsp</p></td>
-              <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getTeamName()</p></span></a></td></tr>
-            }
+               <tr>
+               @if(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~")) == "null"){
+                  <td class = "sched"><a href = "#"><span><p>Bye</p></span></a></td>
+                }
+                @if(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~")) != "null"){
+                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getTeamName()</p></span></a></td>
+                }
+                
+                @if(teams.substring(teams.indexOf("~") + 1) != "null"){
+                  <td class = "vs"><p> vs &nbsp&nbsp&nbsp&nbsp</p></td>
+                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getTeamName()</p></span></a></td></tr>
+                }
+                @if(teams.substring(teams.indexOf("~") + 1) == "null"){
+                  <td class = "sched"<a href = "#"><span><p>Bye</p></span></a></td>
+                }
+				</tr>
+			}
           </table>
         </div>
         @if(league.getCourt() != null){
@@ -364,24 +376,14 @@
             <!-- Indicators -->
             <ol class="carousel-indicators">
               <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
             </ol>
         
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
               <div class="item active">
-                    <div class ="img-three" style = "background-image: url('@routes.Assets.at("images/HawaiiHoopsNetworkLogo.jpg")');"></div>
-                    <div class="carousel-caption"></div>
-                  </div>
-                  <div class="item">
-                    <div class ="img-three" style = "background-image: url('http://img.groundspeak.com/waymarking/display/3fec022a-8674-4339-a8e5-ced0e26aec21.JPG');"></div>
-                    <div class="carousel-caption">For Hawaii Hoopers</div>
-                  </div>
-                  <div class="item">
-                    <div class ="img-three" style = "background-image: url('http://taylorak.files.wordpress.com/2013/11/succeed.jpg?w=576&h=384');"></div>
-                    <div class="carousel-caption">Meet our team</div>
-                  </div>
+                  <div class ="img-three" style = "background-image: url('http://img.groundspeak.com/waymarking/display/3fec022a-8674-4339-a8e5-ced0e26aec21.JPG');"></div>
+                  <div class="carousel-caption">Add your league images here<br>(Feature added later)</div>
+              </div>
             </div>
         
             <!-- Controls -->
