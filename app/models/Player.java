@@ -4,9 +4,9 @@ import javax.persistence.*;
 import com.avaje.ebean.Page;
 import controllers.Secured;
 import play.db.ebean.Model;
+import play.mvc.Http.Context;
 import views.formdata.PlayerFormData;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ public class Player extends Model {
   @Id
   @GeneratedValue
   private Long id;
-  
+
   private String nickname;
   private String skill;
   private String position;
@@ -30,7 +30,7 @@ public class Player extends Model {
   private String bio;
   private String lookingFor;
   private String picUrl;
-  
+
   @OneToOne(mappedBy = "player")
   private User user;
 
@@ -45,13 +45,13 @@ public class Player extends Model {
 
   /**
    * Creates a new player.
-   *
+   * 
    * @param skill = skill level of player
    * @param position = position of player
    * 
    */
-  public Player(String nickname, String skill, String position, long rating, long votes,
-      String height, String weight, String bio, String lookingFor, String picUrl) {
+  public Player(String nickname, String skill, String position, long rating, long votes, String height, String weight,
+      String bio, String lookingFor, String picUrl) {
     this.nickname = nickname;
     this.skill = skill;
     this.position = position;
@@ -64,43 +64,38 @@ public class Player extends Model {
     this.picUrl = picUrl;
   }
 
-    /**public Player(User user) {
-       this.user = user;
-    }
-
-  public static Player addPlayer(User user) {
-      Player player = new Player(user);
-      player.save();
-      return player;
-  }**/
+  /**
+   * public Player(User user) { this.user = user; }
+   * 
+   * public static Player addPlayer(User user) { Player player = new Player(user); player.save(); return player; }
+   **/
 
   public static Player addPlayer(String nickname, String skill, String position, long rating, long votes,
       String height, String weight, String bio, String lookingFor, String picUrl) {
-      Player player = new Player(nickname, skill, position, rating, votes, height, weight, bio, lookingFor, picUrl);
-      player.save();
-      return player;
+    Player player = new Player(nickname, skill, position, rating, votes, height, weight, bio, lookingFor, picUrl);
+    player.save();
+    return player;
   }
 
   /**
    * Adds a player to the database
+   * 
    * @param formData = the PlayerFormData containing the player's info save's the player's info to the DB
    */
   public static void addPlayer(String name) {
-    /**Player player =
-        new Player(name, "", "unknown", "unknown", "unknown",
-            0, 0, "", "", "", "",
-            "");
-    player.save();**/
+    /**
+     * Player player = new Player(name, "", "unknown", "unknown", "unknown", 0, 0, "", "", "", "", ""); player.save();
+     **/
   }
-  
+
   /**
    * Updates a player's info
    */
   public static void updatePlayer(PlayerFormData formData, long id) {
-    
+
     Player player = getPlayer(id);
     player.setNickname(formData.nickname);
-    //player.setHomeCourt(formData.homeCourt);
+    // player.setHomeCourt(formData.homeCourt);
     player.setSkill(formData.skill);
     player.setPosition(formData.position);
     player.setHeight(formData.height);
@@ -110,20 +105,17 @@ public class Player extends Model {
     player.setPicUrl(formData.picUrl);
     player.update();
   }
-  
+
   /**
    * The EBean ORM finder method for database queries on PlayerList.
    **/
-   public static Finder<Long, Player> find() {
-     return new Finder<Long, Player>(Long.class, Player.class);
-   }
-   
-   
+  public static Finder<Long, Player> find() {
+    return new Finder<Long, Player>(Long.class, Player.class);
+  }
+
   /**
-   * ********************* *
-   *  Getters and Setters  *
-   * ********************* *
-  **/
+   * ********************* * Getters and Setters * ********************* *
+   **/
 
   /**
    * The EBean Page finder method to implement pagination for all players.
@@ -133,29 +125,22 @@ public class Player extends Model {
    * @return page object of all players
    */
   public static Page<Player> find(String sortOrder, int page) {
-    return find().where().orderBy(sortOrder).findPagingList(10).setFetchAhead(false).getPage(page);
+    return find().where().ne("user", Secured.getUserInfo(Context.current())).orderBy(sortOrder)
+        .findPagingList(10).setFetchAhead(false).getPage(page);
   }
-
 
   public static Page<Player> page(int size, int page, long court_id, User user) {
-        Page<Player> playerPage;
-        if(user != null) {
-            playerPage = find()
-                    .where()
-                    .in("courts", Court.getCourt(court_id))
-                    .ne("id", user.getPlayer().getId())
-                    .findPagingList(size)
-                    .getPage(page);
-        } else {
-           playerPage = find()
-                    .where()
-                    .in("courts", Court.getCourt(court_id))
-                    .findPagingList(size)
-                    .getPage(page);
-        }
-      return playerPage;
+    Page<Player> playerPage;
+    if (user != null) {
+      playerPage =
+          find().where().in("courts", Court.getCourt(court_id)).ne("id", user.getPlayer().getId()).findPagingList(size)
+              .getPage(page);
+    }
+    else {
+      playerPage = find().where().in("courts", Court.getCourt(court_id)).findPagingList(size).getPage(page);
+    }
+    return playerPage;
   }
-
 
   /**
    * Temporary for now, used in Global.java Stops multiple addition in database.
@@ -182,9 +167,10 @@ public class Player extends Model {
   public static Player getPlayer(long id) {
     return find().where().eq("id", id).findUnique();
   }
-  
+
   /**
    * Used when finding if profile belongs to a name
+   * 
    * @param name the player's name
    * @return Player
    */
@@ -203,15 +189,15 @@ public class Player extends Model {
     return id;
   }
 
-    public Court getHomeCourt() {
-        return homeCourt;
-    }
+  public Court getHomeCourt() {
+    return homeCourt;
+  }
 
-    public void setHomeCourt(Court homeCourt) {
-        this.homeCourt = homeCourt;
-    }
+  public void setHomeCourt(Court homeCourt) {
+    this.homeCourt = homeCourt;
+  }
 
-    /**
+  /**
    * @return the skill
    */
   public String getSkill() {
@@ -363,19 +349,19 @@ public class Player extends Model {
     this.picUrl = picUrl;
   }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public List<Court> getCourts() {
-        return courts;
-    }
+  public List<Court> getCourts() {
+    return courts;
+  }
 
-    public void setCourts(List<Court> courts) {
-        this.courts = courts;
-    }
+  public void setCourts(List<Court> courts) {
+    this.courts = courts;
+  }
 }
