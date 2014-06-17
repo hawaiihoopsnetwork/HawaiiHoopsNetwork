@@ -301,12 +301,12 @@
                   <td class = "sched"><a href = "#"><span><p>Bye</p></span></a></td>
                 }
                 @if(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~")) != "null"){
-                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getTeamName()</p></span></a></td>
+                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getId(), slugify(models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getTeamName()))"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("-") + 1, teams.indexOf("~"))).getTeamName()</p></span></a></td>
                 }
                 
                 @if(teams.substring(teams.indexOf("~") + 1) != "null"){
                   <td class = "vs"><p> vs &nbsp&nbsp&nbsp&nbsp</p></td>
-                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getId())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getTeamName()</p></span></a></td></tr>
+                  <td class = "sched"><img src="@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getImageUrl()" class="img-one"><a href = "@routes.Teams.showTeam(models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getId(), models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getTeamName())"><span><p>@models.teams.Team.getTeam(teams.substring(teams.indexOf("~") + 1)).getTeamName()</p></span></a></td></tr>
                 }
                 @if(teams.substring(teams.indexOf("~") + 1) == "null"){
                   <td class = "sched"<a href = "#"><span><p>Bye</p></span></a></td>

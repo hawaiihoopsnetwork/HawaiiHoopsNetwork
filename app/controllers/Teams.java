@@ -7,6 +7,7 @@ import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
+import utils.Tags;
 import views.formdata.CommentForm;
 import views.formdata.SearchFormData;
 import views.formdata.teams.StatForm;
@@ -82,7 +83,7 @@ public class Teams extends Controller {
       TeamForm tf = teamForm.get();
       Team.addTeam(tf);
       Team newTeam = Team.getTeam(tf.teamName);
-      return redirect("/teams/view/" + newTeam.getId());
+      return redirect(routes.Teams.showTeam(newTeam.getId(), Tags.slugify(newTeam.getTeamName())));
     }
   }
 
@@ -92,13 +93,13 @@ public class Teams extends Controller {
    * @param teamName the team name
    * @return the team page
    */
-  public static Result showTeam(Long id) {
+  public static Result showTeam(Long id, String teamName) {
     CommentForm cf = new CommentForm();
     Form<CommentForm> empty = Form.form(CommentForm.class).fill(cf);
 
     Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
-    return ok(ShowTeam.render("View Team: ", Team.getTeam(id), empty, comments, Secured.isLoggedIn(ctx())));
+    return ok(ShowTeam.render("View Team: " + team.getTeamName(), team, empty, comments, Secured.isLoggedIn(ctx())));
   }
 
   /**
@@ -107,14 +108,14 @@ public class Teams extends Controller {
    * @param teamName the team name
    * @return the team's page if there are no errors.
    */
-  public static Result postComment(Long id) {
+  public static Result postComment(Long id, String teamName) {
     Form<CommentForm> cf = Form.form(CommentForm.class).bindFromRequest();
 
     Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
 
     if (cf.hasErrors()) {
-      return badRequest(ShowTeam.render("View Team", Team.getTeam(id), cf, comments, Secured.isLoggedIn(ctx())));
+      return badRequest(ShowTeam.render("View Team: " + team.getTeamName(), team, cf, comments, Secured.isLoggedIn(ctx())));
     }
     else {
       CommentForm com = cf.get();
@@ -122,12 +123,12 @@ public class Teams extends Controller {
       Team team2 = Team.getTeam(id);
       Comment.addComment(team2, Secured.getUserInfo(ctx()), com);
 
-      return redirect("/teams/view/" + id);
+      return redirect(routes.Teams.showTeam(id, Tags.slugify(teamName)));
     }
 
   }
 
-  public static Result editStats(Long id) {
+  public static Result editStats(Long id, String teamName) {
 
     Team team = Team.getTeam(id);
     
@@ -138,7 +139,7 @@ public class Teams extends Controller {
   }
 
 
-  public static Result postStats(Long id) {
+  public static Result postStats(Long id, String teamName) {
     Team team = Team.getTeam(id);
 
     Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
@@ -158,7 +159,7 @@ public class Teams extends Controller {
       team.setRoster(stat.roster);
       team.save();
 
-      return redirect(routes.Teams.showTeam(team.getId()));
+      return redirect(routes.Teams.showTeam(team.getId(), Tags.slugify(teamName)));
     }
   }
 

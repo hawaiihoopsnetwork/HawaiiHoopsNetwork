@@ -67,10 +67,10 @@ GET         /teams/all                           controllers.Teams.allTeams(sort
 POST        /teams/all/search                    controllers.Teams.searchTeams(page: Integer)
 GET         /teams/create                        controllers.Teams.createTeam()
 POST        /teams/post                          controllers.Teams.addTeam()
-GET         /teams/view/:id                      controllers.Teams.showTeam(id: Long)
-POST        /teams/view/:id/comment              controllers.Teams.postComment(id: Long)
-GET         /teams/view/:id/edit                 controllers.Teams.editStats(id: Long)
-POST        /teams/view/:id/stats/post           controllers.Teams.postStats(id: Long)
+GET         /teams/view/:id/:teamName                      controllers.Teams.showTeam(id: Long, teamName: String)
+POST        /teams/view/:id/:teamName/comment              controllers.Teams.postComment(id: Long, teamName: String)
+GET         /teams/view/:id/:teamName/edit                 controllers.Teams.editStats(id: Long, teamName: String)
+POST        /teams/view/:id/:teamName/stats/post           controllers.Teams.postStats(id: Long, teamName: String)
 
 # Map static resources from the /public folder to the /assets URL path
 

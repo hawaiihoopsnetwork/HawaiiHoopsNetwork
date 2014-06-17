@@ -3,6 +3,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
 
 @import helper._
 @import bootstrap3._
+@import utils.Tags._
 
 @scripts = {
     <!--  Tablesorter doesn't seem to be working now, will fix later -->
@@ -68,7 +69,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
       <tbody data-link="row" class="rowlink">
         @for(team <- currentPage.getList()) {
          <tr>
-            <td><a href="@routes.Teams.showTeam(team.getId)">@team.getTeamName()</a></td>
+            <td><a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">@team.getTeamName()</a></td>
             <td>@team.getLocation()</td>
             <td>@team.getTeamType()</td>
             <td>@team.getRosterList().size()</td>

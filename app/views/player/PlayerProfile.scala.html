@@ -2,6 +2,7 @@
 
 @import helper._
 @import models._
+@import utils.Tags._
 
 @Main(title, isLoggedIn) { 
  
@@ -92,7 +93,7 @@
                 @for(team <- playerTeams) {
                  @if(team.getRoster().contains(player.getUser.getName())) {
                  <tr>
-                    <td><a href="@routes.Teams.showTeam(team.getId)">@team.getTeamName()</a></td>
+                    <td><a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">@team.getTeamName()</a></td>
                     <td>@team.getLocation()</td>
                     <td>@team.getTeamType()</td>
                     <td>@team.getRosterList().size()</td>

@@ -2,8 +2,9 @@
 
 @import helper._
 @import bootstrap3._
+@import utils.Tags._
 
-@Main(title + team.getTeamName(), loggedIn) {
+@Main(title, loggedIn) {
     <div class="container">
     <div class="well">
    <h4>@team.getTeamName()</h4>
@@ -41,7 +42,7 @@
                      <li><label class="control-label">Steals: &nbsp &nbsp</label>@team.getSteals()  <br></li>
                      <li><label class="control-label">Blocks: &nbsp &nbsp</label>@team.getBlocks()  <br></li>
                 </ul>     
-                <a href="@routes.Teams.editStats(team.getId)" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+                <a href="@routes.Teams.editStats(team.getId, slugify(team.getTeamName))" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
     
             </div>
             <div class="tab-pane fade" id="profiles">
@@ -54,7 +55,7 @@
                         <li>@player</li>                    
                     }
                   </ul>
-                 <a href="@routes.Teams.editStats(team.getId)" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+                 <a href="@routes.Teams.editStats(team.getId, slugify(team.getTeamName))" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
     
             </div>
             
@@ -125,7 +126,7 @@
                   <hr>
                   
               
-              @form(routes.Teams.postComment(team.getId()), 'class -> "form-horizontal") {
+              @form(routes.Teams.postComment(team.getId(), slugify(team.getTeamName())), 'class -> "form-horizontal") {
                 
                 @bootstrap3.textarea(commentForm("comment"),
                     rows = "6",
