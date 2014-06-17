@@ -17,6 +17,7 @@ import views.html.games.SingleGame;
 import views.html.games.CreateGame;
 import views.html.games.AllGames;
 import views.html.games.RequestSent;
+import utils.Tags;
 
 /**
  * Implements the controllers for this application.
@@ -30,6 +31,8 @@ public class Games extends Controller {
    */
   @Security.Authenticated(Secured.class)
   public static Result allGames(Integer page, String sort) {
+
+    Game.deletePastGames();
 
     SearchFormData sfd = new SearchFormData();
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
@@ -45,8 +48,9 @@ public class Games extends Controller {
    * @return the page related to the game
    */
   @Security.Authenticated(Secured.class)
-  public static Result getGame(String name) {
-    Game game = Game.find().where().eq("name", name).findUnique();
+  public static Result getGame(long id, String name) {
+
+    Game game = Game.getGame(id);
 
     if (game == null) {
       throw new RuntimeException("Not a valid game.");
@@ -54,6 +58,7 @@ public class Games extends Controller {
     else {
       return ok(SingleGame.render("Game: " + game.getName(), game, Secured.isLoggedIn(ctx())));
     }
+
   }
 
   /**
@@ -86,10 +91,11 @@ public class Games extends Controller {
       GameForm game = gameForm.get();
 
       User user = Secured.getUserInfo(ctx());
-      
-      Game.addGame(game, user);
 
-      return redirect("/games/view/" + game.name);
+      Game addedGame = Game.addGame(game, user);
+
+      return redirect(routes.Games.getGame(addedGame.getId(), Tags.slugify(addedGame.getName())));
+
     }
   }
 
@@ -100,8 +106,8 @@ public class Games extends Controller {
    * @return the create game page
    */
   @Security.Authenticated(Secured.class)
-  public static Result editGame(String name) {
-    GameForm data = new GameForm(Game.find().byId(name));
+  public static Result editGame(long id, String name) {
+    GameForm data = new GameForm(Game.find().byId(id));
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
     return ok(CreateGame.render("Edit Game", "Edit", formdata, Secured.isLoggedIn(ctx())));
 
@@ -131,9 +137,9 @@ public class Games extends Controller {
    * @return the game's page
    */
   @Security.Authenticated(Secured.class)
-  public static Result joinPublic(String gameName) {
+  public static Result joinPublic(long id, String gameName) {
 
-    Game game = Game.getGame(gameName);
+    Game game = Game.getGame(id);
     String name = Secured.getUserInfo(ctx()).getName();
 
     String players = game.getPlayers();
@@ -142,13 +148,13 @@ public class Games extends Controller {
     game.setPlayers(sb.toString());
     game.save();
 
-    return redirect(routes.Games.getGame(gameName));
+    return redirect(routes.Games.getGame(id, Tags.slugify(gameName)));
   }
 
   @Security.Authenticated(Secured.class)
-  public static Result joinPrivate(String gameName) {
+  public static Result joinPrivate(long id, String gameName) {
 
-    Game game = Game.getGame(gameName);
+    Game game = Game.getGame(id);
     String user = Secured.getUserInfo(ctx()).getName();
     MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
 
@@ -156,7 +162,7 @@ public class Games extends Controller {
     User creator = game.getCreator();
     String email = creator.getEmail();
 
-    String url = routes.Games.allowPrivate(gameName, user).absoluteURL(request());
+    String url = routes.Games.allowPrivate(id, gameName, user).absoluteURL(request());
 
     mail.setSubject(user + " would like to join: " + gameName);
     // Set recipient to game creator after null pointer is sorted out.
@@ -166,7 +172,7 @@ public class Games extends Controller {
     mail.sendHtml("<html> <h1>A player wants to join your game!</h1>" + "<hr><br>" + user
         + " would like to join your game " + gameName + "<br><br><a href='" + url
         + "'>Confirm</a> <br><br>If you don't want this player to join this game, ignore this email.</html>");
-    return ok(RequestSent.render("Request Sent", Secured.isLoggedIn(ctx()), gameName));
+    return ok(RequestSent.render("Request Sent", Secured.isLoggedIn(ctx()), gameName, id));
   }
 
   /**
@@ -176,14 +182,14 @@ public class Games extends Controller {
    * @param user user wanting to join game
    * @return the game's page
    */
-  public static Result allowPrivate(String gameName, String user) {
+  public static Result allowPrivate(long id, String gameName, String user) {
 
-    Game game = Game.getGame(gameName);
+    Game game = Game.getGame(id);
 
     String players = game.getPlayers();
 
     if (players.contains(user)) {
-      return redirect(routes.Games.getGame(gameName));
+      return redirect(routes.Games.getGame(id, gameName));
     }
 
     StringBuilder sb = new StringBuilder(players);
@@ -191,13 +197,13 @@ public class Games extends Controller {
     game.setPlayers(sb.toString());
     game.save();
 
-    return redirect(routes.Games.getGame(gameName));
+    return redirect(routes.Games.getGame(id, gameName));
   }
 
   @Security.Authenticated(Secured.class)
-  public static Result unjoin(String gameName) {
+  public static Result unjoin(long id, String gameName) {
 
-    Game game = Game.getGame(gameName);
+    Game game = Game.getGame(id);
     String userName = Secured.getUserInfo(ctx()).getName();
     userName = ", " + userName;
 
@@ -209,6 +215,6 @@ public class Games extends Controller {
     sb.delete(start, end);
     game.setPlayers(sb.toString());
     game.save();
-    return redirect(routes.Games.getGame(gameName));
+    return redirect(routes.Games.getGame(id, gameName));
   }
 }

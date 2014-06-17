@@ -45,7 +45,8 @@ create table courts (
 ;
 
 create table game (
-  name                      varchar(255) not null,
+  id                        bigint not null,
+  name                      varchar(255),
   game_time                 timestamp,
   month                     varchar(255),
   day                       varchar(255),
@@ -62,7 +63,7 @@ create table game (
   date_edit                 varchar(255),
   update_count              integer,
   creator_id                bigint,
-  constraint pk_game primary key (name))
+  constraint pk_game primary key (id))
 ;
 
 create table court_hours (

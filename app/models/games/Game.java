@@ -3,6 +3,7 @@ package models.games;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,7 +30,7 @@ import com.avaje.ebean.Query;
 @Table(name = "game")
 public class Game extends Model {
 
-  private static final int DAYS_PAST = -31;
+  private static final int DAYS_PAST = 0;
 
   /**
    * 
@@ -37,6 +38,9 @@ public class Game extends Model {
   private static final long serialVersionUID = 1L;
 
   @Id
+  @GeneratedValue
+  private Long id;
+  
   private String name;
 
   private DateTime gameTime;
@@ -117,8 +121,8 @@ public class Game extends Model {
    * 
    * @return a finder object
    */
-  public static Finder<String, Game> find() {
-    return new Finder<String, Game>(String.class, Game.class);
+  public static Finder<Long, Game> find() {
+    return new Finder<Long, Game>(Long.class, Game.class);
   }
 
   /**
@@ -127,7 +131,7 @@ public class Game extends Model {
    * @param gf the game form
    * @param user the creator of the game
    */
-  public static void addGame(GameForm gf, User user) {
+  public static Game addGame(GameForm gf, User user) {
 
     Game game;
     DateTime gameDate;
@@ -138,8 +142,9 @@ public class Game extends Model {
     int year = Integer.parseInt(gf.year);
     int hour = Integer.parseInt(gf.hour);
     int minute = Integer.parseInt(gf.minute);
+    
 
-    if (!isGame(gf.name)) {
+    if (!isGame(gf.id)) {
 
       game =
           new Game(gf.name, gf.month, gf.day, gf.year, gf.hour, gf.minute, gf.location, gf.type, gf.frequency,
@@ -154,7 +159,7 @@ public class Game extends Model {
 
     }
     else {
-      game = getGame(gf.name);
+      game = getGame(gf.id);
 
       gameDate = new DateTime(year, month, day, hour, minute);
       game.setGameTime(gameDate);
@@ -179,6 +184,7 @@ public class Game extends Model {
 
       game.save();
     }
+    return game;
   }
 
   /**
@@ -196,8 +202,8 @@ public class Game extends Model {
    * @param name the name of the game.
    * @return game if exists
    */
-  public static boolean isGame(String name) {
-    Game game = getGame(name);
+  public static boolean isGame(long id) {
+    Game game = getGame(id);
     return !(game == null);
   }
 
@@ -206,8 +212,8 @@ public class Game extends Model {
    * 
    * @param name the name of the game
    */
-  public static void deleteGame(String name) {
-    find().ref(name).delete();
+  public static void deleteGame(long id) {
+    find().ref(id).delete();
   }
 
   /**
@@ -216,8 +222,8 @@ public class Game extends Model {
    * @param name name
    * @return the game
    */
-  public static Game getGame(String name) {
-    return find().where().eq("name", name).findUnique();
+  public static Game getGame(long id) {
+    return find().where().eq("id", id).findUnique();
   }
 
   /**
@@ -259,6 +265,20 @@ public class Game extends Model {
     q.where().disjunction().add(Expr.ilike("name", term)).add(Expr.ilike("location", term))
         .add(Expr.ilike("players", term));
     return q.orderBy(sort).findPagingList(50).setFetchAhead(false).getPage(page);
+  }
+
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
+
+  /**
+   * @param id the id to set
+   */
+  public void setId(Long id) {
+    this.id = id;
   }
 
   /**
@@ -611,11 +631,12 @@ public class Game extends Model {
     for (Game game : allGames) {
       int days = Days.daysBetween(today, game.getGameTime()).getDays();
       if (days < DAYS_PAST) {
-        Game.deleteGame(game.getName());
+        Game.deleteGame(game.getId());
       }
     }
   }
   
+
   /**
    * Used for player profile.
    * 

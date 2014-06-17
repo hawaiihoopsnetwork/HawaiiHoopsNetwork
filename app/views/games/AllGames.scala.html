@@ -3,6 +3,8 @@
 @import helper._
 @import bootstrap3._
 
+@import utils.Tags._
+
 
 @Main(title, isLoggedIn) {
 <div class="container">
@@ -56,8 +58,8 @@
       <tbody data-link="row" class="rowlink">
         @for(game <- currentPage.getList()) {
         <tr>
-          <td class="visible-xs"><a href="@routes.Games.getGame(game.getName())">@game.getGameDateString()</a></td>
-          <td class="hidden-xs"><a href="@routes.Games.getGame(game.getName())">@game.getGameTime().monthOfYear().getAsText() @game.getDay(), @game.getYear()</a></td>
+          <td class="visible-xs"><a href="@routes.Games.getGame(game.getId, slugify(game.getName()))">@game.getGameDateString()</a></td>
+          <td class="hidden-xs"><a href="@routes.Games.getGame(game.getId, slugify(game.getName()))">@game.getGameTime().monthOfYear().getAsText() @game.getDay(), @game.getYear()</a></td>
           <td>@game.getGameTime().dayOfWeek().getAsText()</td>
           <td>@game.getGameTimeString()</td>
           @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {

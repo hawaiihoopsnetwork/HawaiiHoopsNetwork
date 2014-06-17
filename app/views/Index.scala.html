@@ -23,7 +23,7 @@
                             <tbody data-link="row" class="rowlink">
                             @for(game <- models.games.Game.gamesForIndex().getList) {
                                 <tr>
-                                    <td><a id="noColor" href="@routes.Games.getGame(game.getName)">@game.getName</a></td>
+                                    <td><a id="noColor" href="@routes.Games.getGame(game.getId, slugify(game.getName))">@game.getName</a></td>
                                 </tr>
                             }
                             </tbody>

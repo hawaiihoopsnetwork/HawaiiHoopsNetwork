@@ -8,11 +8,11 @@
     <div class="container">
     <div class="visible-xs">
             @if(game.getType() == "Public"){
-            <a href="@routes.Games.joinPublic(game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+            <a href="@routes.Games.joinPublic(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
                 Join
             </a>
             } else {
-            <a href="@routes.Games.joinPrivate(game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+            <a href="@routes.Games.joinPrivate(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
                 Ask To Join
             </a>
             }       
@@ -47,7 +47,7 @@
         </br>
       <!-- Need to check if logged in user is user who created the game -->
       @if(Secured.getUserInfo(ctx()).getName() == game.getCreator().getName()) {
-        <a href="@routes.Games.editGame(game.getName())">Edit</a>
+        <a href="@routes.Games.editGame(game.getId, game.getName())">Edit</a>
       }
         <ul>
         <h10>Created: </h10>@game.getDateCreated()</br></br>
@@ -73,11 +73,11 @@
            
         } else {
             @if(game.getType() == "Public"){
-            <a href="@routes.Games.joinPublic(game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+            <a href="@routes.Games.joinPublic(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
                 Join
             </a>
             } else {
-            <a href="@routes.Games.joinPrivate(game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+            <a href="@routes.Games.joinPrivate(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
                 Ask To Join
             </a>
             }       
@@ -111,7 +111,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a href="@routes.Games.unjoin(game.getName())" type="button" class="btn btn-danger">Unjoin</a>
+        <a href="@routes.Games.unjoin(game.getId, game.getName())" type="button" class="btn btn-danger">Unjoin</a>
       </div>
     </div>
   </div>

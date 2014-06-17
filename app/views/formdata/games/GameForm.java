@@ -19,8 +19,9 @@ public class GameForm {
 
   private final int DAYS_FORWARD = 60;
 
-  /** The name of the game. **/
   @Id
+  public long id;
+  
   @Constraints.Required(message = "A name is required.")
   public String name;
   /** Month. **/

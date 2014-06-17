@@ -1,4 +1,4 @@
-@(title: String, isLoggedIn: Boolean, gameName: String) 
+@(title: String, isLoggedIn: Boolean, gameName: String, id: Long) 
 
 @Main(title, isLoggedIn) {
 
@@ -25,7 +25,7 @@
             </p>
             <p class="count-down-wrap">
                 <span id="count-down">5</span><br/>
-                Click <a href="@routes.Games.getGame(gameName)">here</a> if you don't want to wait.
+                Click <a href="@routes.Games.getGame(id, gameName)">here</a> if you don't want to wait.
             </p>
         </div>
     </div>
@@ -37,7 +37,7 @@
             $('#count-down').text(count);
             if(count == 0) {
                 clearInterval(interval);
-                window.location = '@routes.Games.getGame(gameName)';
+                window.location = '@routes.Games.getGame(id, gameName)';
             }
         }, 1000);
     </script>
