@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
+
 import models.Comment;
 import models.Player;
 import models.leagues.League;
@@ -41,7 +44,6 @@ public class Team extends Model {
   private String location;
   private String teamType;
   private String skillLevel;
-  private String roster;
   private String description;
   private String imageUrl;
   
@@ -58,6 +60,9 @@ public class Team extends Model {
   private int blocks = 0;
   
   private String opponents = "";
+  
+  @ManyToMany(mappedBy = "teams", cascade=CascadeType.ALL)
+  public List<Player> roster = new ArrayList<>();
   
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
@@ -82,24 +87,22 @@ public class Team extends Model {
    * @param roster roster
    * @param description description
    */
-  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
+  public Team(String teamName, String location, String teamType, String skillLevel, String description,
       String imageUrl) {
     this.setTeamName(teamName);
     this.setLocation(location);
     this.setTeamType(teamType);
     this.setSkillLevel(skillLevel);
-    this.setRoster(roster);
     this.setDescription(description);
     this.setImageUrl(imageUrl);
   }
   
-  public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
+  public Team(String teamName, String location, String teamType, String skillLevel, String description,
       String imageUrl, int wins, int losses, int pointsFor, int pointsAgainst) {
     this.setTeamName(teamName);
     this.setLocation(location);
     this.setTeamType(teamType);
     this.setSkillLevel(skillLevel);
-    this.setRoster(roster);
     this.setDescription(description);
     this.setImageUrl(imageUrl);
     this.setWins(wins);
@@ -128,7 +131,7 @@ public class Team extends Model {
     long id = tf.id;
 
     if (!isTeam(id)) {
-      team = new Team(tf.teamName, tf.location, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
+      team = new Team(tf.teamName, tf.location, tf.teamType, tf.skillLevel, tf.description, tf.imageUrl);
       team.save();
     }
     else {
@@ -288,7 +291,7 @@ public class Team extends Model {
   /**
    * @return the roster
    */
-  public String getRoster() {
+  public List<Player> getRoster() {
     return roster;
   }
   
@@ -307,54 +310,18 @@ public class Team extends Model {
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
   }
-
-  /**
-   * Returns the roster as a java list.
-   * 
-   * @return the roster as a list
-   */
-  public List<String> getRosterList() {
-    // TODO check if player name is related to a player profile
-    List<String> rosterList = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
-    return rosterList;
-  }
   
-  private List<String> noProfile = new ArrayList<>();
-
   /**
    * @return the players as a java List
    */
-  public List<Player> getPlayerProfiles() {
-    // TODO check if player name is related to a player profile
-    List<String> gamePlayers = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
-
-    List<Player> withProfile = new ArrayList<>();
-    for (int x = 0; x < gamePlayers.size(); x++) {
-      Player player = Player.getPlayer(gamePlayers.get(x));
-
-      if (player != null) {
-        withProfile.add(player);
-      }
-      else {
-        noProfile.add(gamePlayers.get(x));
-      }
-    }
-    return withProfile;
-  }
-
-  /**
-   * Returns a list of the player names that don't have a profile within the site.
-   * 
-   * @return noProfile
-   */
-  public List<String> getNoProfile() {
-    return noProfile;
+  public void inviteFriends() {
+    // TODO Allow users to invite their facebook friends
   }
 
   /**
    * @param roster the roster to set
    */
-  public void setRoster(String roster) {
+  public void setRoster(List<Player> roster) {
     this.roster = roster;
   }
 

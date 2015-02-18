@@ -27,10 +27,17 @@
               buttonNameList = models.teams.Team.typeOfTeam(),
               help = "")
               
-        @bootstrap3.text(teamForm("skillLevel"),
+       @bootstrap3.text(teamForm("skillLevel"),
             label = "Skill Level (optional)",
             placeholder = "The skill level of the team",
             help = "")
+       
+       //THIS IS INCOMPLETE!!!
+       @bootstrap3.select(teamForm("roster"),
+                    label = "Select players from our database",
+                    optionMap = models.leagues.League.getTeamMap(),
+                    isMultiple = true,
+                    help = "")
        
        @bootstrap3.textarea(teamForm("roster"),
               rows = "6",

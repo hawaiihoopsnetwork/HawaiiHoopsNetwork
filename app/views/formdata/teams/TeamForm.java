@@ -2,7 +2,9 @@ package views.formdata.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Id;
+
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
@@ -29,8 +31,8 @@ public class TeamForm {
   /** Team Skill level. **/
   public String skillLevel;
   /** Team roster. **/
-  @Constraints.Required(message = "Players are required for a team, aren't they?")
-  public String roster;
+  @Constraints.Required(message = "Atleast one player is required to start a team")
+  public List<String> roster = new ArrayList<>();
   /** Description of the team. **/
   public String description;
   /** Team logo **/
